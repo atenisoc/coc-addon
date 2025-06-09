@@ -1,18 +1,13 @@
-'use client'
-
-import Chat from '@/components/Chat'
-import Feedback from '@/components/Feedback'
+import ChoiceSection from '@/components/ChoiceSection'
 
 export default function CocPage() {
   return (
-    <div className="p-4 space-y-6">
-      <h1 className="text-2xl font-bold text-center">クトゥルフの世界へようこそ</h1>
-
-      {/* チャットエリア */}
-      <Chat />
-
-      {/* フィードバック欄（開発者へのメッセージ） */}
-      <Feedback />
-    </div>
+    <main className="min-h-screen text-white p-4">
+      <div className="max-w-md mx-auto space-y-6">
+        <h1 className="text-xl font-bold">シナリオ選択画面</h1>
+        <p>あなたの前に謎の扉が現れた。どうする？</p>
+        <ChoiceSection />
+      </div>
+    </main>
   )
 }

@@ -1,9 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  experimental: {
-    appDir: true,
-  },
-  srcDir: 'src', // ✅ ← 戻す
+  // i18nは削除
 }
 
 export default nextConfig

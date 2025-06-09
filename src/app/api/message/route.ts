@@ -1,57 +1,55 @@
 import { cookies } from 'next/headers'
+import { NextRequest, NextResponse } from 'next/server'
 import OpenAI from 'openai'
 
 const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY!,
+  apiKey: process.env.OPENAI_API_KEY,
 })
 
-export async function POST(req: Request) {
-  const body = await req.json()
-  const userMessage = body.message || ''
-
-  // ✅ cookies() は Promise なので await が必要！
-  const cookieStore = await cookies()
-  const uuid = cookieStore.get('user-uuid')?.value
-
-  const systemPrompt = `
-あなたはクトゥルフ神話TRPGのゲームマスターです。
-以下の形式で必ずJSONのみを返答してください：
-
-{
-  "reply": "描写または会話",
-  "options": ["選択肢A", "選択肢B", "選択肢C"]
-}
-
-JSON以外の文字列を絶対に出力しないこと。
-`
-
-  let replyData = ''
-  let json
-
+export async function POST(req: NextRequest) {
   try {
-    const response = await openai.chat.completions.create({
-      model: 'gpt-4',
-      temperature: 0.8,
+    const cookieStore = cookies()
+    const uuid = cookieStore.get('user-uuid')?.value || 'unknown'
+
+    const referer = req.headers.get('referer') || ''
+    const isJapanese = referer.includes('/ja') || referer.endsWith('/coc')
+
+    const systemPrompt = isJapanese
+      ? `あなたはクトゥルフ神話TRPGのゲームマスターです。
+必ず以下の形式で応答してください。
+{
+  "reply": "あなたの返答メッセージ",
+  "options": ["選択肢A", "選択肢B"] // 任意。ない場合は含めない。
+}`
+      : `You are the Game Master of a Cthulhu Mythos TRPG.
+Always respond strictly in the following JSON format:
+{
+  "reply": "Your response to the player.",
+  "options": ["Option A", "Option B"] // Optional. Omit this field if no options.
+}`
+
+    const { message } = await req.json()
+
+    // GPT API 呼び出し
+    const chatCompletion = await openai.chat.completions.create({
+      model: 'gpt-3.5-turbo',
       messages: [
         { role: 'system', content: systemPrompt },
-        { role: 'user', content: userMessage },
+        { role: 'user', content: message },
       ],
-      response_format: 'json_object' as any,
     })
 
-    replyData = response.choices[0].message.content || ''
-    json = JSON.parse(replyData)
+    const gptRaw = chatCompletion.choices[0].message.content || ''
 
-  } catch (err) {
-    console.error('GPTエラー:', err)
-    json = {
-      reply: 'GPTの応答を解析できませんでした。もう一度選んでください。',
-      options: ['再試行する', '最初に戻る'],
-    }
+    const parsed = JSON.parse(gptRaw)
+
+    return NextResponse.json({
+      reply: parsed.reply || '(no reply)',
+      options: parsed.options || [],
+      user: uuid,
+    })
+  } catch (err: any) {
+    console.error('GPT API error:', err)
+    return NextResponse.json({ reply: 'エラーが発生しました。' }, { status: 500 })
   }
-
-  return new Response(JSON.stringify(json), {
-    status: 200,
-    headers: { 'Content-Type': 'application/json' },
-  })
 }

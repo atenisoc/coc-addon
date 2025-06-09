@@ -1,22 +1,22 @@
-import { NextResponse } from 'next/server'
-import { cookies } from 'next/headers'
+// src/app/api/log/route.ts
 
 export async function POST(req: Request) {
-  const body = await req.json()
-  const { message, uuid, lang } = body
+  try {
+    const body = await req.json()
+    const { message } = body
 
-  // クッキー確認
-const cookieStore = await cookies();
-const cookieUUID = cookieStore.get('user-uuid')?.value;
+    // 実際にはここでDB保存 or ファイル書き込み処理（ここではログ出力のみ）
+    console.log('📝 フィードバック:', message)
 
-  // 仮にログをサーバー側で処理（ここでは console に出力）
-  console.log('ログ保存:', {
-    uuid: uuid || cookieUUID,
-    lang: lang || 'ja',
-    message,
-    timestamp: new Date().toISOString(),
-  })
-
-  // 将来的にDB保存などに差し替え可
-  return NextResponse.json({ status: 'ok' })
+    return new Response(JSON.stringify({ status: 'ok' }), {
+      status: 200,
+      headers: { 'Content-Type': 'application/json' },
+    })
+  } catch (error) {
+    console.error('⚠️ フィードバック送信エラー:', error)
+    return new Response(JSON.stringify({ status: 'error' }), {
+      status: 500,
+      headers: { 'Content-Type': 'application/json' },
+    })
+  }
 }
