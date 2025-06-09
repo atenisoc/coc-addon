@@ -1,24 +1,22 @@
-import { NextRequest } from 'next/server';
+import { NextResponse } from 'next/server'
+import { cookies } from 'next/headers'
 
-export async function POST(req: NextRequest) {
-  try {
-    const body = await req.json();
+export async function POST(req: Request) {
+  const body = await req.json()
+  const { message, uuid, lang } = body
 
-    // ログ情報を取得
-    const { type, user, content, timestamp } = body;
+  // クッキー確認
+  const cookieStore = cookies()
+  const cookieUUID = cookieStore.get('user-uuid')?.value
 
-    // 簡易ログ：現状は console に出力（将来的に DBやS3などへ）
-    console.log('LOG:', { type, user, content, timestamp });
+  // 仮にログをサーバー側で処理（ここでは console に出力）
+  console.log('ログ保存:', {
+    uuid: uuid || cookieUUID,
+    lang: lang || 'ja',
+    message,
+    timestamp: new Date().toISOString(),
+  })
 
-    // 成功応答
-    return new Response(JSON.stringify({ status: 'ok' }), {
-      status: 200,
-      headers: { 'Content-Type': 'application/json' },
-    });
-  } catch (error) {
-    return new Response(JSON.stringify({ status: 'error', message: error }), {
-      status: 500,
-      headers: { 'Content-Type': 'application/json' },
-    });
-  }
+  // 将来的にDB保存などに差し替え可
+  return NextResponse.json({ status: 'ok' })
 }

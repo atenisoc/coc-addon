@@ -1,11 +1,18 @@
-// src/app/coc/page.tsx
 'use client'
+
+import Chat from '@/components/Chat'
+import Feedback from '@/components/Feedback'
 
 export default function CocPage() {
   return (
-    <main className="p-4">
-      <h1 className="text-xl font-bold mb-4">GPT CoC アプリ</h1>
-      <p>このページは正常に表示されています。</p>
-    </main>
+    <div className="p-4 space-y-6">
+      <h1 className="text-2xl font-bold text-center">クトゥルフの世界へようこそ</h1>
+
+      {/* チャットエリア */}
+      <Chat />
+
+      {/* フィードバック欄（開発者へのメッセージ） */}
+      <Feedback />
+    </div>
   )
 }

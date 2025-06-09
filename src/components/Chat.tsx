@@ -41,8 +41,14 @@ export default function Chat() {
       localStorage.setItem(`log-${uuid}`, JSON.stringify(updated))
     }
 
-    // 新たな選択肢を仮設定（本来は data.options などから生成）
-　　setOptions(data.options || [])
+    // 💾 ログ保存（クッキーUUID付きで）
+    saveChatLog({
+      user: optionText,
+      reply: data.reply,
+      options: data.options,
+    })
+
+    setOptions(data.options || [])
   }
 
   return (
@@ -76,4 +82,42 @@ function getCookie(name: string): string | null {
   const parts = value.split(`; ${name}=`)
   if (parts.length === 2) return parts.pop()?.split(';').shift() ?? null
   return null
+}
+
+// 🔽 ログ保存関数
+function saveChatLog(newEntry: {
+  user: string
+  reply: string
+  options?: string[]
+}) {
+  try {
+    const key = 'coc-chat-log'
+    const prev = localStorage.getItem(key)
+    let log: {
+      timestamp: string
+      user: string
+      reply: string
+      options?: string[]
+    }[] = []
+
+    if (prev) {
+      try {
+        log = JSON.parse(prev)
+        if (!Array.isArray(log)) log = []
+      } catch {
+        log = []
+      }
+    }
+
+    log.push({
+      timestamp: new Date().toISOString(),
+      user: newEntry.user,
+      reply: newEntry.reply,
+      options: newEntry.options,
+    })
+
+    localStorage.setItem(key, JSON.stringify(log))
+  } catch (e) {
+    console.error('ログ保存に失敗:', e)
+  }
 }
