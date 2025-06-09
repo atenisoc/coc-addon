@@ -8,7 +8,7 @@ const openai = new OpenAI({
 
 export async function POST(req: NextRequest) {
   try {
-    const cookieStore = cookies()
+    const cookieStore = await cookies() // ← await を追加
     const uuid = cookieStore.get('user-uuid')?.value || 'unknown'
 
     const referer = req.headers.get('referer') || ''
@@ -30,7 +30,6 @@ Always respond strictly in the following JSON format:
 
     const { message } = await req.json()
 
-    // GPT API 呼び出し
     const chatCompletion = await openai.chat.completions.create({
       model: 'gpt-3.5-turbo',
       messages: [
@@ -40,7 +39,6 @@ Always respond strictly in the following JSON format:
     })
 
     const gptRaw = chatCompletion.choices[0].message.content || ''
-
     const parsed = JSON.parse(gptRaw)
 
     return NextResponse.json({
