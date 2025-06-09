@@ -6,8 +6,8 @@ export async function POST(req: Request) {
   const { message, uuid, lang } = body
 
   // クッキー確認
-  const cookieStore = cookies()
-  const cookieUUID = cookieStore.get('user-uuid')?.value
+const cookieStore = await cookies();
+const cookieUUID = cookieStore.get('user-uuid')?.value;
 
   // 仮にログをサーバー側で処理（ここでは console に出力）
   console.log('ログ保存:', {
