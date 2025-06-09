@@ -1,4 +1,3 @@
-// ファイル: src/app/api/scenario/route.ts
 import { OpenAI } from 'openai'
 import { NextResponse } from 'next/server'
 
@@ -9,15 +8,24 @@ const openai = new OpenAI({
 export async function GET() {
   const prompt = `
 あなたはクトゥルフ神話TRPGのゲームマスターです。
-以下の形式で短めのシナリオを返してください。
+異なる3つの短編シナリオを以下の形式で生成してください：
 
-形式:
-{
-  "title": "タイトル",
-  "summary": "あらすじ"
-}
+[
+  {
+    "title": "シナリオタイトルA",
+    "summary": "あらすじA"
+  },
+  {
+    "title": "シナリオタイトルB",
+    "summary": "あらすじB"
+  },
+  {
+    "title": "シナリオタイトルC",
+    "summary": "あらすじC"
+  }
+]
 
-ジャンル: ホラー、オカルト、謎解きから毎回ランダムにしてください。
+ホラー、オカルト、サスペンス、神話系などジャンルにばらつきを持たせてください。
   `
 
   const completion = await openai.chat.completions.create({
@@ -27,6 +35,5 @@ export async function GET() {
   })
 
   const content = completion.choices[0].message.content
-
   return NextResponse.json(JSON.parse(content!))
 }
