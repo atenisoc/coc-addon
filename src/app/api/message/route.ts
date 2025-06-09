@@ -1,53 +1,28 @@
-import { cookies } from 'next/headers'
-import { NextRequest, NextResponse } from 'next/server'
-import OpenAI from 'openai'
+// ファイル: src/app/api/message/route.ts
+import { OpenAI } from 'openai'
+import { NextResponse } from 'next/server'
 
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
-})
+const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY })
 
-export async function POST(req: NextRequest) {
-  try {
-    const cookieStore = await cookies() // ← await を追加
-    const uuid = cookieStore.get('user-uuid')?.value || 'unknown'
+export async function POST(req: Request) {
+  const { userInput, history } = await req.json()
 
-    const referer = req.headers.get('referer') || ''
-    const isJapanese = referer.includes('/ja') || referer.endsWith('/coc')
+  const messages = [
+    {
+      role: 'system',
+      content: `あなたはクトゥルフ神話TRPGのゲームマスターです。
+プレイヤーの行動に応じて、ホラー・謎・緊張感ある展開を返してください。文体は描写中心に。`,
+    },
+    ...history,
+    { role: 'user', content: userInput },
+  ]
 
-    const systemPrompt = isJapanese
-      ? `あなたはクトゥルフ神話TRPGのゲームマスターです。
-必ず以下の形式で応答してください。
-{
-  "reply": "あなたの返答メッセージ",
-  "options": ["選択肢A", "選択肢B"] // 任意。ない場合は含めない。
-}`
-      : `You are the Game Master of a Cthulhu Mythos TRPG.
-Always respond strictly in the following JSON format:
-{
-  "reply": "Your response to the player.",
-  "options": ["Option A", "Option B"] // Optional. Omit this field if no options.
-}`
+  const response = await openai.chat.completions.create({
+    model: 'gpt-4',
+    messages,
+    temperature: 0.8,
+  })
 
-    const { message } = await req.json()
-
-    const chatCompletion = await openai.chat.completions.create({
-      model: 'gpt-3.5-turbo',
-      messages: [
-        { role: 'system', content: systemPrompt },
-        { role: 'user', content: message },
-      ],
-    })
-
-    const gptRaw = chatCompletion.choices[0].message.content || ''
-    const parsed = JSON.parse(gptRaw)
-
-    return NextResponse.json({
-      reply: parsed.reply || '(no reply)',
-      options: parsed.options || [],
-      user: uuid,
-    })
-  } catch (err: any) {
-    console.error('GPT API error:', err)
-    return NextResponse.json({ reply: 'エラーが発生しました。' }, { status: 500 })
-  }
+  const reply = response.choices[0].message.content
+  return NextResponse.json({ reply })
 }
