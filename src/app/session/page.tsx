@@ -1,4 +1,4 @@
-// ✅ 完全版 `/session/page.tsx`
+// ✅ 完全版 `/session/page.tsx`（選択肢を段階的に順に表示）
 'use client'
 
 import { useEffect, useState } from 'react'
@@ -28,6 +28,7 @@ export default function SessionPage() {
   const [loading, setLoading] = useState(false)
   const [input, setInput] = useState('')
   const [options, setOptions] = useState<string[]>([])
+  const [visibleOptions, setVisibleOptions] = useState<string[]>([])
   const pathname = usePathname()
   const isJapanese = pathname.includes('/ja') || pathname.endsWith('/coc')
 
@@ -62,6 +63,18 @@ export default function SessionPage() {
       }, 2000)
     }
   }, [])
+
+  useEffect(() => {
+    if (!options.length) return
+    setVisibleOptions([])
+    let i = 0
+    const interval = setInterval(() => {
+      setVisibleOptions((prev) => [...prev, options[i]])
+      i++
+      if (i >= options.length) clearInterval(interval)
+    }, 600)
+    return () => clearInterval(interval)
+  }, [options])
 
   const handleSend = async (text: string) => {
     if (!text.trim()) return
@@ -129,9 +142,9 @@ export default function SessionPage() {
             </button>
           </div>
 
-          {options.length > 0 && (
+          {visibleOptions.length > 0 && (
             <div className="space-y-2">
-              {options.map((opt, i) => (
+              {visibleOptions.map((opt, i) => (
                 <button
                   key={i}
                   className="w-full bg-sky-500 hover:bg-sky-600 text-white py-2 rounded"
