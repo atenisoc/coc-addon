@@ -1,4 +1,3 @@
-// ✅ 完全版 `/session/page.tsx`（選択肢を段階的に順に表示）
 'use client'
 
 import { useEffect, useState } from 'react'
@@ -46,7 +45,7 @@ export default function SessionPage() {
 
   const introMessage = isJapanese
     ? `ようこそ「${scenario?.title}」。探索者たちは、${(scenario?.summary || '').slice(0, 40)}… どうする？`
-    : `Welcome to "${scenario?.title}". The investigators arrive... What will they do?`
+    : `Welcome to \"${scenario?.title}\". The investigators arrive... What will they do?`
 
   const typedIntro = useTypewriter(introMessage, 25, showIntro)
 
@@ -64,8 +63,9 @@ export default function SessionPage() {
     }
   }, [])
 
+  // ✅ 選択肢を1つずつ表示
   useEffect(() => {
-    if (!options.length) return
+    if (!options || options.length === 0) return
     setVisibleOptions([])
     let i = 0
     const interval = setInterval(() => {
@@ -74,7 +74,7 @@ export default function SessionPage() {
       if (i >= options.length) clearInterval(interval)
     }, 600)
     return () => clearInterval(interval)
-  }, [options])
+  }, [options.join(',')]) // 変更を正確に検知
 
   const handleSend = async (text: string) => {
     if (!text.trim()) return
@@ -90,7 +90,7 @@ export default function SessionPage() {
 
     const data = await res.json()
     setMessages([...updated, { role: 'assistant', content: data.reply }])
-    setOptions(data.options || [])
+    setOptions(data.options || []) // visibleOptions は useEffect に任せる
     setLoading(false)
   }
 
