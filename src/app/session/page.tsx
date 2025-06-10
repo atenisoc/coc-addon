@@ -3,22 +3,6 @@
 import { useEffect, useState } from 'react'
 import { usePathname } from 'next/navigation'
 
-function useTypewriter(text: string, delay = 30, trigger = true) {
-  const [displayed, setDisplayed] = useState('')
-  useEffect(() => {
-    if (!trigger) return
-    setDisplayed('')
-    let i = 0
-    const timer = setInterval(() => {
-      setDisplayed((prev) => prev + text[i])
-      i++
-      if (i >= text.length) clearInterval(timer)
-    }, delay)
-    return () => clearInterval(timer)
-  }, [text, trigger])
-  return displayed
-}
-
 type Message = { role: 'user' | 'assistant'; content: string }
 
 export default function SessionPage() {
@@ -27,9 +11,10 @@ export default function SessionPage() {
   const [loading, setLoading] = useState(false)
   const [input, setInput] = useState('')
   const [options, setOptions] = useState<string[]>([])
+  const [typedOptions, setTypedOptions] = useState<string[]>([])
   const [visibleOptions, setVisibleOptions] = useState<string[]>([])
   const [optionTrigger, setOptionTrigger] = useState(0)
-  const [optionTypewriters, setOptionTypewriters] = useState<string[]>([])
+  const [introMessage, setIntroMessage] = useState('')
 
   const pathname = usePathname()
   const isJapanese = pathname.includes('/ja') || pathname.endsWith('/coc')
@@ -38,6 +23,22 @@ export default function SessionPage() {
   const [showSummary, setShowSummary] = useState(false)
   const [showIntro, setShowIntro] = useState(false)
 
+  const useTypewriter = (text: string, delay = 30, trigger = true) => {
+    const [displayed, setDisplayed] = useState('')
+    useEffect(() => {
+      if (!trigger) return
+      setDisplayed('')
+      let i = 0
+      const timer = setInterval(() => {
+        setDisplayed((prev) => prev + text[i])
+        i++
+        if (i >= text.length) clearInterval(timer)
+      }, delay)
+      return () => clearInterval(timer)
+    }, [text, trigger])
+    return displayed
+  }
+
   const typedTitle = useTypewriter(
     isJapanese ? `🧠 シナリオ：${scenario?.title || ''}` : `🧠 Scenario: ${scenario?.title || ''}`,
     25,
@@ -45,11 +46,6 @@ export default function SessionPage() {
   )
 
   const typedSummary = useTypewriter(scenario?.summary || '', 15, showSummary)
-
-  const introMessage = isJapanese
-    ? `ようこそ「${scenario?.title}」。探索者たちは、${(scenario?.summary || '').slice(0, 40)}… どうする？`
-    : `Welcome to "${scenario?.title}". The investigators arrive... What will they do?`
-
   const typedIntro = useTypewriter(introMessage, 25, showIntro)
 
   useEffect(() => {
@@ -57,46 +53,51 @@ export default function SessionPage() {
     if (saved) {
       const parsed = JSON.parse(saved)
       setScenario(parsed)
+
+      const title = parsed?.title || ''
+      const summary = parsed?.summary || ''
+
+      const intro = isJapanese
+        ? `ようこそ「${title}」。探索者たちは、${summary.slice(0, 40)}… どうする？`
+        : `Welcome to "${title}". The investigators arrive... What will they do?`
+
+      setIntroMessage(intro)
+
       setTimeout(() => setShowTitle(true), 300)
       setTimeout(() => setShowSummary(true), 1000)
       setTimeout(() => {
         setShowIntro(true)
-        setMessages([{ role: 'assistant', content: introMessage }])
+        setMessages([{ role: 'assistant', content: intro }])
       }, 2000)
     }
   }, [])
 
   useEffect(() => {
     if (!options || options.length === 0) return
+    setTypedOptions([])
     setVisibleOptions([])
-    setOptionTypewriters([])
 
     let i = 0
     const interval = setInterval(() => {
-      setVisibleOptions((prev) => [...prev, options[i]])
-      setOptionTypewriters((prev) => [...prev, ''])
+      const full = options[i]
+      let j = 0
+      const typeTimer = setInterval(() => {
+        setTypedOptions((prev) => {
+          const updated = [...prev]
+          updated[i] = (updated[i] || '') + full[j]
+          return updated
+        })
+        j++
+        if (j >= full.length) clearInterval(typeTimer)
+      }, 30)
+
+      setVisibleOptions((prev) => [...prev, full])
       i++
       if (i >= options.length) clearInterval(interval)
     }, 600)
 
     return () => clearInterval(interval)
   }, [optionTrigger])
-
-  useEffect(() => {
-    visibleOptions.forEach((opt, idx) => {
-      let i = 0
-      const timer = setInterval(() => {
-        setOptionTypewriters((prev) => {
-          const updated = [...prev]
-          updated[idx] = (updated[idx] || '') + opt[i]
-          return updated
-        })
-        i++
-        if (i >= opt.length) clearInterval(timer)
-      }, 20)
-      return () => clearInterval(timer)
-    })
-  }, [visibleOptions])
 
   const handleSend = async (text: string) => {
     if (!text.trim()) return
@@ -105,7 +106,7 @@ export default function SessionPage() {
     setLoading(true)
     setInput('')
     setVisibleOptions([])
-    setOptionTypewriters([])
+    setTypedOptions([])
 
     const res = await fetch('/api/message', {
       method: 'POST',
@@ -120,6 +121,14 @@ export default function SessionPage() {
   }
 
   const handleChoice = (text: string) => handleSend(text)
+
+  if (!scenario) {
+    return (
+      <main className="min-h-screen text-white p-4 max-w-xl mx-auto">
+        <p>読み込み中...</p>
+      </main>
+    )
+  }
 
   return (
     <main className="min-h-screen text-white p-4 max-w-xl mx-auto space-y-4">
@@ -164,19 +173,17 @@ export default function SessionPage() {
             </button>
           </div>
 
-          {visibleOptions.length > 0 && (
-            <div className="space-y-2">
-              {visibleOptions.map((_, i) => (
-                <button
-                  key={i}
-                  className="w-full bg-sky-500 hover:bg-sky-600 text-white py-2 rounded"
-                  onClick={() => handleChoice(visibleOptions[i])}
-                >
-                  {optionTypewriters[i] || ''}
-                </button>
-              ))}
-            </div>
-          )}
+          <div className="space-y-2">
+            {typedOptions.map((opt, i) => (
+              <button
+                key={i}
+                className="w-full bg-sky-500 hover:bg-sky-600 text-white py-2 rounded"
+                onClick={() => handleChoice(visibleOptions[i])}
+              >
+                {opt}
+              </button>
+            ))}
+          </div>
         </>
       )}
     </main>
