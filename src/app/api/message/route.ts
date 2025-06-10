@@ -1,5 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server'
-import OpenAI, { ChatCompletionMessageParam } from 'openai'
+import OpenAI from 'openai'
+
+type ChatCompletionMessageParam = {
+  role: 'system' | 'user' | 'assistant' | 'function'
+  content: string
+  name?: string
+}
 
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
@@ -14,8 +20,7 @@ export async function POST(req: NextRequest) {
     if (Array.isArray(history)) {
       for (const m of history) {
         if (m.role === 'function') {
-          // function roleの場合はnameが必須なのでスキップか適切にセットする
-          // ここではスキップ
+          // function roleならnameが必須だがここではスキップ
           continue
         }
         if (
@@ -28,13 +33,11 @@ export async function POST(req: NextRequest) {
       }
     }
 
-    // systemプロンプトを必ず先頭に
     messagesForOpenAI.unshift({
       role: 'system',
       content: 'あなたはクトゥルフ神話TRPGのゲームマスターです。',
     })
 
-    // ユーザーの最新発言を追加
     messagesForOpenAI.push({
       role: 'user',
       content: message,
@@ -47,12 +50,11 @@ export async function POST(req: NextRequest) {
 
     const gptResponse = completion.choices[0].message?.content || ''
 
-    // JSONパースを試みる（失敗したらテキスト返し）
     let parsed = { reply: gptResponse, options: [] as string[] }
     try {
       parsed = JSON.parse(gptResponse)
     } catch {
-      // ignore parse error
+      // JSONパースエラーは無視してテキスト返し
     }
 
     return NextResponse.json({
