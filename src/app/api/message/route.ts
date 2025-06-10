@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import OpenAI from 'openai'
+import OpenAI, { ChatCompletionMessageParam } from 'openai'
 
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
@@ -9,23 +9,36 @@ export async function POST(req: NextRequest) {
   try {
     const { message, history } = await req.json()
 
-    // history が配列かチェックし、OpenAIに渡す形式に変換
-    const messagesForOpenAI = [
-      ...(Array.isArray(history)
-        ? history.map((m: { role: string; content: string }) => ({
-            role: m.role === 'user' ? 'user' : 'assistant',
-            content: m.content,
-          }))
-        : []),
-      {
-        role: 'system',
-        content: 'あなたはクトゥルフ神話TRPGのゲームマスターです。',
-      },
-      {
-        role: 'user',
-        content: message,
-      },
-    ]
+    const messagesForOpenAI: ChatCompletionMessageParam[] = []
+
+    if (Array.isArray(history)) {
+      for (const m of history) {
+        if (m.role === 'function') {
+          // function roleの場合はnameが必須なのでスキップか適切にセットする
+          // ここではスキップ
+          continue
+        }
+        if (
+          m.role === 'user' ||
+          m.role === 'assistant' ||
+          m.role === 'system'
+        ) {
+          messagesForOpenAI.push({ role: m.role, content: m.content })
+        }
+      }
+    }
+
+    // systemプロンプトを必ず先頭に
+    messagesForOpenAI.unshift({
+      role: 'system',
+      content: 'あなたはクトゥルフ神話TRPGのゲームマスターです。',
+    })
+
+    // ユーザーの最新発言を追加
+    messagesForOpenAI.push({
+      role: 'user',
+      content: message,
+    })
 
     const completion = await openai.chat.completions.create({
       model: 'gpt-3.5-turbo',
@@ -34,12 +47,12 @@ export async function POST(req: NextRequest) {
 
     const gptResponse = completion.choices[0].message?.content || ''
 
-    // GPTの返答をJSONとして解釈（失敗してもテキスト返し）
+    // JSONパースを試みる（失敗したらテキスト返し）
     let parsed = { reply: gptResponse, options: [] as string[] }
     try {
       parsed = JSON.parse(gptResponse)
     } catch {
-      // JSON parse error は無視してテキストをそのまま返す
+      // ignore parse error
     }
 
     return NextResponse.json({
