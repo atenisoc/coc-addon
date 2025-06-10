@@ -28,6 +28,8 @@ export default function SessionPage() {
   const [input, setInput] = useState('')
   const [options, setOptions] = useState<string[]>([])
   const [visibleOptions, setVisibleOptions] = useState<string[]>([])
+  const [optionTrigger, setOptionTrigger] = useState(0)
+
   const pathname = usePathname()
   const isJapanese = pathname.includes('/ja') || pathname.endsWith('/coc')
 
@@ -45,7 +47,7 @@ export default function SessionPage() {
 
   const introMessage = isJapanese
     ? `ようこそ「${scenario?.title}」。探索者たちは、${(scenario?.summary || '').slice(0, 40)}… どうする？`
-    : `Welcome to \"${scenario?.title}\". The investigators arrive... What will they do?`
+    : `Welcome to "${scenario?.title}". The investigators arrive... What will they do?`
 
   const typedIntro = useTypewriter(introMessage, 25, showIntro)
 
@@ -63,7 +65,6 @@ export default function SessionPage() {
     }
   }, [])
 
-  // ✅ 選択肢を1つずつ表示
   useEffect(() => {
     if (!options || options.length === 0) return
     setVisibleOptions([])
@@ -74,7 +75,7 @@ export default function SessionPage() {
       if (i >= options.length) clearInterval(interval)
     }, 600)
     return () => clearInterval(interval)
-  }, [options.join(',')]) // 変更を正確に検知
+  }, [optionTrigger])
 
   const handleSend = async (text: string) => {
     if (!text.trim()) return
@@ -82,6 +83,7 @@ export default function SessionPage() {
     setMessages(updated)
     setLoading(true)
     setInput('')
+    setVisibleOptions([])
 
     const res = await fetch('/api/message', {
       method: 'POST',
@@ -90,7 +92,8 @@ export default function SessionPage() {
 
     const data = await res.json()
     setMessages([...updated, { role: 'assistant', content: data.reply }])
-    setOptions(data.options || []) // visibleOptions は useEffect に任せる
+    setOptions(data.options || [])
+    setOptionTrigger((prev) => prev + 1)
     setLoading(false)
   }
 
