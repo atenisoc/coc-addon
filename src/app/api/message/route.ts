@@ -1,28 +1,53 @@
-// ファイル: src/app/api/message/route.ts
-import { OpenAI } from 'openai'
-import { NextResponse } from 'next/server'
+import { NextRequest, NextResponse } from 'next/server'
+import OpenAI from 'openai'
 
-const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY })
+const openai = new OpenAI({
+  apiKey: process.env.OPENAI_API_KEY,
+})
 
-export async function POST(req: Request) {
-  const { userInput, history } = await req.json()
+export async function POST(req: NextRequest) {
+  try {
+    const { message, history } = await req.json()
 
-  const messages = [
-    {
-      role: 'system',
-      content: `あなたはクトゥルフ神話TRPGのゲームマスターです。
-プレイヤーの行動に応じて、ホラー・謎・緊張感ある展開を返してください。文体は描写中心に。`,
-    },
-    ...history,
-    { role: 'user', content: userInput },
-  ]
+    // history が配列かチェックし、OpenAIに渡す形式に変換
+    const messagesForOpenAI = [
+      ...(Array.isArray(history)
+        ? history.map((m: { role: string; content: string }) => ({
+            role: m.role === 'user' ? 'user' : 'assistant',
+            content: m.content,
+          }))
+        : []),
+      {
+        role: 'system',
+        content: 'あなたはクトゥルフ神話TRPGのゲームマスターです。',
+      },
+      {
+        role: 'user',
+        content: message,
+      },
+    ]
 
-  const response = await openai.chat.completions.create({
-    model: 'gpt-4',
-    messages,
-    temperature: 0.8,
-  })
+    const completion = await openai.chat.completions.create({
+      model: 'gpt-3.5-turbo',
+      messages: messagesForOpenAI,
+    })
 
-  const reply = response.choices[0].message.content
-  return NextResponse.json({ reply })
+    const gptResponse = completion.choices[0].message?.content || ''
+
+    // GPTの返答をJSONとして解釈（失敗してもテキスト返し）
+    let parsed = { reply: gptResponse, options: [] as string[] }
+    try {
+      parsed = JSON.parse(gptResponse)
+    } catch {
+      // JSON parse error は無視してテキストをそのまま返す
+    }
+
+    return NextResponse.json({
+      reply: parsed.reply || gptResponse,
+      options: parsed.options || [],
+    })
+  } catch (error) {
+    console.error('API error:', error)
+    return NextResponse.json({ reply: 'エラーが発生しました。' }, { status: 500 })
+  }
 }

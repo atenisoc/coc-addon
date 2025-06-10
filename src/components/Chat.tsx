@@ -25,7 +25,7 @@ export default function Chat() {
     try {
       const res = await fetch('/api/message', {
         method: 'POST',
-        body: JSON.stringify({ message: text }),
+        body: JSON.stringify({ message: text, history: updated }),
         headers: { 'Content-Type': 'application/json' },
       })
       const data = await res.json()
@@ -42,7 +42,7 @@ export default function Chat() {
 
   return (
     <div className="p-4 max-w-xl mx-auto">
-      <div className="mb-4 space-y-2">
+      <div className="mb-4 space-y-2 max-h-[60vh] overflow-y-auto">
         {messages.map((msg, i) => (
           <div
             key={i}
@@ -55,7 +55,6 @@ export default function Chat() {
         ))}
       </div>
 
-      {/* 選択肢ボタン */}
       {visibleOptions.length > 0 && (
         <div className="mb-4 flex flex-wrap gap-2">
           {visibleOptions.map((opt, i) => (
@@ -71,7 +70,6 @@ export default function Chat() {
         </div>
       )}
 
-      {/* 入力欄 */}
       <div className="flex gap-2">
         <input
           type="text"
@@ -80,9 +78,7 @@ export default function Chat() {
           value={input}
           onChange={(e) => setInput(e.target.value)}
           onKeyDown={(e) => {
-            if (e.key === 'Enter') {
-              handleSend(input)
-            }
+            if (e.key === 'Enter') handleSend(input)
           }}
           disabled={loading}
         />
