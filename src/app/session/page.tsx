@@ -29,6 +29,7 @@ export default function SessionPage() {
   const [options, setOptions] = useState<string[]>([])
   const [visibleOptions, setVisibleOptions] = useState<string[]>([])
   const [optionTrigger, setOptionTrigger] = useState(0)
+  const [optionTypewriters, setOptionTypewriters] = useState<string[]>([])
 
   const pathname = usePathname()
   const isJapanese = pathname.includes('/ja') || pathname.endsWith('/coc')
@@ -68,14 +69,34 @@ export default function SessionPage() {
   useEffect(() => {
     if (!options || options.length === 0) return
     setVisibleOptions([])
+    setOptionTypewriters([])
+
     let i = 0
     const interval = setInterval(() => {
       setVisibleOptions((prev) => [...prev, options[i]])
+      setOptionTypewriters((prev) => [...prev, ''])
       i++
       if (i >= options.length) clearInterval(interval)
     }, 600)
+
     return () => clearInterval(interval)
   }, [optionTrigger])
+
+  useEffect(() => {
+    visibleOptions.forEach((opt, idx) => {
+      let i = 0
+      const timer = setInterval(() => {
+        setOptionTypewriters((prev) => {
+          const updated = [...prev]
+          updated[idx] = (updated[idx] || '') + opt[i]
+          return updated
+        })
+        i++
+        if (i >= opt.length) clearInterval(timer)
+      }, 20)
+      return () => clearInterval(timer)
+    })
+  }, [visibleOptions])
 
   const handleSend = async (text: string) => {
     if (!text.trim()) return
@@ -84,6 +105,7 @@ export default function SessionPage() {
     setLoading(true)
     setInput('')
     setVisibleOptions([])
+    setOptionTypewriters([])
 
     const res = await fetch('/api/message', {
       method: 'POST',
@@ -107,10 +129,7 @@ export default function SessionPage() {
       {showIntro && (
         <div className="space-y-2 bg-black bg-opacity-50 p-4 rounded max-h-[300px] overflow-y-auto">
           {messages.map((msg, i) => (
-            <p
-              key={i}
-              className={`text-sm ${msg.role === 'user' ? 'text-sky-300' : ''}`}
-            >
+            <p key={i} className={`text-sm ${msg.role === 'user' ? 'text-sky-300' : ''}`}>
               {msg.role === 'user'
                 ? isJapanese
                   ? `あなた：${msg.content}`
@@ -147,13 +166,13 @@ export default function SessionPage() {
 
           {visibleOptions.length > 0 && (
             <div className="space-y-2">
-              {visibleOptions.map((opt, i) => (
+              {visibleOptions.map((_, i) => (
                 <button
                   key={i}
                   className="w-full bg-sky-500 hover:bg-sky-600 text-white py-2 rounded"
-                  onClick={() => handleChoice(opt)}
+                  onClick={() => handleChoice(visibleOptions[i])}
                 >
-                  {opt}
+                  {optionTypewriters[i] || ''}
                 </button>
               ))}
             </div>
