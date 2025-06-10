@@ -1,12 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import OpenAI from 'openai'
 
-type ChatCompletionMessageParam = {
-  role: 'system' | 'user' | 'assistant' | 'function'
-  content: string
-  name?: string
-}
-
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 })
@@ -15,21 +9,15 @@ export async function POST(req: NextRequest) {
   try {
     const { message, history } = await req.json()
 
-    const messagesForOpenAI: ChatCompletionMessageParam[] = []
+    const messagesForOpenAI = []
 
     if (Array.isArray(history)) {
       for (const m of history) {
         if (m.role === 'function') {
-          // function roleならnameが必須だがここではスキップ
+          // function roleはname必須なのでスキップ
           continue
         }
-        if (
-          m.role === 'user' ||
-          m.role === 'assistant' ||
-          m.role === 'system'
-        ) {
-          messagesForOpenAI.push({ role: m.role, content: m.content })
-        }
+        messagesForOpenAI.push({ role: m.role, content: m.content })
       }
     }
 
@@ -54,7 +42,7 @@ export async function POST(req: NextRequest) {
     try {
       parsed = JSON.parse(gptResponse)
     } catch {
-      // JSONパースエラーは無視してテキスト返し
+      // JSON parse error ignored
     }
 
     return NextResponse.json({
