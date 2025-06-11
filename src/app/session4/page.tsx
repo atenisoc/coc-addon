@@ -1,152 +1,108 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import { NpcChatLog } from '@/components/NpcChatLog'
 
 type Message = {
   role: 'user' | 'assistant'
   content: string
 }
 
-type Scenario = {
-  id: string
-  title: string
-  summary: string
-}
-
-export default function SessionPage() {
-  const [scenario, setScenario] = useState<Scenario | null>(null)
+export default function Page() {
   const [messages, setMessages] = useState<Message[]>([])
   const [input, setInput] = useState('')
-  const [options, setOptions] = useState<string[]>([])
-  const [showIntro, setShowIntro] = useState(false)
-  const [typingMessage, setTypingMessage] = useState<string>('')
+  const [loading, setLoading] = useState(false)
+  const [typedOptions, setTypedOptions] = useState<string[]>([])
 
-  // 初期シナリオ読み込み
+  const STORAGE_KEY = 'coc-session4-log'
+
+  // ロード時に保存データ復元
   useEffect(() => {
-    const saved = localStorage.getItem('selectedScenario')
+    const saved = localStorage.getItem(STORAGE_KEY)
     if (saved) {
-      const parsed: Scenario = JSON.parse(saved)
-      setScenario(parsed)
-      setMessages([{ role: 'assistant', content: `ようこそ『${parsed.title}』。探索を開始しますか？` }])
-      setOptions(['探索を開始する'])
-      setShowIntro(true)
+      try {
+        setMessages(JSON.parse(saved))
+      } catch {
+        console.error('ログの復元に失敗しました')
+      }
     }
   }, [])
 
-  // メッセージ送信処理
-  const handleSend = async (text: string) => {
-    if (!text.trim()) return
-    const newMessages: Message[] = [...messages, { role: 'user', content: text }]
-    setMessages(newMessages)
+  // ローカル保存
+  useEffect(() => {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(messages))
+  }, [messages])
+
+  const delay = (ms: number) => new Promise(res => setTimeout(res, ms))
+
+  const handleSubmit = async () => {
+    if (!input.trim()) return
+    const updated: Message[] = [...messages, { role: 'user', content: input }]
+    setMessages(updated)
     setInput('')
-    setOptions([])
+    setLoading(true)
+    setTypedOptions([])
 
     const res = await fetch('/api/message', {
       method: 'POST',
-      body: JSON.stringify({ userInput: text, history: newMessages }),
+      body: JSON.stringify({
+        messages: updated,
+        systemPrompt: `あなたはクトゥルフ神話TRPGのGMです。応答は以下形式にしてください：
+{
+  "reply": "あなたの返答メッセージ",
+  "options": ["選択肢A", "選択肢B"]
+}`,
+        model: 'gpt-4',
+      }),
     })
-
     const data = await res.json()
-    const assistantMessage: Message = { role: 'assistant', content: data.reply }
-    setMessages([...newMessages, assistantMessage])
-    setOptions(data.options || [])
+    const reply = data.reply
+    const options: string[] = data.options || []
+
+    // 文字を1文字ずつ出す演出
+    let displayed = ''
+    for (const char of reply) {
+      displayed += char
+      setMessages(prev => [...prev.slice(0, -1), { role: 'assistant', content: displayed }])
+      await delay(15)
+    }
+
+    setMessages(prev => [...prev, { role: 'assistant', content: reply }])
+    setTypedOptions(options)
+    setLoading(false)
   }
 
-  // 順次表示（assistantの最新メッセージ）
-  useEffect(() => {
-    const last = messages[messages.length - 1]
-    if (last?.role === 'assistant') {
-      let index = 0
-      const interval = setInterval(() => {
-        setTypingMessage(last.content.slice(0, index + 1))
-        index++
-        if (index >= last.content.length) {
-          clearInterval(interval)
-        }
-      }, 30)
-      return () => clearInterval(interval)
-    } else {
-      setTypingMessage('')
-    }
-  }, [messages])
-
   return (
-    <main className="min-h-screen text-white p-4 max-w-xl mx-auto space-y-4">
-      {scenario && (
-        <>
-          <h1 className="text-2xl font-bold">🔍 Scenario: {scenario.title}</h1>
-          <p className="text-sm text-yellow-300 whitespace-pre-wrap">{scenario.summary}</p>
-        </>
-      )}
-
-      {showIntro && (
-        <>
-          <div className="bg-black bg-opacity-60 p-4 rounded space-y-2">
-            {messages.map((msg, idx) => {
-              const isLast = idx === messages.length - 1
-              if (msg.role === 'assistant') {
-                return (
-                  <p key={idx}>
-                    {isLast ? typingMessage : msg.content}
-                  </p>
-                )
-              } else {
-                return (
-                  <p key={idx} className="text-sky-300">
-                    あなた：{msg.content}
-                  </p>
-                )
-              }
-            })}
-          </div>
-
-          {/* 選択肢を上に表示 */}
-          {options.length > 0 && (
-            <div className="mt-4 space-y-2">
-              {options.map((opt, idx) => (
-                <button
-                  key={idx}
-                  onClick={() => handleSend(opt)}
-                  className="block w-full bg-gray-700 hover:bg-gray-600 px-4 py-2 rounded text-left"
-                >
-                  {opt}
-                </button>
-              ))}
-            </div>
-          )}
-
-          {/* 自由入力欄を下に */}
-          <div className="flex gap-2 mt-4">
-            <input
-              type="text"
-              value={input}
-              onChange={(e) => setInput(e.target.value)}
-              onKeyDown={(e) => e.key === 'Enter' && handleSend(input)}
-              placeholder="行動を入力"
-              className="flex-1 px-3 py-2 rounded text-black"
-              id="userInput"
-              name="userInput"
-            />
+    <div className="min-h-screen bg-black text-white p-4 space-y-4">
+      <NpcChatLog messages={messages} />
+      {typedOptions.length > 0 && (
+        <div className="space-y-2">
+          {typedOptions.map((opt, i) => (
             <button
-              onClick={() => handleSend(input)}
-              className="bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded"
+              key={i}
+              className="block w-full bg-gray-700 hover:bg-gray-600 p-3 rounded"
+              onClick={() => setInput(opt)}
             >
-              送信
+              {opt}
             </button>
-          </div>
-
-          {/* セッションリセット（任意） */}
-          <button
-            onClick={() => {
-              localStorage.removeItem('selectedScenario')
-              location.reload()
-            }}
-            className="text-xs text-gray-400 hover:underline mt-2"
-          >
-            セッションをリセット
-          </button>
-        </>
+          ))}
+        </div>
       )}
-    </main>
+      <div className="flex space-x-2 pt-4">
+        <input
+          className="flex-1 bg-gray-800 p-2 rounded text-white"
+          value={input}
+          onChange={e => setInput(e.target.value)}
+          placeholder="入力..."
+        />
+        <button
+          onClick={handleSubmit}
+          disabled={loading}
+          className="bg-blue-600 hover:bg-blue-500 px-4 py-2 rounded disabled:opacity-50"
+        >
+          送信
+        </button>
+      </div>
+    </div>
   )
 }
