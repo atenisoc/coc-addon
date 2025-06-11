@@ -1,3 +1,8 @@
+type Message = {
+  role: 'user' | 'assistant'
+  content: string
+}
+
 'use client'
 
 import { useEffect, useState } from 'react'
