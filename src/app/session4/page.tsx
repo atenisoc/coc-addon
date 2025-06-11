@@ -19,12 +19,13 @@ export default function SessionPage() {
   const [input, setInput] = useState('')
   const [options, setOptions] = useState<string[]>([])
   const [showIntro, setShowIntro] = useState(false)
-  const [typingMessage, setTypingMessage] = useState<string>('') // 👈 順次表示用
+  const [typingMessage, setTypingMessage] = useState<string>('')
 
+  // 初期シナリオ読み込み
   useEffect(() => {
     const saved = localStorage.getItem('selectedScenario')
     if (saved) {
-      const parsed = JSON.parse(saved)
+      const parsed: Scenario = JSON.parse(saved)
       setScenario(parsed)
       setMessages([{ role: 'assistant', content: `ようこそ『${parsed.title}』。探索を開始しますか？` }])
       setOptions(['探索を開始する'])
@@ -32,9 +33,10 @@ export default function SessionPage() {
     }
   }, [])
 
+  // メッセージ送信処理
   const handleSend = async (text: string) => {
     if (!text.trim()) return
-    const newMessages = [...messages, { role: 'user', content: text }]
+    const newMessages: Message[] = [...messages, { role: 'user', content: text }]
     setMessages(newMessages)
     setInput('')
     setOptions([])
@@ -45,11 +47,12 @@ export default function SessionPage() {
     })
 
     const data = await res.json()
-    setMessages([...newMessages, { role: 'assistant', content: data.reply }])
+    const assistantMessage: Message = { role: 'assistant', content: data.reply }
+    setMessages([...newMessages, assistantMessage])
     setOptions(data.options || [])
   }
 
-  // 🔁 順次表示の処理
+  // 順次表示（assistantの最新メッセージ）
   useEffect(() => {
     const last = messages[messages.length - 1]
     if (last?.role === 'assistant') {
@@ -60,7 +63,7 @@ export default function SessionPage() {
         if (index >= last.content.length) {
           clearInterval(interval)
         }
-      }, 30) // ← 表示速度（ミリ秒ごと）
+      }, 30)
       return () => clearInterval(interval)
     } else {
       setTypingMessage('')
@@ -97,7 +100,7 @@ export default function SessionPage() {
             })}
           </div>
 
-          {/* 🔘 選択肢を先に表示 */}
+          {/* 選択肢を上に表示 */}
           {options.length > 0 && (
             <div className="mt-4 space-y-2">
               {options.map((opt, idx) => (
@@ -112,7 +115,7 @@ export default function SessionPage() {
             </div>
           )}
 
-          {/* ✏ 自由入力欄は下に */}
+          {/* 自由入力欄を下に */}
           <div className="flex gap-2 mt-4">
             <input
               type="text"
@@ -121,6 +124,8 @@ export default function SessionPage() {
               onKeyDown={(e) => e.key === 'Enter' && handleSend(input)}
               placeholder="行動を入力"
               className="flex-1 px-3 py-2 rounded text-black"
+              id="userInput"
+              name="userInput"
             />
             <button
               onClick={() => handleSend(input)}
@@ -130,7 +135,7 @@ export default function SessionPage() {
             </button>
           </div>
 
-          {/* 🔁 セッションリセット */}
+          {/* セッションリセット（任意） */}
           <button
             onClick={() => {
               localStorage.removeItem('selectedScenario')
