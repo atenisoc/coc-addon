@@ -7,8 +7,15 @@ type Message = {
   content: string
 }
 
-export default function SessionPage() {
-  const [scenario, setScenario] = useState<{ title: string; summary: string; tagline?: string } | null>(null)
+type Scenario = {
+  id: string
+  title: string
+  tagline?: string
+  summary: string
+}
+
+export default function Session2Page() {
+  const [scenario, setScenario] = useState<Scenario | null>(null)
   const [messages, setMessages] = useState<Message[]>([])
   const [input, setInput] = useState('')
   const [options, setOptions] = useState<string[]>([])
@@ -34,26 +41,36 @@ export default function SessionPage() {
     return displayed
   }
 
-  const titleText = scenario?.title ? `🔎 Scenario: ${scenario.title}` : ''
-  const summaryText = scenario?.summary || ''
-  const typedTitle = useTypewriter(titleText, 20, showTitle)
-  const typedSummary = useTypewriter(summaryText, 10, showSummary)
+  const typedTitle = useTypewriter(
+    scenario?.title ? `🔎 Scenario: ${scenario.title}` : '',
+    20,
+    showTitle
+  )
+
+  const typedSummary = useTypewriter(
+    scenario?.summary || '',
+    10,
+    showSummary
+  )
 
   useEffect(() => {
     const saved = localStorage.getItem('selectedScenario')
     if (saved) {
       try {
-        const parsed = JSON.parse(saved)
-        setScenario(parsed)
-        setTimeout(() => setShowTitle(true), 300)
-        setTimeout(() => setShowSummary(true), 1200)
-        setTimeout(() => {
-          setShowIntro(true)
-          const intro = `ようこそ「${parsed.title}」。探索を開始しますか？`
-          setMessages([{ role: 'assistant', content: intro }])
-        }, 2000)
+        const parsed: Scenario = JSON.parse(saved)
+        console.log('[SCENARIO]', parsed)
+        if (parsed.title && parsed.summary) {
+          setScenario(parsed)
+          setTimeout(() => setShowTitle(true), 300)
+          setTimeout(() => setShowSummary(true), 1200)
+          setTimeout(() => {
+            setShowIntro(true)
+            const intro = `ようこそ「${parsed.title}」。探索を開始しますか？`
+            setMessages([{ role: 'assistant', content: intro }])
+          }, 2000)
+        }
       } catch (e) {
-        console.error('シナリオ読み込み失敗:', e)
+        console.error('❌ JSON解析失敗:', e)
       }
     }
   }, [])
@@ -103,22 +120,28 @@ export default function SessionPage() {
     <main className="min-h-screen text-white p-4 max-w-xl mx-auto space-y-4">
       {showTitle && <h1 className="text-2xl font-bold">{typedTitle}</h1>}
       {showSummary && (
-        <>
-          {scenario?.tagline && (
-            <p className="text-sm text-amber-400">{scenario.tagline}</p>
-          )}
-          <p className="text-sm text-yellow-300 whitespace-pre-wrap">{typedSummary}</p>
-        </>
+        <p className="text-sm text-yellow-300 whitespace-pre-wrap">
+          {typedSummary}
+        </p>
       )}
       {showIntro && (
         <>
           <div className="bg-black bg-opacity-60 p-4 rounded max-h-64 overflow-y-auto space-y-2">
             {messages.map((msg, idx) => (
-              <p key={idx} className={`text-sm ${msg.role === 'user' ? 'text-sky-300' : ''}`}>
-                {msg.role === 'user' ? `あなた：${msg.content}` : msg.content}
+              <p
+                key={idx}
+                className={`text-sm ${
+                  msg.role === 'user' ? 'text-sky-300' : ''
+                }`}
+              >
+                {msg.role === 'user'
+                  ? `あなた：${msg.content}`
+                  : msg.content}
               </p>
             ))}
-            {loading && <p className="text-gray-400 animate-pulse">...thinking</p>}
+            {loading && (
+              <p className="text-gray-400 animate-pulse">...thinking</p>
+            )}
           </div>
 
           <div className="mt-4 flex gap-2">
