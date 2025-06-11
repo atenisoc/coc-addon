@@ -1,44 +1,43 @@
-'use client'
+'use client';
 
-import { useEffect, useState } from 'react'
+import { useState } from 'react';
+import NpcChatLog from '@/components/NpcChatLog';
 
-type Scenario = {
-  id: string
-  title: string
-  summary: string
-  tagline?: string
-}
+export default function Session1Page() {
+  const [agreed, setAgreed] = useState(false);
 
-export default function Session3Page() {
-  const [scenario, setScenario] = useState<Scenario | null>(null)
-  const [titleDebug, setTitleDebug] = useState('')
-  const [summaryDebug, setSummaryDebug] = useState('')
-
-  useEffect(() => {
-    const saved = localStorage.getItem('selectedScenario')
-    if (saved) {
-      try {
-        const parsed: Scenario = JSON.parse(saved)
-        console.log('[DEBUG] parsed:', parsed)
-        setScenario(parsed)
-        setTitleDebug(parsed.title ?? 'タイトルなし')
-        setSummaryDebug(parsed.summary ?? '要約なし')
-      } catch (e) {
-        console.error('[ERROR] JSON parse failed', e)
-      }
-    } else {
-      console.warn('[WARN] selectedScenario not found in localStorage')
-    }
-  }, [])
+  if (!agreed) {
+    return (
+      <div className="min-h-screen bg-black text-white px-4 py-8">
+        <div className="max-w-2xl mx-auto space-y-6">
+          <h1 className="text-2xl font-bold text-center">セッション1：闇の図書館</h1>
+          <p className="text-sm text-gray-300 whitespace-pre-line">
+            このゲームはAIによって進行されるクトゥルフ神話TRPGです。
+            登場する人物・団体・出来事はすべてフィクションです。
+            選択によって物語が分岐し、異なる結末にたどり着くことがあります。
+            ブラウザに履歴が保存され、再訪問時に続きから再開される場合があります。
+            苦手な表現が含まれる可能性もありますので、自己責任でご利用ください。
+          </p>
+          <button
+            onClick={() => setAgreed(true)}
+            className="bg-indigo-600 hover:bg-indigo-700 transition rounded-xl py-3 px-6 text-center text-white font-semibold shadow mx-auto block"
+          >
+            ▶ はじめる
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   return (
-    <main className="text-white p-4 max-w-xl mx-auto space-y-4 min-h-screen">
-      <h1 className="text-xl font-bold">
-        📘 Scenario: {titleDebug || '（タイトル未設定）'}
-      </h1>
-      <p className="text-yellow-300 whitespace-pre-wrap">
-        {summaryDebug || '（あらすじ未設定）'}
-      </p>
-    </main>
-  )
+    <div className="min-h-screen bg-black text-white px-4 py-6">
+      <div className="max-w-2xl mx-auto space-y-4">
+        <h2 className="text-xl font-bold">闇の図書館</h2>
+        <p className="text-gray-300 text-sm">
+          あなたは奇妙な夢に導かれ、廃墟となった図書館へと足を踏み入れた……。
+        </p>
+        <NpcChatLog />
+      </div>
+    </div>
+  );
 }

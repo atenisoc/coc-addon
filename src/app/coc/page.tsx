@@ -28,7 +28,7 @@ export default function CoCPage() {
 
   const handleSelect = (scenario: typeof scenarios[number]) => {
     localStorage.setItem('selectedScenario', JSON.stringify(scenario))
-    router.push('/session')
+    router.push('/session4')
   }
 
   return (

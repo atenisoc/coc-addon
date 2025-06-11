@@ -8,7 +8,7 @@ type Message = {
 }
 
 export default function SessionPage() {
-  const [scenario, setScenario] = useState<{ title: string; summary: string; tagline?: string } | null>(null)
+  const [scenario, setScenario] = useState<{ title: string; summary: string } | null>(null)
   const [messages, setMessages] = useState<Message[]>([])
   const [input, setInput] = useState('')
   const [options, setOptions] = useState<string[]>([])
@@ -34,8 +34,8 @@ export default function SessionPage() {
     return displayed
   }
 
-  const titleText = scenario?.title ? `🔎 Scenario: ${scenario.title}` : ''
-  const summaryText = scenario?.summary || ''
+  const titleText = `🕰️ Scenario: ${scenario?.title ?? 'タイトル不明'}`
+  const summaryText = scenario?.summary ?? '（シナリオ概要がありません）'
   const typedTitle = useTypewriter(titleText, 20, showTitle)
   const typedSummary = useTypewriter(summaryText, 10, showSummary)
 
@@ -49,7 +49,7 @@ export default function SessionPage() {
         setTimeout(() => setShowSummary(true), 1200)
         setTimeout(() => {
           setShowIntro(true)
-          const intro = `ようこそ「${parsed.title}」。探索を開始しますか？`
+          const intro = `ようこそ『${parsed?.title ?? 'タイトル不明'}』。探索を開始しますか？`
           setMessages([{ role: 'assistant', content: intro }])
         }, 2000)
       } catch (e) {
@@ -102,14 +102,7 @@ export default function SessionPage() {
   return (
     <main className="min-h-screen text-white p-4 max-w-xl mx-auto space-y-4">
       {showTitle && <h1 className="text-2xl font-bold">{typedTitle}</h1>}
-      {showSummary && (
-        <>
-          {scenario?.tagline && (
-            <p className="text-sm text-amber-400">{scenario.tagline}</p>
-          )}
-          <p className="text-sm text-yellow-300 whitespace-pre-wrap">{typedSummary}</p>
-        </>
-      )}
+      {showSummary && <p className="text-sm text-yellow-300 whitespace-pre-wrap">{typedSummary}</p>}
       {showIntro && (
         <>
           <div className="bg-black bg-opacity-60 p-4 rounded max-h-64 overflow-y-auto space-y-2">
