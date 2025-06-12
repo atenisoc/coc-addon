@@ -1,49 +1,63 @@
 import { NextRequest } from 'next/server'
-import { cookies } from 'next/headers'
 import OpenAI from 'openai'
-
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY, // .env.localに設定必須
-})
 
 export async function POST(req: NextRequest) {
   const { userInput, history, scenarioId } = await req.json()
 
-  // systemプロンプト（ここで世界観や初期設定を調整）
+  // GPT APIキー読み込み
+  const openai = new OpenAI({
+    apiKey: process.env.OPENAI_API_KEY,
+  })
+
+  // システムプロンプト（シナリオIDで切り替え可能）
   const systemPrompt = `あなたはクトゥルフ神話TRPGのゲームマスターです。シナリオID: ${scenarioId}。
-プレイヤーの発言に対し、描写や状況、選択肢を提示してください。
-必ず以下の形式で返答してください：
+プレイヤーの発言に対して、臨場感のある描写や選択肢を提示してください。
+必ず以下のJSON形式で返答してください：
 {
   "reply": "描写本文…",
   "options": ["選択肢A", "選択肢B", ...]
 }`
 
-  try {
-    const chatHistory = [
-      { role: 'system', content: systemPrompt },
-      ...history.map((m: any) => ({ role: m.role, content: m.content })),
-    ]
+  // チャット履歴整形
+  const chatHistory = [
+    { role: 'system', content: systemPrompt },
+    ...history.map((m: any) => ({
+      role: m.role === 'user' ? 'user' : 'assistant',
+      content: m.content,
+    })),
+  ]
 
-    const response = await openai.chat.completions.create({
-      model: 'gpt-4', // または 'gpt-3.5-turbo'
+  try {
+    const res = await openai.chat.completions.create({
+      model: 'gpt-4',
       messages: chatHistory,
       temperature: 0.8,
     })
 
-    const reply = response.choices[0].message.content ?? ''
+    const text = res.choices[0]?.message?.content ?? ''
 
-    // JSONとしてパース（GPTの返答形式を前提とする）
-    const parsed = JSON.parse(reply)
+    // JSON形式を想定してパース
+    let parsed: { reply: string; options?: string[] }
+    try {
+      parsed = JSON.parse(text)
+    } catch {
+      parsed = { reply: text, options: [] }
+    }
 
-    return Response.json({
-      reply: parsed.reply,
-      options: parsed.options || [],
+    return new Response(JSON.stringify(parsed), {
+      headers: { 'Content-Type': 'application/json' },
     })
-  } catch (err: any) {
-    console.error('[API ERROR]', err)
-    return Response.json({
-      reply: '通信エラーが発生しました。もう一度お試しください。',
-      options: ['最初に戻る'],
-    })
+  } catch (err) {
+    console.error('[GPT ERROR]', err)
+    return new Response(
+      JSON.stringify({
+        reply: 'エラーが発生しました。もう一度お試しください。',
+        options: ['最初に戻る'],
+      }),
+      {
+        headers: { 'Content-Type': 'application/json' },
+        status: 500,
+      }
+    )
   }
 }
