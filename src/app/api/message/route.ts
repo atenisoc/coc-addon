@@ -4,6 +4,9 @@ import OpenAI from 'openai'
 export async function POST(req: NextRequest) {
   const { userInput, history, scenarioId } = await req.json()
 
+  // ✅ ログ：POSTが呼ばれたことを確認
+  console.log('[POST呼び出し]', { userInput, scenarioId })
+
   const openai = new OpenAI({
     apiKey: process.env.OPENAI_API_KEY,
   })
@@ -39,11 +42,13 @@ export async function POST(req: NextRequest) {
     })
 
     const replyText = res.choices[0]?.message?.content ?? ''
+    console.log('[GPT replyText]', replyText)
 
     let parsed
     try {
       parsed = JSON.parse(replyText)
-    } catch {
+    } catch (e) {
+      console.error('[JSON.parse ERROR] raw replyText:', replyText)
       parsed = {
         reply: replyText,
         options: ['続ける', '終了する'],
@@ -53,8 +58,10 @@ export async function POST(req: NextRequest) {
     return new Response(JSON.stringify(parsed), {
       headers: { 'Content-Type': 'application/json' },
     })
-  } catch (err) {
-    console.error('[GPT ERROR]', err)
+  } catch (err: any) {
+    console.error('[GPT ERROR]', err?.message || err)
+    console.error('[環境変数確認]', process.env.OPENAI_API_KEY ? '✔️ 設定済み' : '❌ 未設定')
+
     return new Response(
       JSON.stringify({
         reply: 'エラーが発生しました。もう一度お試しください。',

@@ -16,20 +16,14 @@ export default function Page() {
   useEffect(() => {
     const id = searchParams.get('id') ?? 'echoes'
     setScenarioId(id)
-
     const title = getScenarioTitle(id)
-    const initial: Message = {
-      role: 'assistant',
-      content: `ようこそ「${title}」。探索を開始しますか？`,
-    }
-
-    setMessages([initial])
+    setMessages([{ role: 'assistant', content: `ようこそ「${title}」。探索を開始しますか？` }])
     setOptions(['探索を開始する', '引き返す'])
   }, [searchParams])
 
   const handleSubmit = async (text: string) => {
     if (!text.trim()) return
-    const updated = [...messages, { role: 'user', content: text }]
+    const updated: Message[] = [...messages, { role: 'user', content: text }]
     setMessages(updated)
     setInput('')
     setLoading(true)
@@ -38,17 +32,14 @@ export default function Page() {
     try {
       const res = await fetch('/api/message', {
         method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ userInput: text, history: updated, scenarioId }),
       })
       const data = await res.json()
       setMessages((prev) => [...prev, { role: 'assistant', content: data.reply }])
       setOptions(data.options || [])
     } catch (e) {
-      console.error('APIエラー:', e)
-      setMessages((prev) => [
-        ...prev,
-        { role: 'assistant', content: '通信に失敗しました。もう一度お試しください。' },
-      ])
+      setMessages((prev) => [...prev, { role: 'assistant', content: '通信エラーが発生しました。' }])
     }
 
     setLoading(false)
@@ -61,15 +52,13 @@ export default function Page() {
     >
       <div className="max-w-xl mx-auto bg-black bg-opacity-70 p-4 rounded-xl space-y-4">
         <h1 className="text-xl font-bold">
-          Scenario: {getScenarioTitle(scenarioId)}
+          Scenario: {getScenarioTitle(scenarioId)}（ID: {scenarioId}）
         </h1>
 
         {messages.map((msg, i) => (
           <div
             key={i}
-            className={`p-2 rounded ${
-              msg.role === 'user' ? 'bg-blue-800 text-right' : 'bg-gray-800 text-left'
-            }`}
+            className={`p-2 rounded ${msg.role === 'user' ? 'bg-blue-800 text-right' : 'bg-gray-800 text-left'}`}
           >
             {msg.content}
           </div>
