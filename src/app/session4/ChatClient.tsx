@@ -7,7 +7,7 @@ type Message = { role: 'user' | 'assistant'; content: string }
 
 export default function ChatClient() {
   const searchParams = useSearchParams()
-  const [scenarioId, setScenarioId] = useState<string>('echoes')
+  const [scenarioId, setScenarioId] = useState('echoes')
   const [messages, setMessages] = useState<Message[]>([])
   const [input, setInput] = useState('')
   const [loading, setLoading] = useState(false)
