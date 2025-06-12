@@ -13,28 +13,19 @@ export default function Page() {
   const [loading, setLoading] = useState(false)
   const [options, setOptions] = useState<string[]>([])
 
-  useEffect(() => {
-    // クエリからIDを取得（なければ echoes に）
-    let id = 'echoes'
-    try {
-      if (typeof window !== 'undefined') {
-        const params = new URLSearchParams(window.location.search)
-        id = params.get('id') ?? 'echoes'
-      }
-    } catch (e) {
-      console.warn('URL読み取りエラー', e)
-    }
+useEffect(() => {
+  const id = 'echoes' // ← 無条件にechoesにする（Vercelでの安定表示用）
+  setScenarioId(id)
+  const title = getScenarioTitle(id)
+  setMessages([
+    {
+      role: 'assistant',
+      content: `ようこそ「${title}」。探索を開始しますか？`,
+    },
+  ])
+  setOptions(['探索を開始する', '引き返す'])
+}, [])
 
-    setScenarioId(id)
-    const title = getScenarioTitle(id)
-    setMessages([
-      {
-        role: 'assistant',
-        content: `ようこそ「${title}」。探索を開始しますか？`,
-      },
-    ])
-    setOptions(['探索を開始する', '引き返す'])
-  }, [])
 
   const handleSubmit = async (text: string) => {
     if (!text.trim()) return
