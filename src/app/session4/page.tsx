@@ -16,7 +16,7 @@ export default function Page() {
 
   const STORAGE_KEY = 'coc-session4-log'
 
-  // ロード時に保存データ復元
+  // 初回表示メッセージ付きロード
   useEffect(() => {
     const saved = localStorage.getItem(STORAGE_KEY)
     if (saved) {
@@ -25,10 +25,18 @@ export default function Page() {
       } catch {
         console.error('ログの復元に失敗しました')
       }
+    } else {
+      // 初期メッセージ（ようこそ）
+      const welcome: Message[] = [
+        {
+          role: 'assistant',
+          content: 'ようこそ「エコーズ」。探索を開始しますか？'
+        }
+      ]
+      setMessages(welcome)
     }
   }, [])
 
-  // ローカル保存
   useEffect(() => {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(messages))
   }, [messages])
@@ -55,11 +63,11 @@ export default function Page() {
         model: 'gpt-4',
       }),
     })
+
     const data = await res.json()
     const reply = data.reply
     const options: string[] = data.options || []
 
-    // 文字を1文字ずつ出す演出
     let displayed = ''
     for (const char of reply) {
       displayed += char
