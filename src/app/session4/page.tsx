@@ -31,7 +31,7 @@ export default function Page() {
 
   const handleSubmit = async (text: string) => {
     if (!text.trim()) return
-    const updated = [...messages, { role: 'user', content: text as const }]
+    const updated = [...messages, { role: 'user', content: text }]
     setMessages(updated)
     setInput('')
     setLoading(true)
