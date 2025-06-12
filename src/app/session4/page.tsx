@@ -7,54 +7,25 @@ type Message = { role: 'user' | 'assistant'; content: string }
 
 export default function Page() {
   const searchParams = useSearchParams()
-  const scenarioId = searchParams.get('id') ?? 'echoes'
-
+  const [scenarioId, setScenarioId] = useState<string>('echoes')
   const [messages, setMessages] = useState<Message[]>([])
-  const [displayedMessages, setDisplayedMessages] = useState<Message[]>([])
   const [input, setInput] = useState('')
   const [loading, setLoading] = useState(false)
-  const [typing, setTyping] = useState(false)
   const [options, setOptions] = useState<string[]>([])
 
-  // ✅ 初期メッセージ表示
   useEffect(() => {
-    if (messages.length === 0) {
-      const title = getScenarioTitle(scenarioId)
-      const initial = {
-        role: 'assistant',
-        content: `ようこそ「${title}」。探索を開始しますか？`,
-      }
-      setMessages([initial])
-      setOptions(['探索を開始する', '引き返す'])
-    }
-  }, [scenarioId, messages])
+    const id = searchParams.get('id') ?? 'echoes'
+    setScenarioId(id)
 
-  // ✅ リアルタイピング表示処理
-  useEffect(() => {
-    const last = messages[messages.length - 1]
-    if (!last || last.role !== 'assistant') {
-      setDisplayedMessages(messages)
-      return
+    const title = getScenarioTitle(id)
+    const initial: Message = {
+      role: 'assistant',
+      content: `ようこそ「${title}」。探索を開始しますか？`,
     }
 
-    setTyping(true)
-    let i = 0
-    const interval = setInterval(() => {
-      setDisplayedMessages((prev) => {
-        const rest = messages.slice(0, messages.length - 1)
-        const partial = { ...last, content: last.content.slice(0, i + 1) }
-        return [...rest, partial]
-      })
-
-      i++
-      if (i >= last.content.length) {
-        clearInterval(interval)
-        setTyping(false)
-      }
-    }, 20)
-
-    return () => clearInterval(interval)
-  }, [messages])
+    setMessages([initial])
+    setOptions(['探索を開始する', '引き返す'])
+  }, [searchParams])
 
   const handleSubmit = async (text: string) => {
     if (!text.trim()) return
@@ -90,10 +61,10 @@ export default function Page() {
     >
       <div className="max-w-xl mx-auto bg-black bg-opacity-70 p-4 rounded-xl space-y-4">
         <h1 className="text-xl font-bold">
-          Scenario: {getScenarioTitle(scenarioId)}（ID: {scenarioId}）
+          Scenario: {getScenarioTitle(scenarioId)}
         </h1>
 
-        {displayedMessages.map((msg, i) => (
+        {messages.map((msg, i) => (
           <div
             key={i}
             className={`p-2 rounded ${
@@ -110,7 +81,6 @@ export default function Page() {
               key={i}
               className="w-full bg-gray-700 hover:bg-gray-600 p-2 rounded"
               onClick={() => handleSubmit(opt)}
-              disabled={loading || typing}
             >
               {opt}
             </button>
@@ -123,11 +93,10 @@ export default function Page() {
             value={input}
             onChange={(e) => setInput(e.target.value)}
             placeholder="自由行動・状況確認など"
-            disabled={loading || typing}
           />
           <button
             onClick={() => handleSubmit(input)}
-            disabled={loading || typing}
+            disabled={loading}
             className="bg-blue-600 hover:bg-blue-500 px-4 py-2 rounded disabled:opacity-50"
           >
             送信
@@ -138,7 +107,6 @@ export default function Page() {
   )
 }
 
-// ✅ シナリオID → 表示タイトル変換
 function getScenarioTitle(id: string): string {
   const map: Record<string, string> = {
     echoes: 'エコーズ',
