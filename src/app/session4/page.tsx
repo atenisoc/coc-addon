@@ -1,116 +1,149 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { NpcChatLog } from '@/components/NpcChatLog'
+import { useSearchParams } from 'next/navigation'
 
-type Message = {
-  role: 'user' | 'assistant'
-  content: string
-}
+type Message = { role: 'user' | 'assistant'; content: string }
 
 export default function Page() {
+  const searchParams = useSearchParams()
+  const scenarioId = searchParams.get('id') ?? 'echoes'
+
   const [messages, setMessages] = useState<Message[]>([])
+  const [displayedMessages, setDisplayedMessages] = useState<Message[]>([])
   const [input, setInput] = useState('')
   const [loading, setLoading] = useState(false)
-  const [typedOptions, setTypedOptions] = useState<string[]>([])
+  const [typing, setTyping] = useState(false)
+  const [options, setOptions] = useState<string[]>([])
 
-  const STORAGE_KEY = 'coc-session4-log'
-
-  // 初回表示メッセージ付きロード
+  // ✅ 初期メッセージ表示
   useEffect(() => {
-    const saved = localStorage.getItem(STORAGE_KEY)
-    if (saved) {
-      try {
-        setMessages(JSON.parse(saved))
-      } catch {
-        console.error('ログの復元に失敗しました')
+    if (messages.length === 0) {
+      const title = getScenarioTitle(scenarioId)
+      const initial = {
+        role: 'assistant',
+        content: `ようこそ「${title}」。探索を開始しますか？`,
       }
-    } else {
-      // 初期メッセージ（ようこそ）
-      const welcome: Message[] = [
-        {
-          role: 'assistant',
-          content: 'ようこそ「エコーズ」。探索を開始しますか？'
-        }
-      ]
-      setMessages(welcome)
+      setMessages([initial])
+      setOptions(['探索を開始する', '引き返す'])
     }
-  }, [])
+  }, [scenarioId, messages])
 
+  // ✅ リアルタイピング表示処理
   useEffect(() => {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(messages))
+    const last = messages[messages.length - 1]
+    if (!last || last.role !== 'assistant') {
+      setDisplayedMessages(messages)
+      return
+    }
+
+    setTyping(true)
+    let i = 0
+    const interval = setInterval(() => {
+      setDisplayedMessages((prev) => {
+        const rest = messages.slice(0, messages.length - 1)
+        const partial = { ...last, content: last.content.slice(0, i + 1) }
+        return [...rest, partial]
+      })
+
+      i++
+      if (i >= last.content.length) {
+        clearInterval(interval)
+        setTyping(false)
+      }
+    }, 20)
+
+    return () => clearInterval(interval)
   }, [messages])
 
-  const delay = (ms: number) => new Promise(res => setTimeout(res, ms))
-
-  const handleSubmit = async () => {
-    if (!input.trim()) return
-    const updated: Message[] = [...messages, { role: 'user', content: input }]
+  const handleSubmit = async (text: string) => {
+    if (!text.trim()) return
+    const updated = [...messages, { role: 'user', content: text }]
     setMessages(updated)
     setInput('')
     setLoading(true)
-    setTypedOptions([])
+    setOptions([])
 
-    const res = await fetch('/api/message', {
-      method: 'POST',
-      body: JSON.stringify({
-        messages: updated,
-        systemPrompt: `あなたはクトゥルフ神話TRPGのGMです。応答は以下形式にしてください：
-{
-  "reply": "あなたの返答メッセージ",
-  "options": ["選択肢A", "選択肢B"]
-}`,
-        model: 'gpt-4',
-      }),
-    })
-
-    const data = await res.json()
-    const reply = data.reply
-    const options: string[] = data.options || []
-
-    let displayed = ''
-    for (const char of reply) {
-      displayed += char
-      setMessages(prev => [...prev.slice(0, -1), { role: 'assistant', content: displayed }])
-      await delay(15)
+    try {
+      const res = await fetch('/api/message', {
+        method: 'POST',
+        body: JSON.stringify({ userInput: text, history: updated, scenarioId }),
+      })
+      const data = await res.json()
+      setMessages((prev) => [...prev, { role: 'assistant', content: data.reply }])
+      setOptions(data.options || [])
+    } catch (e) {
+      console.error('APIエラー:', e)
+      setMessages((prev) => [
+        ...prev,
+        { role: 'assistant', content: '通信に失敗しました。もう一度お試しください。' },
+      ])
     }
 
-    setMessages(prev => [...prev, { role: 'assistant', content: reply }])
-    setTypedOptions(options)
     setLoading(false)
   }
 
   return (
-    <div className="min-h-screen bg-black text-white p-4 space-y-4">
-      <NpcChatLog messages={messages} />
-      {typedOptions.length > 0 && (
+    <div
+      className="min-h-screen bg-no-repeat bg-center bg-cover bg-fixed p-4 text-white"
+      style={{ backgroundImage: 'url(/backgrounds/cthulhu-bg.jpg)' }}
+    >
+      <div className="max-w-xl mx-auto bg-black bg-opacity-70 p-4 rounded-xl space-y-4">
+        <h1 className="text-xl font-bold">
+          Scenario: {getScenarioTitle(scenarioId)}（ID: {scenarioId}）
+        </h1>
+
+        {displayedMessages.map((msg, i) => (
+          <div
+            key={i}
+            className={`p-2 rounded ${
+              msg.role === 'user' ? 'bg-blue-800 text-right' : 'bg-gray-800 text-left'
+            }`}
+          >
+            {msg.content}
+          </div>
+        ))}
+
         <div className="space-y-2">
-          {typedOptions.map((opt, i) => (
+          {options.map((opt, i) => (
             <button
               key={i}
-              className="block w-full bg-gray-700 hover:bg-gray-600 p-3 rounded"
-              onClick={() => setInput(opt)}
+              className="w-full bg-gray-700 hover:bg-gray-600 p-2 rounded"
+              onClick={() => handleSubmit(opt)}
+              disabled={loading || typing}
             >
               {opt}
             </button>
           ))}
         </div>
-      )}
-      <div className="flex space-x-2 pt-4">
-        <input
-          className="flex-1 bg-gray-800 p-2 rounded text-white"
-          value={input}
-          onChange={e => setInput(e.target.value)}
-          placeholder="入力..."
-        />
-        <button
-          onClick={handleSubmit}
-          disabled={loading}
-          className="bg-blue-600 hover:bg-blue-500 px-4 py-2 rounded disabled:opacity-50"
-        >
-          送信
-        </button>
+
+        <div className="flex space-x-2 pt-4">
+          <input
+            className="flex-1 bg-gray-800 p-2 rounded text-white"
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            placeholder="自由行動・状況確認など"
+            disabled={loading || typing}
+          />
+          <button
+            onClick={() => handleSubmit(input)}
+            disabled={loading || typing}
+            className="bg-blue-600 hover:bg-blue-500 px-4 py-2 rounded disabled:opacity-50"
+          >
+            送信
+          </button>
+        </div>
       </div>
     </div>
   )
+}
+
+// ✅ シナリオID → 表示タイトル変換
+function getScenarioTitle(id: string): string {
+  const map: Record<string, string> = {
+    echoes: 'エコーズ',
+    library: '闇の図書館',
+    clocktower: '時計塔の彼方',
+  }
+  return map[id] || '未知のシナリオ'
 }

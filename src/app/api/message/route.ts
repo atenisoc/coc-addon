@@ -1,74 +1,49 @@
+import { NextRequest } from 'next/server'
+import { cookies } from 'next/headers'
 import OpenAI from 'openai'
-import { NextResponse } from 'next/server'
 
 const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
+  apiKey: process.env.OPENAI_API_KEY, // .env.localに設定必須
 })
 
-export async function POST(req: Request) {
-  const { userInput, history } = await req.json()
+export async function POST(req: NextRequest) {
+  const { userInput, history, scenarioId } = await req.json()
 
-  const messages = [
-    {
-      role: 'system',
-      content: `
-あなたは探索系TRPGのゲームマスターです。
-プレイヤーの入力に対して、物語を少しずつ進め、次の選択肢を提示してください。
-
-以下のJSON形式のみをそのまま返してください。
-**前後に一切の説明・挨拶・補足などを書かないでください。**
-
+  // systemプロンプト（ここで世界観や初期設定を調整）
+  const systemPrompt = `あなたはクトゥルフ神話TRPGのゲームマスターです。シナリオID: ${scenarioId}。
+プレイヤーの発言に対し、描写や状況、選択肢を提示してください。
+必ず以下の形式で返答してください：
 {
-  "reply": "語り手としての返答文（改行可）",
-  "options": ["選択肢1", "選択肢2", "選択肢3"]
-}
-
-・replyは400文字以内で自然に進行させてください。
-・optionsは常に2〜4個を目安に出してください（なければ["自由に行動する"]）。
-・**必ずパース可能なJSONで返してください。**
-      `,
-    },
-    ...history.map((msg: any) => ({
-      role: msg.role,
-      content: msg.content,
-    })),
-    { role: 'user', content: userInput },
-  ]
-
-  const completion = await openai.chat.completions.create({
-    model: 'gpt-4', // ← gpt-4に変更済
-    messages,
-    temperature: 0.7,
-  })
-
-  let raw = completion.choices[0].message.content || ''
-  raw = raw.trim()
-
-  // コードブロック除去
-  if (raw.startsWith('```json')) {
-    raw = raw.replace(/^```json\s*/, '').replace(/```$/, '').trim()
-  } else if (raw.startsWith('```')) {
-    raw = raw.replace(/^```\s*/, '').replace(/```$/, '').trim()
-  }
-
-  let reply = ''
-  let options: string[] = []
+  "reply": "描写本文…",
+  "options": ["選択肢A", "選択肢B", ...]
+}`
 
   try {
-    const json = JSON.parse(raw)
-    reply = json.reply
-    options = Array.isArray(json.options) ? json.options : []
-    if (options.length === 0) {
-      options = ['自由に行動する']
-    }
-  } catch (e) {
-    reply = '⚠️ GPTの応答が不正な形式でした。もう一度試してください。'
-    options = []
-    console.error('GPT応答のパース失敗:', raw)
-  }
+    const chatHistory = [
+      { role: 'system', content: systemPrompt },
+      ...history.map((m: any) => ({ role: m.role, content: m.content })),
+    ]
 
-  return NextResponse.json({
-    reply,
-    options,
-  })
+    const response = await openai.chat.completions.create({
+      model: 'gpt-4', // または 'gpt-3.5-turbo'
+      messages: chatHistory,
+      temperature: 0.8,
+    })
+
+    const reply = response.choices[0].message.content ?? ''
+
+    // JSONとしてパース（GPTの返答形式を前提とする）
+    const parsed = JSON.parse(reply)
+
+    return Response.json({
+      reply: parsed.reply,
+      options: parsed.options || [],
+    })
+  } catch (err: any) {
+    console.error('[API ERROR]', err)
+    return Response.json({
+      reply: '通信エラーが発生しました。もう一度お試しください。',
+      options: ['最初に戻る'],
+    })
+  }
 }
