@@ -7,24 +7,32 @@ type Message = { role: 'user' | 'assistant'; content: string }
 export const dynamic = 'force-dynamic'
 
 export default function Page() {
-  const [scenarioId, setScenarioId] = useState<string>('echoes')
+  const [scenarioId, setScenarioId] = useState<string>('echoes') // ← 初期値を echoes に固定
   const [messages, setMessages] = useState<Message[]>([])
   const [input, setInput] = useState('')
   const [loading, setLoading] = useState(false)
   const [options, setOptions] = useState<string[]>([])
 
-  // 初期化（window.location.search からIDを取得）
   useEffect(() => {
-    const params = new URLSearchParams(window.location.search)
-    const id = params.get('id') ?? 'echoes'
-    setScenarioId(id)
-
-    const title = getScenarioTitle(id)
-    const initial: Message = {
-      role: 'assistant',
-      content: `ようこそ「${title}」。探索を開始しますか？`,
+    // クエリからIDを取得（なければ echoes に）
+    let id = 'echoes'
+    try {
+      if (typeof window !== 'undefined') {
+        const params = new URLSearchParams(window.location.search)
+        id = params.get('id') ?? 'echoes'
+      }
+    } catch (e) {
+      console.warn('URL読み取りエラー', e)
     }
-    setMessages([initial])
+
+    setScenarioId(id)
+    const title = getScenarioTitle(id)
+    setMessages([
+      {
+        role: 'assistant',
+        content: `ようこそ「${title}」。探索を開始しますか？`,
+      },
+    ])
     setOptions(['探索を開始する', '引き返す'])
   }, [])
 
