@@ -4,22 +4,26 @@ import OpenAI from 'openai'
 export async function POST(req: NextRequest) {
   const { userInput, history, scenarioId } = await req.json()
 
-  // GPT APIキー読み込み
   const openai = new OpenAI({
     apiKey: process.env.OPENAI_API_KEY,
   })
 
-  // システムプロンプト（シナリオIDで切り替え可能）
-  const systemPrompt = `あなたはクトゥルフ神話TRPGのゲームマスターです。シナリオID: ${scenarioId}。
-プレイヤーの発言に対して、臨場感のある描写や選択肢を提示してください。
-必ず以下のJSON形式で返答してください：
-{
-  "reply": "描写本文…",
-  "options": ["選択肢A", "選択肢B", ...]
-}`
+  const systemPrompt = `あなたはクトゥルフ神話TRPGのゲームマスターです。プレイヤーは今、シナリオ「${scenarioId}」を進行中です。
+プレイヤーの選択に応じて、ストーリーを描写し、行動の選択肢を提示してください。
 
-  // チャット履歴整形
-  const chatHistory = [
+【出力形式】
+{
+  "reply": "描写や状況説明をここに記述します。",
+  "options": ["選択肢1", "選択肢2", "選択肢3", "選択肢4"]
+}
+
+【ルール】
+- 選択肢は常に3〜4個提示してください。
+- それぞれの選択肢は異なる展開につながるようにしてください。
+- 選択肢の文言は簡潔に（例：「扉を開ける」「話しかける」「逃げる」など）
+- replyは短すぎず、描写や緊張感を含めてください。`
+
+  const messages = [
     { role: 'system', content: systemPrompt },
     ...history.map((m: any) => ({
       role: m.role === 'user' ? 'user' : 'assistant',
@@ -30,18 +34,20 @@ export async function POST(req: NextRequest) {
   try {
     const res = await openai.chat.completions.create({
       model: 'gpt-4',
-      messages: chatHistory,
+      messages,
       temperature: 0.8,
     })
 
-    const text = res.choices[0]?.message?.content ?? ''
+    const replyText = res.choices[0]?.message?.content ?? ''
 
-    // JSON形式を想定してパース
-    let parsed: { reply: string; options?: string[] }
+    let parsed
     try {
-      parsed = JSON.parse(text)
+      parsed = JSON.parse(replyText)
     } catch {
-      parsed = { reply: text, options: [] }
+      parsed = {
+        reply: replyText,
+        options: ['続ける', '終了する'],
+      }
     }
 
     return new Response(JSON.stringify(parsed), {
