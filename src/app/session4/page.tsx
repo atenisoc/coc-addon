@@ -1,23 +1,22 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { useSearchParams } from 'next/navigation'
 
 type Message = { role: 'user' | 'assistant'; content: string }
 
 export const dynamic = 'force-dynamic'
 
 export default function Page() {
-  const searchParams = useSearchParams()
   const [scenarioId, setScenarioId] = useState<string>('echoes')
   const [messages, setMessages] = useState<Message[]>([])
   const [input, setInput] = useState('')
   const [loading, setLoading] = useState(false)
   const [options, setOptions] = useState<string[]>([])
 
-  // 初期化
+  // 初期化（window.location.search からIDを取得）
   useEffect(() => {
-    const id = searchParams.get('id') ?? 'echoes'
+    const params = new URLSearchParams(window.location.search)
+    const id = params.get('id') ?? 'echoes'
     setScenarioId(id)
 
     const title = getScenarioTitle(id)
@@ -27,11 +26,11 @@ export default function Page() {
     }
     setMessages([initial])
     setOptions(['探索を開始する', '引き返す'])
-  }, [searchParams])
+  }, [])
 
   const handleSubmit = async (text: string) => {
     if (!text.trim()) return
-const updated: Message[] = [...messages, { role: 'user', content: text } as Message]
+    const updated: Message[] = [...messages, { role: 'user', content: text }]
     setMessages(updated)
     setInput('')
     setLoading(true)
