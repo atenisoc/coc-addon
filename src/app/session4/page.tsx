@@ -1,31 +1,31 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import Link from 'next/link'
 
 type Message = { role: 'user' | 'assistant'; content: string }
 
 export const dynamic = 'force-dynamic'
 
 export default function Page() {
-  const [scenarioId, setScenarioId] = useState<string>('echoes') // ← 初期値を echoes に固定
+  const [scenarioId, setScenarioId] = useState<string>('echoes')
   const [messages, setMessages] = useState<Message[]>([])
   const [input, setInput] = useState('')
   const [loading, setLoading] = useState(false)
   const [options, setOptions] = useState<string[]>([])
 
-useEffect(() => {
-  const id = 'echoes' // ← 無条件にechoesにする（Vercelでの安定表示用）
-  setScenarioId(id)
-  const title = getScenarioTitle(id)
-  setMessages([
-    {
-      role: 'assistant',
-      content: `ようこそ「${title}」。探索を開始しますか？`,
-    },
-  ])
-  setOptions(['探索を開始する', '引き返す'])
-}, [])
-
+  useEffect(() => {
+    const id = new URLSearchParams(window.location.search).get('id') || 'echoes'
+    setScenarioId(id)
+    const title = getScenarioTitle(id)
+    setMessages([
+      {
+        role: 'assistant',
+        content: `ようこそ「${title}」。探索を開始しますか？`,
+      },
+    ])
+    setOptions(['探索を開始する', '引き返す'])
+  }, [])
 
   const handleSubmit = async (text: string) => {
     if (!text.trim()) return
@@ -42,7 +42,22 @@ useEffect(() => {
       })
 
       const data = await res.json()
-      setMessages((prev) => [...prev, { role: 'assistant', content: data.reply }])
+      const replyText: string = data.reply
+      let currentText = ''
+
+      for (let i = 0; i < replyText.length; i++) {
+        currentText += replyText[i]
+        await new Promise((r) => setTimeout(r, 15))
+        setMessages((prev) => {
+          const last = prev[prev.length - 1]
+          if (last?.role === 'assistant') {
+            return [...prev.slice(0, -1), { role: 'assistant', content: currentText }]
+          } else {
+            return [...prev, { role: 'assistant', content: currentText }]
+          }
+        })
+      }
+
       setOptions(data.options || [])
     } catch (e) {
       console.error('APIエラー:', e)
@@ -83,6 +98,7 @@ useEffect(() => {
               key={i}
               className="w-full bg-gray-700 hover:bg-gray-600 p-2 rounded"
               onClick={() => handleSubmit(opt)}
+              disabled={loading}
             >
               {opt}
             </button>
@@ -95,6 +111,7 @@ useEffect(() => {
             value={input}
             onChange={(e) => setInput(e.target.value)}
             placeholder="自由行動・状況確認など"
+            disabled={loading}
           />
           <button
             onClick={() => handleSubmit(input)}
@@ -103,6 +120,12 @@ useEffect(() => {
           >
             送信
           </button>
+        </div>
+
+        <div className="text-center pt-4">
+          <Link href="/coc" className="text-sm text-blue-400 hover:underline">
+            トップへ戻る
+          </Link>
         </div>
       </div>
     </div>
