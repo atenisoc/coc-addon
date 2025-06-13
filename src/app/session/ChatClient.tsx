@@ -116,5 +116,5 @@ export default function ChatClient() {
   )
 }
 
-export default ChatClient
+
 
