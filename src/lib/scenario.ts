@@ -15,6 +15,8 @@ export const getScenarioTitle = (id: string): string => {
       return '闇の図書館'
     case 'clocktower':
       return '時計塔の彼方'
+    case 'real-type':
+      return 'リアルタイプ'
     default:
       return '未知のシナリオ'
   }
@@ -27,6 +29,7 @@ export const getScenarioBackground = (id: string): string => {
     'kisaragi': '/bg/kisaragi.jpg',
     'radio-voice': '/bg/radio.jpg',
     'mirror-home': '/bg/mirror.jpg',
+    'real-type': '/bg/real.jpg', // 画像があれば
   }
   return bgMap[id] ?? '/bg/common.jpg'
 }
@@ -48,6 +51,8 @@ export const getScenarioDescription = (id: string): string => {
       return '封印された図書館を探索するシナリオ。禁書や古代神話と狂気の知識に迫る。'
     case 'clocktower':
       return '歪んだ時間と失われた記憶の中を巡るタイムホラー。真実を選び取る物語。'
+    case 'real-type':
+      return '自由に物語を描写するリアル志向のシナリオ。会話、演出、状況描写すべてがプレイヤーに委ねられる。'
     default:
       return '未知のシナリオ。'
   }

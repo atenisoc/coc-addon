@@ -57,6 +57,14 @@ export default function COCPage() {
           description="時計塔に導かれた探索者たちは、歪んだ時間と失われた記憶に翻弄される。過去と未来の交差点で、真実を選び取れるか。"
           href="/session?id=clocktower"
         />
+
+<ScenarioCard
+  title="「リアルタイプ」"
+  subtitle="演出も描写も、すべて自由に。"
+  description="より自由な表現で、自分自身の物語を描きたいプレイヤー向け。GPTが状況を補完し、進行を支援します。"
+  href="/session?id=real-type"
+/>
+
       </div>
     </div>
   )
