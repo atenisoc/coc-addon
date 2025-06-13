@@ -1,7 +1,8 @@
 import { NextRequest } from 'next/server'
 import OpenAI from 'openai'
+import { getScenarioDescription } from '@/lib/scenario'
 
-export const runtime = 'edge' // VercelのEdge Function対応
+export const runtime = 'edge'
 
 export async function POST(req: NextRequest) {
   const { userInput, history, scenarioId } = await req.json()
@@ -17,24 +18,25 @@ export async function POST(req: NextRequest) {
     )
   }
 
-  const openai = new OpenAI({
-    apiKey: process.env.OPENAI_API_KEY,
-  })
+  const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY })
 
-  const systemPrompt = `あなたはクトゥルフ神話TRPGのゲームマスターです。プレイヤーは今、シナリオ「${scenarioId}」を進行中です。
-プレイヤーの選択に応じて、ストーリーを描写し、行動の選択肢を提示してください。
+  const scenarioSummary = getScenarioDescription(scenarioId)
 
-【出力形式】
+  const systemPrompt = `あなたはクトゥルフ神話TRPGのゲームマスターです。現在、以下のシナリオを進行中です。
+
+【シナリオ名】
+${scenarioId}
+
+【シナリオ概要】
+${scenarioSummary}
+
+プレイヤーの発言や選択に応じて、以下の形式で描写と選択肢を返してください。
+コードブロックを使わず、純粋なJSONのみで出力してください：
+
 {
-  "reply": "描写や状況説明をここに記述します。",
-  "options": ["選択肢1", "選択肢2", "選択肢3", "選択肢4"]
-}
-
-【ルール】
-- 選択肢は常に3〜4個提示してください。
-- それぞれの選択肢は異なる展開につながるようにしてください。
-- 選択肢の文言は簡潔に（例：「扉を開ける」「話しかける」「逃げる」など）
-- replyは短すぎず、描写や緊張感を含めてください。`
+  "reply": "描写文や状況説明をここに記述します。",
+  "options": ["選択肢1", "選択肢2", "選択肢3"]
+}`
 
   try {
     const chatHistory = [
@@ -43,15 +45,24 @@ export async function POST(req: NextRequest) {
     ]
 
     const response = await openai.chat.completions.create({
-      model: 'gpt-4', // 必要に応じて gpt-4.0, gpt-4.0-turbo 等
+      model: 'gpt-4',
       messages: chatHistory,
       temperature: 0.8,
     })
 
-    const raw = response.choices[0]?.message.content ?? ''
+    let raw = response.choices[0]?.message.content ?? ''
+    raw = raw.trim()
+
+    if (raw.startsWith('```')) {
+      raw = raw.replace(/```json|```/g, '').trim()
+    }
+
     const json = JSON.parse(raw)
 
-    return new Response(JSON.stringify(json), { status: 200 })
+    return new Response(JSON.stringify(json), {
+      headers: { 'Content-Type': 'application/json' },
+      status: 200,
+    })
   } catch (err: any) {
     console.error('[OpenAIエラー]', err)
 
