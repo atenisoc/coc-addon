@@ -115,3 +115,6 @@ export default function ChatClient() {
     </div>
   )
 }
+
+export default ChatClient
+
