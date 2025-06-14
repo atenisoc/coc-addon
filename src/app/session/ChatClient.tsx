@@ -44,7 +44,7 @@ export default function ChatClient() {
 
   const handleSubmit = async (text: string) => {
     if (!text.trim()) return
-    const updated = [...messages, { role: 'user', content: text }]
+    const updated: Message[] = [...messages, { role: 'user', content: text }]
     setMessages(updated)
     setInput('')
     setOptions([])
@@ -61,7 +61,6 @@ export default function ChatClient() {
 
       let data = await res.json()
 
-      // GPTがJSON全体を文字列で返した場合のフォールバック
       if (typeof data === 'string') {
         try {
           data = JSON.parse(data)
@@ -93,7 +92,7 @@ export default function ChatClient() {
   }
 
   return (
-    <div className="w-full max-w-3xl mx-auto px-4 space-y-4 font-[Kiwi Maru]">
+    <div className="w-full max-w-3xl mx-auto px-4 space-y-4 font-[Kiwi_Maru]">
 
       {messages.map((msg, idx) => {
         const isLast = idx === messages.length - 1
