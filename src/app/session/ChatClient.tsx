@@ -19,7 +19,6 @@ export default function ChatClient() {
   const params = useSearchParams()
   const scenarioId = params.get('id') || 'echoes'
   const disableOptions = params.get('noopt') === 'true'
-
   const typingSpeed = 20
 
   useEffect(() => {
@@ -52,27 +51,50 @@ export default function ChatClient() {
     setTyping('')
     setLoading(true)
     setErrorFlag('')
+
     try {
       const res = await fetch('/api/message', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ userInput: text, history: updated, scenarioId }),
       })
-      const json = await res.json()
-      setMessages([...updated, { role: 'assistant', content: json.reply }])
-      setOptions(json.options || [])
-      if (json.errorFlag) setErrorFlag(json.errorFlag)
+
+      let data = await res.json()
+
+      // GPTがJSON全体を文字列で返した場合のフォールバック
+      if (typeof data === 'string') {
+        try {
+          data = JSON.parse(data)
+        } catch (e) {
+          setMessages([
+            ...updated,
+            { role: 'assistant', content: '⚠️ 応答の構造が不正です（JSONとして解釈できません）' },
+          ])
+          setLoading(false)
+          return
+        }
+      }
+
+      setMessages([...updated, { role: 'assistant', content: data.reply }])
+      setOptions(data.options || [])
+      if (data.errorFlag) setErrorFlag(data.errorFlag)
+
     } catch (e: any) {
-      setMessages([...updated, {
-        role: 'assistant',
-        content: `通信エラーが発生しました。\n\n(APIエラー: ${e.message})`
-      }])
+      setMessages([
+        ...updated,
+        {
+          role: 'assistant',
+          content: `通信エラーが発生しました。\n\n(APIエラー: ${e.message})`,
+        },
+      ])
     }
+
     setLoading(false)
   }
 
   return (
-    <div className="w-full max-w-3xl mx-auto px-4 space-y-4">
+    <div className="w-full max-w-3xl mx-auto px-4 space-y-4 font-[Kiwi Maru]">
+
       {messages.map((msg, idx) => {
         const isLast = idx === messages.length - 1
         const isTyping = isLast && msg.role === 'assistant' && typing
@@ -117,7 +139,9 @@ export default function ChatClient() {
           placeholder="自由行動・状況確認など"
           value={input}
           onChange={(e) => setInput(e.target.value)}
-          onKeyDown={(e) => { if (e.key === 'Enter') handleSubmit(input) }}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter') handleSubmit(input)
+          }}
         />
         <button
           className="bg-blue-600 hover:bg-blue-500 text-white px-4 py-2 rounded"
