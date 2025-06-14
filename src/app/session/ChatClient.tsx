@@ -13,82 +13,102 @@ export default function ChatClient() {
   const [input, setInput] = useState('')
   const [loading, setLoading] = useState(false)
   const [options, setOptions] = useState<string[]>([])
+  const [typing, setTyping] = useState('')
+  const [errorFlag, setErrorFlag] = useState('')
 
   const params = useSearchParams()
   const scenarioId = params.get('id') || 'echoes'
+  const disableOptions = params.get('noopt') === 'true'
+
+  const typingSpeed = 20
 
   useEffect(() => {
-    setMessages([
-      {
-        role: 'assistant',
-        content: '探索を開始しますか？',
-      },
-    ])
+    setMessages([{ role: 'assistant', content: '探索を開始しますか？' }])
     setOptions(['探索を開始する', '引き返す'])
   }, [scenarioId])
 
+  useEffect(() => {
+    const last = messages[messages.length - 1]
+    if (!last || last.role !== 'assistant') return
+    let i = 0
+    setTyping('')
+    const interval = setInterval(() => {
+      setTyping((prev) => prev + last.content[i])
+      i++
+      if (i >= last.content.length) {
+        clearInterval(interval)
+        setTyping('')
+      }
+    }, typingSpeed)
+    return () => clearInterval(interval)
+  }, [messages])
+
   const handleSubmit = async (text: string) => {
     if (!text.trim()) return
-
-    const updated: Message[] = [...messages, { role: 'user', content: text }]
+    const updated = [...messages, { role: 'user', content: text }]
     setMessages(updated)
     setInput('')
-    setLoading(true)
     setOptions([])
-
+    setTyping('')
+    setLoading(true)
+    setErrorFlag('')
     try {
       const res = await fetch('/api/message', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          userInput: text,
-          history: updated,
-          scenarioId,
-        }),
+        body: JSON.stringify({ userInput: text, history: updated, scenarioId }),
       })
-
-      const data = await res.json()
-      setMessages([...updated, { role: 'assistant', content: data.reply }])
-      setOptions(data.options || [])
+      const json = await res.json()
+      setMessages([...updated, { role: 'assistant', content: json.reply }])
+      setOptions(json.options || [])
+      if (json.errorFlag) setErrorFlag(json.errorFlag)
     } catch (e: any) {
-      setMessages([
-        ...updated,
-        { role: 'assistant', content: `エラーが発生しました: ${e.message}` },
-      ])
-      setOptions(['最初に戻る'])
+      setMessages([...updated, {
+        role: 'assistant',
+        content: `通信エラーが発生しました。\n\n(APIエラー: ${e.message})`
+      }])
     }
-
     setLoading(false)
   }
 
   return (
-    <div className="space-y-4">
-      {messages.map((msg, idx) => (
-        <div
-          key={idx}
-          className={`text-sm whitespace-pre-wrap ${
-            msg.role === 'user' ? 'text-blue-300 text-right' : 'text-green-300'
-          }`}
-        >
-          {msg.content}
-        </div>
-      ))}
+    <div className="w-full max-w-3xl mx-auto px-4 space-y-4">
+      {messages.map((msg, idx) => {
+        const isLast = idx === messages.length - 1
+        const isTyping = isLast && msg.role === 'assistant' && typing
+        return (
+          <div
+            key={idx}
+            className={`whitespace-pre-wrap leading-relaxed text-shadow ${
+              msg.role === 'user'
+                ? 'text-blue-300 text-right font-semibold'
+                : 'text-green-100 text-left font-mono text-sm'
+            }`}
+          >
+            {isTyping ? typing : msg.content}
+          </div>
+        )
+      })}
 
-      {loading && (
-        <div className="text-gray-400 text-sm italic">GMが状況を整理しています...</div>
+      {errorFlag && (
+        <div className="text-xs text-yellow-300">
+          ※ 正常な応答が得られませんでした（{errorFlag}）
+        </div>
       )}
 
-      <div className="flex flex-wrap gap-2">
-        {options.map((opt, idx) => (
-          <button
-            key={idx}
-            className="bg-gray-700 hover:bg-gray-600 text-white text-sm px-3 py-1 rounded"
-            onClick={() => handleSubmit(opt)}
-          >
-            {opt}
-          </button>
-        ))}
-      </div>
+      {!disableOptions && (
+        <div className="flex flex-wrap gap-2">
+          {options.map((opt, idx) => (
+            <button
+              key={idx}
+              className="bg-gray-700 hover:bg-gray-600 text-white text-sm px-3 py-1 rounded"
+              onClick={() => handleSubmit(opt)}
+            >
+              {opt}
+            </button>
+          ))}
+        </div>
+      )}
 
       <div className="flex gap-2 mt-2">
         <input
@@ -97,9 +117,7 @@ export default function ChatClient() {
           placeholder="自由行動・状況確認など"
           value={input}
           onChange={(e) => setInput(e.target.value)}
-          onKeyDown={(e) => {
-            if (e.key === 'Enter') handleSubmit(input)
-          }}
+          onKeyDown={(e) => { if (e.key === 'Enter') handleSubmit(input) }}
         />
         <button
           className="bg-blue-600 hover:bg-blue-500 text-white px-4 py-2 rounded"
@@ -115,6 +133,3 @@ export default function ChatClient() {
     </div>
   )
 }
-
-
-

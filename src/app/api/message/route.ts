@@ -7,6 +7,20 @@ export const runtime = 'edge'
 export async function POST(req: NextRequest) {
   const { userInput, history, scenarioId } = await req.json()
 
+  if (userInput === 'force-error') {
+    return new Response(JSON.stringify({
+      reply: '※ 構造不正テスト: 強制エラー応答',
+      options: ['再試行', '確認する'],
+      fallback: true,
+      errorFlag: 'structure-invalid',
+      debugFlags: ['FORCED_TEST']
+    }), { status: 206 })
+  }
+
+  if (userInput === 'force-exception') {
+    throw new Error('強制例外 for test')
+  }
+
   const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY || '' })
   const scenarioSummary = getScenarioDescription(scenarioId)
 
@@ -29,8 +43,8 @@ ${scenarioSummary}
 【ルール】
 - reply は簡潔に。情景描写を含めつつ300字以内
 - options は必ず ["〜", "〜", "〜"] という JSON 配列
-- options 各要素は「""」で囲った文字列
-- options に「,」「"」「改行」が含まれる場合は避けてください
+- options 各要素は「\"」で囲った文字列
+- options に「,」「\"」「改行」が含まれる場合は避けてください
 - 絶対に reply や options を省略しないでください
 - 上記JSONのみを返してください（前後の説明なども出力禁止）
 `
@@ -38,10 +52,7 @@ ${scenarioSummary}
   try {
     const chatHistory = [
       { role: 'system', content: systemPrompt },
-      ...history.map((m: any) => ({
-        role: m.role as 'user' | 'assistant',
-        content: m.content,
-      })),
+      ...history.map((m: any) => ({ role: m.role, content: m.content }))
     ]
 
     const response = await openai.chat.completions.create({
@@ -51,23 +62,31 @@ ${scenarioSummary}
     })
 
     let raw = response.choices[0]?.message.content?.trim() ?? ''
-
-    // コードブロック除去
     if (raw.startsWith('```')) {
       raw = raw.replace(/```json|```/g, '').trim()
     }
 
-    // JSONパース＋構造チェック
     const json = JSON.parse(raw)
 
     const isValid =
       typeof json === 'object' &&
       typeof json.reply === 'string' &&
       Array.isArray(json.options) &&
-      json.options.every((opt: any) => typeof opt === 'string')
+      json.options.every((opt: any) => typeof opt === 'string') &&
+      json.options.length >= 2 && json.options.length <= 4
 
     if (!isValid) {
-      throw new Error('GPTからの出力が正しいJSON形式ではありません。')
+      console.warn('[構造不正または誤構造検出]', raw)
+      return new Response(
+        JSON.stringify({
+          reply: '※ 正常な応答が得られませんでした（構造不正検出）',
+          options: ['様子を見る', '静かに待つ', '誰かを呼ぶ'],
+          fallback: true,
+          errorFlag: 'structure-invalid',
+          debugFlags: ['RAW_FAIL_PARSE']
+        }),
+        { status: 206 }
+      )
     }
 
     return new Response(JSON.stringify(json), {
@@ -78,8 +97,11 @@ ${scenarioSummary}
     console.error('[OpenAIエラー]', err)
     return new Response(
       JSON.stringify({
-        reply: `エラーが発生しました: ${err.message}`,
-        options: ['最初に戻る'],
+        reply: '※ システムエラーが発生しました。現在の状況を確認してください。',
+        options: ['様子を見る', '静かに待つ', '誰かを呼ぶ'],
+        fallback: true,
+        errorFlag: 'exception',
+        debugFlags: ['EXCEPTION_THROWN']
       }),
       { status: 500 }
     )

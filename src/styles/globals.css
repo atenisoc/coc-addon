@@ -2,12 +2,29 @@
 @tailwind components;
 @tailwind utilities;
 
+/* 背景と基本設定 */
 @layer base {
-body {
-  background-image: url("/bg.jpg");
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
+  body {
+    background-image: url("/bg.jpg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    color: white;
+    font-family: 'BIZ UDGothic', 'Noto Serif JP', serif; /* 怖さ＋読みやすさ */
+    letter-spacing: 0.03em;
+    line-height: 1.75;
+  }
 }
 
+/* テキストに黒シャドウで視認性UP */
+.text-shadow {
+  text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.9);
+}
+
+/* エラーメッセージ表示用 */
+.error-flag {
+  color: #f87171; /* Tailwindの赤-400相当 */
+  font-size: 0.85rem;
+  font-style: italic;
+  margin-top: 0.5rem;
 }
