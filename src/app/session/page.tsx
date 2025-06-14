@@ -1,9 +1,10 @@
 'use client'
 
+import { Suspense } from 'react'
 import ChatClient from './ChatClient'
 import { useSearchParams } from 'next/navigation'
 
-export default function Page() {
+function PageInner() {
   const params = useSearchParams()
   const scenarioId = params.get('id') || 'unknown'
 
@@ -29,5 +30,13 @@ export default function Page() {
         <ChatClient />
       </div>
     </main>
+  )
+}
+
+export default function Page() {
+  return (
+    <Suspense fallback={<div className="text-center text-white">読み込み中…</div>}>
+      <PageInner />
+    </Suspense>
   )
 }
