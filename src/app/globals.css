@@ -2,17 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
-@layer base {
-  body {
-    background-image: url("/bg.jpg");
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    color: white;
-    font-family: "HorrorFont", sans-serif; /* 👈 ここにフォント指定を追加するなど */
-  }
-}
+/* ✅ 必要なフォントだけ読み込む（影響なし） */
+@import url('https://fonts.googleapis.com/css2?family=Creepster&family=Noto+Serif+JP&display=swap');
 
+/* ✅ テキストシャドウはクラス指定時のみ適用 */
 .text-shadow {
   text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.9);
 }

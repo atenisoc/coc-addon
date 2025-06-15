@@ -22,8 +22,20 @@ export default function ChatClient() {
   const typingSpeed = 20
 
   useEffect(() => {
-    setMessages([{ role: 'assistant', content: '探索を開始しますか？' }])
-    setOptions(['探索を開始する', '引き返す'])
+    // 初期状態：まずGM確認中だけ表示
+    setMessages([{ role: 'assistant', content: 'GMが確認中...' }])
+    setOptions([])
+    setTyping('')
+
+    // 少し遅れて本来のプロンプトと選択肢を出す
+    const timer = setTimeout(() => {
+      setMessages([
+        { role: 'assistant', content: '探索を開始しますか？' }
+      ])
+      setOptions(['探索を開始する', '引き返す'])
+    }, 1000)
+
+    return () => clearTimeout(timer)
   }, [scenarioId])
 
   useEffect(() => {
@@ -131,6 +143,12 @@ export default function ChatClient() {
         </div>
       )}
 
+      {loading && (
+        <div className="text-center text-white/60 italic text-sm">
+          ⏳ GMが状況を確認中…
+        </div>
+      )}
+
       <div className="flex gap-2 mt-2">
         <input
           type="text"
@@ -150,9 +168,6 @@ export default function ChatClient() {
         </button>
       </div>
 
-      <div className="text-center text-xs text-blue-300 mt-2">
-        <a href="/coc">トップへ戻る</a>
-      </div>
     </div>
   )
 }
