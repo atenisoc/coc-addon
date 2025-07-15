@@ -1,0 +1,3901 @@
+[
+  {
+    "id": "phase01_01",
+    "text": "気づくと見知らぬ駅のホームに立っていた。風の音だけが耳に残る。",
+    "options": [
+      {
+        "text": "駅名表示を見る",
+        "next": "phase01_02"
+      },
+      {
+        "text": "改札へ向かう",
+        "next": "phase01_03"
+      },
+      {
+        "text": "ホームを歩く",
+        "next": "phase01_04"
+      }
+    ],
+    "requiredFlags": [],
+    "setFlag": "phase01_01_visited",
+    "event": "時間停止",
+    "sanChange": -1,
+    "isTerminal": false,
+    "jump": null,
+    "lossCondition": null
+  },
+  {
+    "id": "phase01_02",
+    "text": "駅名表示には『きさらぎ駅』と書かれていた。聞いたことのない名前だ。",
+    "options": [
+      {
+        "text": "不安になる",
+        "next": "phase01_05"
+      },
+      {
+        "text": "とにかく進む",
+        "next": "phase01_06"
+      },
+      {
+        "text": "辺りを見渡す",
+        "next": "phase01_07"
+      }
+    ],
+    "requiredFlags": [],
+    "setFlag": "phase01_02_visited",
+    "event": "異界干渉",
+    "sanChange": 1,
+    "isTerminal": false,
+    "jump": null,
+    "lossCondition": null
+  },
+  {
+    "id": "phase01_03",
+    "text": "改札へ向かうと、自動改札は止まっていた。誰もいない。",
+    "options": [
+      {
+        "text": "無理やり通る",
+        "next": "phase01_08"
+      },
+      {
+        "text": "戻る",
+        "next": "phase01_09"
+      },
+      {
+        "text": "駅員を探す",
+        "next": "phase01_10"
+      }
+    ],
+    "requiredFlags": [],
+    "setFlag": "phase01_03_visited",
+    "event": "視覚異常",
+    "sanChange": 1,
+    "isTerminal": false,
+    "jump": null,
+    "lossCondition": null
+  },
+  {
+    "id": "phase01_04",
+    "text": "ホームを歩いても出口は見当たらない。どこまでも続いているように思える。",
+    "options": [
+      {
+        "text": "走る",
+        "next": "phase01_11"
+      },
+      {
+        "text": "立ち止まる",
+        "next": "phase01_12"
+      },
+      {
+        "text": "線路に降りる",
+        "next": "phase01_13"
+      }
+    ],
+    "requiredFlags": [],
+    "setFlag": "phase01_04_visited",
+    "event": "異界干渉",
+    "sanChange": 0,
+    "isTerminal": false,
+    "jump": null,
+    "lossCondition": null
+  },
+  {
+    "id": "phase01_05",
+    "text": "不安が胸を締め付ける。視界がぐにゃりと歪むような感覚。",
+    "options": [
+      {
+        "text": "深呼吸する",
+        "next": "phase01_14"
+      },
+      {
+        "text": "声を出す",
+        "next": "phase01_14"
+      },
+      {
+        "text": "目を閉じる",
+        "next": "phase01_14"
+      }
+    ],
+    "requiredFlags": [],
+    "setFlag": "phase01_05_visited",
+    "event": "幻聴",
+    "sanChange": 1,
+    "isTerminal": false,
+    "jump": null,
+    "lossCondition": null
+  },
+  {
+    "id": "phase01_06",
+    "text": "進んだ先に見えたのは、赤く錆びた自販機とベンチだった。",
+    "options": [
+      {
+        "text": "ベンチに座る",
+        "next": "phase01_14"
+      },
+      {
+        "text": "自販機を叩く",
+        "next": "phase01_14"
+      },
+      {
+        "text": "何もせず通り過ぎる",
+        "next": "phase01_14"
+      }
+    ],
+    "requiredFlags": [],
+    "setFlag": "phase01_06_visited",
+    "event": "感覚麻痺",
+    "sanChange": -3,
+    "isTerminal": true,
+    "jump": "phase99_lost",
+    "lossCondition": "san <= 0"
+  },
+  {
+    "id": "phase01_07",
+    "text": "空は鈍い灰色に覆われていた。時計も、止まっている。",
+    "options": [
+      {
+        "text": "携帯を確認",
+        "next": "phase01_14"
+      },
+      {
+        "text": "声を上げる",
+        "next": "phase01_14"
+      },
+      {
+        "text": "ただ佇む",
+        "next": "phase01_14"
+      }
+    ],
+    "requiredFlags": [],
+    "setFlag": "phase01_07_visited",
+    "event": "記憶喪失",
+    "sanChange": -1,
+    "isTerminal": false,
+    "jump": null,
+    "lossCondition": null
+  },
+  {
+    "id": "phase01_08",
+    "text": "改札をくぐった先には、崩れた駅舎のようなものが広がっていた。",
+    "options": [
+      {
+        "text": "駅舎に入る",
+        "next": "phase01_14"
+      },
+      {
+        "text": "道を探す",
+        "next": "phase01_14"
+      },
+      {
+        "text": "戻る",
+        "next": "phase01_14"
+      }
+    ],
+    "requiredFlags": [],
+    "setFlag": "phase01_08_visited",
+    "event": "幻聴",
+    "sanChange": -1,
+    "isTerminal": false,
+    "jump": null,
+    "lossCondition": null
+  },
+  {
+    "id": "phase01_09",
+    "text": "戻ったはずの道にホームはなかった。景色が変わっていた。",
+    "options": [
+      {
+        "text": "進むしかない",
+        "next": "phase01_14"
+      },
+      {
+        "text": "叫ぶ",
+        "next": "phase01_14"
+      },
+      {
+        "text": "その場に座る",
+        "next": "phase01_14"
+      }
+    ],
+    "requiredFlags": [],
+    "setFlag": "phase01_09_visited",
+    "event": "幻聴",
+    "sanChange": 0,
+    "isTerminal": false,
+    "jump": null,
+    "lossCondition": null
+  },
+  {
+    "id": "phase01_10",
+    "text": "駅員室の中は空っぽだったが、誰かがいたような気配が残っていた。",
+    "options": [
+      {
+        "text": "メモを探す",
+        "next": "phase01_14"
+      },
+      {
+        "text": "奥を覗く",
+        "next": "phase01_14"
+      },
+      {
+        "text": "出て行く",
+        "next": "phase01_14"
+      }
+    ],
+    "requiredFlags": [],
+    "setFlag": "phase01_10_visited",
+    "event": "幻聴",
+    "sanChange": -2,
+    "isTerminal": false,
+    "jump": null,
+    "lossCondition": null
+  },
+  {
+    "id": "phase01_11",
+    "text": "走っても走っても終点が見えない。足音がだんだん遠ざかっていく。",
+    "options": [
+      {
+        "text": "止まる",
+        "next": "phase01_14"
+      },
+      {
+        "text": "叫ぶ",
+        "next": "phase01_14"
+      },
+      {
+        "text": "振り返る",
+        "next": "phase01_14"
+      }
+    ],
+    "requiredFlags": [],
+    "setFlag": "phase01_11_visited",
+    "event": "幻聴",
+    "sanChange": 0,
+    "isTerminal": false,
+    "jump": null,
+    "lossCondition": null
+  },
+  {
+    "id": "phase01_12",
+    "text": "静寂の中、かすかに『こっちへ』という声が聞こえた気がした。",
+    "options": [
+      {
+        "text": "声を追う",
+        "next": "phase01_14"
+      },
+      {
+        "text": "耳をふさぐ",
+        "next": "phase01_14"
+      },
+      {
+        "text": "動かない",
+        "next": "phase01_14"
+      }
+    ],
+    "requiredFlags": [],
+    "setFlag": "phase01_12_visited",
+    "event": "視覚異常",
+    "sanChange": -2,
+    "isTerminal": false,
+    "jump": null,
+    "lossCondition": null
+  },
+  {
+    "id": "phase01_13",
+    "text": "線路に降りた途端、異様な風が吹いた。空間が捻れているようだった。",
+    "options": [
+      {
+        "text": "進む",
+        "next": "phase01_14"
+      },
+      {
+        "text": "戻る",
+        "next": "phase01_14"
+      },
+      {
+        "text": "その場にしゃがむ",
+        "next": "phase01_14"
+      }
+    ],
+    "requiredFlags": [],
+    "setFlag": "phase01_13_visited",
+    "event": "感覚麻痺",
+    "sanChange": -1,
+    "isTerminal": false,
+    "jump": null,
+    "lossCondition": null
+  },
+  {
+    "id": "phase01_14",
+    "text": "どう進むべきか。あなたは微かな違和感を頼りに、歩を進める。",
+    "options": [
+      {
+        "text": "駅構内へ向かう",
+        "next": "phase02_01"
+      },
+      {
+        "text": "線路をたどる",
+        "next": "phase02_01"
+      },
+      {
+        "text": "空を見上げる",
+        "next": "phase02_01"
+      }
+    ],
+    "requiredFlags": [],
+    "setFlag": "phase01_14_visited",
+    "event": "記憶喪失",
+    "sanChange": 0,
+    "isTerminal": false,
+    "jump": null,
+    "lossCondition": null
+  },
+  {
+    "id": "phase02_01",
+    "text": "駅の構内に入ると、照明はついていないのに、妙に明るかった。",
+    "options": [
+      {
+        "text": "左の通路へ進む",
+        "next": "phase02_02"
+      },
+      {
+        "text": "階段を降りる",
+        "next": "phase02_03"
+      },
+      {
+        "text": "構内を見回す",
+        "next": "phase02_04"
+      }
+    ],
+    "requiredFlags": [
+      "phase01_clear"
+    ],
+    "setFlag": "phase02_01_visited",
+    "event": "記憶喪失",
+    "sanChange": 0,
+    "isTerminal": false,
+    "jump": null,
+    "lossCondition": null
+  },
+  {
+    "id": "phase02_02",
+    "text": "左の通路は薄暗く、湿った空気が漂っていた。床には古い新聞紙が散乱している。",
+    "options": [
+      {
+        "text": "新聞を拾う",
+        "next": "phase02_05"
+      },
+      {
+        "text": "通路を進む",
+        "next": "phase02_06"
+      },
+      {
+        "text": "戻る",
+        "next": "phase02_07"
+      }
+    ],
+    "requiredFlags": [
+      "phase01_clear"
+    ],
+    "setFlag": "phase02_02_visited",
+    "event": "異界干渉",
+    "sanChange": 0,
+    "isTerminal": false,
+    "jump": null,
+    "lossCondition": null
+  },
+  {
+    "id": "phase02_03",
+    "text": "階段を降りると、地下道のような空間に出た。どこかから水が滴っている音がする。",
+    "options": [
+      {
+        "text": "奥へ進む",
+        "next": "phase02_08"
+      },
+      {
+        "text": "音の方を見る",
+        "next": "phase02_09"
+      },
+      {
+        "text": "引き返す",
+        "next": "phase02_10"
+      }
+    ],
+    "requiredFlags": [
+      "phase01_clear"
+    ],
+    "setFlag": "phase02_03_visited",
+    "event": "記憶喪失",
+    "sanChange": -1,
+    "isTerminal": true,
+    "jump": null,
+    "lossCondition": null
+  },
+  {
+    "id": "phase02_04",
+    "text": "構内には壊れた案内板や、使用されていない改札口が点在している。",
+    "options": [
+      {
+        "text": "案内板を読む",
+        "next": "phase02_11"
+      },
+      {
+        "text": "改札の奥へ行く",
+        "next": "phase02_12"
+      },
+      {
+        "text": "待合室を探す",
+        "next": "phase02_13"
+      }
+    ],
+    "requiredFlags": [
+      "phase01_clear"
+    ],
+    "setFlag": "phase02_04_visited",
+    "event": "視覚異常",
+    "sanChange": 0,
+    "isTerminal": false,
+    "jump": null,
+    "lossCondition": null
+  },
+  {
+    "id": "phase02_05",
+    "text": "新聞紙には日付がなかったが、意味不明な図形が描かれていた。",
+    "options": [
+      {
+        "text": "図形をメモする",
+        "next": "phase02_14"
+      },
+      {
+        "text": "破って捨てる",
+        "next": "phase02_14"
+      },
+      {
+        "text": "その場に戻す",
+        "next": "phase02_14"
+      }
+    ],
+    "requiredFlags": [
+      "phase01_clear"
+    ],
+    "setFlag": "phase02_05_visited",
+    "event": "異界干渉",
+    "sanChange": -3,
+    "isTerminal": true,
+    "jump": "phase99_lost",
+    "lossCondition": "san <= 0"
+  },
+  {
+    "id": "phase02_06",
+    "text": "通路の先には鏡が落ちていた。割れていないが、映るものが不自然に見えた。",
+    "options": [
+      {
+        "text": "鏡を見る",
+        "next": "phase02_14"
+      },
+      {
+        "text": "拾って持つ",
+        "next": "phase02_14"
+      },
+      {
+        "text": "無視して進む",
+        "next": "phase02_14"
+      }
+    ],
+    "requiredFlags": [
+      "phase01_clear"
+    ],
+    "setFlag": "phase02_06_visited",
+    "event": "時間停止",
+    "sanChange": 0,
+    "isTerminal": false,
+    "jump": null,
+    "lossCondition": null
+  },
+  {
+    "id": "phase02_07",
+    "text": "引き返すと、来たはずの通路が消えていた。空間が歪んでいる。",
+    "options": [
+      {
+        "text": "前進する",
+        "next": "phase02_14"
+      },
+      {
+        "text": "立ち止まる",
+        "next": "phase02_14"
+      },
+      {
+        "text": "叫ぶ",
+        "next": "phase02_14"
+      }
+    ],
+    "requiredFlags": [
+      "phase01_clear"
+    ],
+    "setFlag": "phase02_07_visited",
+    "event": "視覚異常",
+    "sanChange": -2,
+    "isTerminal": false,
+    "jump": null,
+    "lossCondition": null
+  },
+  {
+    "id": "phase02_08",
+    "text": "奥へ進むと鉄扉があった。開けるには力が必要そうだ。",
+    "options": [
+      {
+        "text": "押し開ける",
+        "next": "phase02_14"
+      },
+      {
+        "text": "諦めて戻る",
+        "next": "phase02_14"
+      },
+      {
+        "text": "蹴ってみる",
+        "next": "phase02_14"
+      }
+    ],
+    "requiredFlags": [
+      "phase01_clear"
+    ],
+    "setFlag": "phase02_08_visited",
+    "event": "時間停止",
+    "sanChange": -2,
+    "isTerminal": false,
+    "jump": null,
+    "lossCondition": null
+  },
+  {
+    "id": "phase02_09",
+    "text": "水の音の方を見ると、パイプから黒い液体が漏れていた。",
+    "options": [
+      {
+        "text": "触れる",
+        "next": "phase02_14"
+      },
+      {
+        "text": "避ける",
+        "next": "phase02_14"
+      },
+      {
+        "text": "瓶に採取する",
+        "next": "phase02_14"
+      }
+    ],
+    "requiredFlags": [
+      "phase01_clear"
+    ],
+    "setFlag": "phase02_09_visited",
+    "event": "時間停止",
+    "sanChange": 1,
+    "isTerminal": false,
+    "jump": null,
+    "lossCondition": null
+  },
+  {
+    "id": "phase02_10",
+    "text": "引き返すと、地上の階段が異様に長くなっていた。",
+    "options": [
+      {
+        "text": "走って登る",
+        "next": "phase02_14"
+      },
+      {
+        "text": "一段ずつ慎重に",
+        "next": "phase02_14"
+      },
+      {
+        "text": "途中で止まる",
+        "next": "phase02_14"
+      }
+    ],
+    "requiredFlags": [
+      "phase01_clear"
+    ],
+    "setFlag": "phase02_10_visited",
+    "event": "感覚麻痺",
+    "sanChange": 1,
+    "isTerminal": false,
+    "jump": null,
+    "lossCondition": null
+  },
+  {
+    "id": "phase02_11",
+    "text": "案内板には『外への出口』と書かれていたが、矢印はぐるぐると円を描いていた。",
+    "options": [
+      {
+        "text": "信じて進む",
+        "next": "phase02_14"
+      },
+      {
+        "text": "矢印をなぞる",
+        "next": "phase02_14"
+      },
+      {
+        "text": "破壊する",
+        "next": "phase02_14"
+      }
+    ],
+    "requiredFlags": [
+      "phase01_clear"
+    ],
+    "setFlag": "phase02_11_visited",
+    "event": "異界干渉",
+    "sanChange": -3,
+    "isTerminal": true,
+    "jump": "phase99_lost",
+    "lossCondition": "san <= 0"
+  },
+  {
+    "id": "phase02_12",
+    "text": "改札の奥は薄暗く、机と椅子が整然と並んだ部屋に続いていた。",
+    "options": [
+      {
+        "text": "机を調べる",
+        "next": "phase02_14"
+      },
+      {
+        "text": "椅子に座る",
+        "next": "phase02_14"
+      },
+      {
+        "text": "部屋を出る",
+        "next": "phase02_14"
+      }
+    ],
+    "requiredFlags": [
+      "phase01_clear"
+    ],
+    "setFlag": "phase02_12_visited",
+    "event": "異界干渉",
+    "sanChange": 0,
+    "isTerminal": false,
+    "jump": null,
+    "lossCondition": null
+  },
+  {
+    "id": "phase02_13",
+    "text": "待合室らしき場所に入ると、座席には古びた人形がひとつ置かれていた。",
+    "options": [
+      {
+        "text": "近づく",
+        "next": "phase02_14"
+      },
+      {
+        "text": "触れる",
+        "next": "phase02_14"
+      },
+      {
+        "text": "無視して出る",
+        "next": "phase02_14"
+      }
+    ],
+    "requiredFlags": [
+      "phase01_clear"
+    ],
+    "setFlag": "phase02_13_visited",
+    "event": "幻聴",
+    "sanChange": 0,
+    "isTerminal": false,
+    "jump": null,
+    "lossCondition": null
+  },
+  {
+    "id": "phase02_14",
+    "text": "出口はまだ見えない。構内の奥へ進むと、再び風の音が耳に響く。",
+    "options": [
+      {
+        "text": "音の方へ進む",
+        "next": "phase03_01"
+      },
+      {
+        "text": "反対方向へ進む",
+        "next": "phase03_01"
+      },
+      {
+        "text": "その場に留まる",
+        "next": "phase03_01"
+      }
+    ],
+    "requiredFlags": [
+      "phase01_clear"
+    ],
+    "setFlag": "phase02_14_visited",
+    "event": "幻聴",
+    "sanChange": 0,
+    "isTerminal": false,
+    "jump": null,
+    "lossCondition": null
+  },
+  {
+    "id": "phase03_01",
+    "text": "駅の出口を抜けると、そこには静寂に包まれた異様な風景が広がっていた。",
+    "options": [
+      {
+        "text": "左の坂道を登る",
+        "next": "phase03_02"
+      },
+      {
+        "text": "右の細道へ進む",
+        "next": "phase03_03"
+      },
+      {
+        "text": "駅に戻る",
+        "next": "phase03_04"
+      }
+    ],
+    "requiredFlags": [
+      "phase02_clear"
+    ],
+    "setFlag": "phase03_01_visited",
+    "event": "幻聴",
+    "sanChange": 0,
+    "isTerminal": false,
+    "jump": null,
+    "lossCondition": null
+  },
+  {
+    "id": "phase03_02",
+    "text": "坂道の途中で、道端にひび割れた石碑が立っていた。何か文字が刻まれている。",
+    "options": [
+      {
+        "text": "読む",
+        "next": "phase03_05"
+      },
+      {
+        "text": "無視する",
+        "next": "phase03_06"
+      },
+      {
+        "text": "石碑を倒す",
+        "next": "phase03_06"
+      }
+    ],
+    "requiredFlags": [
+      "phase02_clear"
+    ],
+    "setFlag": "phase03_02_visited",
+    "event": "異界干渉",
+    "sanChange": 0,
+    "isTerminal": false,
+    "jump": null,
+    "lossCondition": null
+  },
+  {
+    "id": "phase03_03",
+    "text": "細道は草に覆われていたが、足跡がかすかに残っていた。",
+    "options": [
+      {
+        "text": "足跡を追う",
+        "next": "phase03_07"
+      },
+      {
+        "text": "別の道を探す",
+        "next": "phase03_08"
+      },
+      {
+        "text": "草を踏み分ける",
+        "next": "phase03_08"
+      }
+    ],
+    "requiredFlags": [
+      "phase02_clear"
+    ],
+    "setFlag": "phase03_03_visited",
+    "event": "幻聴",
+    "sanChange": 0,
+    "isTerminal": false,
+    "jump": "phase09_07",
+    "lossCondition": null
+  },
+  {
+    "id": "phase03_04",
+    "text": "駅へ戻ろうとしたが、駅舎の扉が固く閉ざされていた。",
+    "options": [
+      {
+        "text": "力ずくで開ける",
+        "next": "phase03_09"
+      },
+      {
+        "text": "諦める",
+        "next": "phase03_09"
+      },
+      {
+        "text": "叫ぶ",
+        "next": "phase03_09"
+      }
+    ],
+    "requiredFlags": [
+      "phase02_clear"
+    ],
+    "setFlag": "phase03_04_visited",
+    "event": "感覚麻痺",
+    "sanChange": -2,
+    "isTerminal": false,
+    "jump": "phase07_13",
+    "lossCondition": null
+  },
+  {
+    "id": "phase03_05",
+    "text": "石碑には『帰るな、影を連れてくる』と刻まれていた。",
+    "options": [
+      {
+        "text": "写真を撮る",
+        "next": "phase03_10"
+      },
+      {
+        "text": "スケッチする",
+        "next": "phase03_10"
+      },
+      {
+        "text": "見なかったことにする",
+        "next": "phase03_10"
+      }
+    ],
+    "requiredFlags": [
+      "phase02_clear"
+    ],
+    "setFlag": "phase03_05_visited",
+    "event": "記憶喪失",
+    "sanChange": 0,
+    "isTerminal": false,
+    "jump": null,
+    "lossCondition": null
+  },
+  {
+    "id": "phase03_06",
+    "text": "石碑の前で風が止まり、周囲の音が一斉に消えた。",
+    "options": [
+      {
+        "text": "周囲を見渡す",
+        "next": "phase03_10"
+      },
+      {
+        "text": "その場を離れる",
+        "next": "phase03_10"
+      },
+      {
+        "text": "じっとする",
+        "next": "phase03_10"
+      }
+    ],
+    "requiredFlags": [
+      "phase02_clear"
+    ],
+    "setFlag": "phase03_06_visited",
+    "event": "記憶喪失",
+    "sanChange": 0,
+    "isTerminal": false,
+    "jump": null,
+    "lossCondition": null
+  },
+  {
+    "id": "phase03_07",
+    "text": "足跡の先には、赤く濡れた布切れが落ちていた。",
+    "options": [
+      {
+        "text": "拾う",
+        "next": "phase03_11"
+      },
+      {
+        "text": "避ける",
+        "next": "phase03_11"
+      },
+      {
+        "text": "焼く",
+        "next": "phase03_11"
+      }
+    ],
+    "requiredFlags": [
+      "phase02_clear"
+    ],
+    "setFlag": "phase03_07_visited",
+    "event": "異界干渉",
+    "sanChange": -2,
+    "isTerminal": false,
+    "jump": null,
+    "lossCondition": null
+  },
+  {
+    "id": "phase03_08",
+    "text": "草むらの奥に、古びた鳥居がぽつんと立っていた。",
+    "options": [
+      {
+        "text": "くぐる",
+        "next": "phase03_11"
+      },
+      {
+        "text": "近づかない",
+        "next": "phase03_11"
+      },
+      {
+        "text": "鳥居を撮る",
+        "next": "phase03_11"
+      }
+    ],
+    "requiredFlags": [
+      "phase02_clear"
+    ],
+    "setFlag": "phase03_08_visited",
+    "event": "幻聴",
+    "sanChange": 1,
+    "isTerminal": false,
+    "jump": "phase04_11",
+    "lossCondition": null
+  },
+  {
+    "id": "phase03_09",
+    "text": "駅舎の扉を叩いても反応はない。ふと足元に紙片が落ちているのに気づく。",
+    "options": [
+      {
+        "text": "拾う",
+        "next": "phase03_12"
+      },
+      {
+        "text": "無視する",
+        "next": "phase03_12"
+      },
+      {
+        "text": "誰かに届ける",
+        "next": "phase03_12"
+      }
+    ],
+    "requiredFlags": [
+      "phase02_clear"
+    ],
+    "setFlag": "phase03_09_visited",
+    "event": "感覚麻痺",
+    "sanChange": 0,
+    "isTerminal": false,
+    "jump": null,
+    "lossCondition": null
+  },
+  {
+    "id": "phase03_10",
+    "text": "空がわずかに赤みを帯び、不気味な風が吹き抜けた。",
+    "options": [
+      {
+        "text": "隠れる",
+        "next": "phase03_13"
+      },
+      {
+        "text": "叫ぶ",
+        "next": "phase03_13"
+      },
+      {
+        "text": "立ち尽くす",
+        "next": "phase03_13"
+      }
+    ],
+    "requiredFlags": [
+      "phase02_clear"
+    ],
+    "setFlag": "phase03_10_visited",
+    "event": "異界干渉",
+    "sanChange": -3,
+    "isTerminal": true,
+    "jump": "phase99_lost",
+    "lossCondition": "san <= 0"
+  },
+  {
+    "id": "phase03_11",
+    "text": "足元の土がぬかるみ、何かが這い出してくる気配があった。",
+    "options": [
+      {
+        "text": "逃げる",
+        "next": "phase03_14"
+      },
+      {
+        "text": "観察する",
+        "next": "phase03_14"
+      },
+      {
+        "text": "踏みつける",
+        "next": "phase03_14"
+      }
+    ],
+    "requiredFlags": [
+      "phase02_clear"
+    ],
+    "setFlag": "phase03_11_visited",
+    "event": "時間停止",
+    "sanChange": -2,
+    "isTerminal": false,
+    "jump": null,
+    "lossCondition": null
+  },
+  {
+    "id": "phase03_12",
+    "text": "紙片には“ここはどこ？”と書かれていた。筆跡は自分のものに見えた。",
+    "options": [
+      {
+        "text": "考え込む",
+        "next": "phase03_14"
+      },
+      {
+        "text": "破る",
+        "next": "phase03_14"
+      },
+      {
+        "text": "持ち歩く",
+        "next": "phase03_14"
+      }
+    ],
+    "requiredFlags": [
+      "phase02_clear"
+    ],
+    "setFlag": "phase03_12_visited",
+    "event": "視覚異常",
+    "sanChange": 0,
+    "isTerminal": false,
+    "jump": null,
+    "lossCondition": null
+  },
+  {
+    "id": "phase03_13",
+    "text": "空から砂のようなものが降り始めた。それは肌に触れると消えていく。",
+    "options": [
+      {
+        "text": "味を見る",
+        "next": "phase03_14"
+      },
+      {
+        "text": "服で防ぐ",
+        "next": "phase03_14"
+      },
+      {
+        "text": "写真に残す",
+        "next": "phase03_14"
+      }
+    ],
+    "requiredFlags": [
+      "phase02_clear"
+    ],
+    "setFlag": "phase03_13_visited",
+    "event": "記憶喪失",
+    "sanChange": 1,
+    "isTerminal": false,
+    "jump": null,
+    "lossCondition": null
+  },
+  {
+    "id": "phase03_14",
+    "text": "周囲の景色がわずかに歪み始めている。遠くに誰かの影が見えた。",
+    "options": [
+      {
+        "text": "近づく",
+        "next": "phase04_01"
+      },
+      {
+        "text": "隠れる",
+        "next": "phase04_01"
+      },
+      {
+        "text": "無視して進む",
+        "next": "phase04_01"
+      }
+    ],
+    "requiredFlags": [
+      "phase02_clear"
+    ],
+    "setFlag": "phase03_14_visited",
+    "event": "記憶喪失",
+    "sanChange": 0,
+    "isTerminal": false,
+    "jump": null,
+    "lossCondition": null
+  },
+  {
+    "id": "phase04_01",
+    "text": "影に近づくと、それは徐々に形を持ちはじめた。誰かがこちらを見ている。",
+    "options": [
+      {
+        "text": "声をかける",
+        "next": "phase04_02"
+      },
+      {
+        "text": "逃げる",
+        "next": "phase04_03"
+      },
+      {
+        "text": "物陰に隠れる",
+        "next": "phase04_04"
+      }
+    ],
+    "requiredFlags": [
+      "phase03_clear"
+    ],
+    "setFlag": "phase04_01_visited",
+    "event": "感覚麻痺",
+    "sanChange": 0,
+    "isTerminal": false,
+    "jump": null,
+    "lossCondition": null
+  },
+  {
+    "id": "phase04_02",
+    "text": "返事はない。ただじっと見つめてくるだけだった。",
+    "options": [
+      {
+        "text": "さらに近づく",
+        "next": "phase04_05"
+      },
+      {
+        "text": "石を投げる",
+        "next": "phase04_05"
+      },
+      {
+        "text": "その場から離れる",
+        "next": "phase04_06"
+      }
+    ],
+    "requiredFlags": [
+      "phase03_clear"
+    ],
+    "setFlag": "phase04_02_visited",
+    "event": "幻聴",
+    "sanChange": 1,
+    "isTerminal": false,
+    "jump": null,
+    "lossCondition": null
+  },
+  {
+    "id": "phase04_03",
+    "text": "走り出した足元に、見覚えのない段差が現れ、つまずきかける。",
+    "options": [
+      {
+        "text": "転倒する",
+        "next": "phase04_07"
+      },
+      {
+        "text": "なんとか踏みとどまる",
+        "next": "phase04_08"
+      },
+      {
+        "text": "別の方向に走る",
+        "next": "phase04_09"
+      }
+    ],
+    "requiredFlags": [
+      "phase03_clear"
+    ],
+    "setFlag": "phase04_03_visited",
+    "event": "視覚異常",
+    "sanChange": 1,
+    "isTerminal": false,
+    "jump": null,
+    "lossCondition": null
+  },
+  {
+    "id": "phase04_04",
+    "text": "物陰に潜んで様子を見ると、影はまるでこちらに気づいているように止まっていた。",
+    "options": [
+      {
+        "text": "しばらく様子を見る",
+        "next": "phase04_05"
+      },
+      {
+        "text": "後退する",
+        "next": "phase04_06"
+      },
+      {
+        "text": "目を閉じる",
+        "next": "phase04_05"
+      }
+    ],
+    "requiredFlags": [
+      "phase03_clear"
+    ],
+    "setFlag": "phase04_04_visited",
+    "event": "感覚麻痺",
+    "sanChange": -1,
+    "isTerminal": false,
+    "jump": null,
+    "lossCondition": null
+  },
+  {
+    "id": "phase04_05",
+    "text": "影の形が徐々に人ではない何かに変わっていく。",
+    "options": [
+      {
+        "text": "叫ぶ",
+        "next": "phase04_10"
+      },
+      {
+        "text": "その名を呼ぶ",
+        "next": "phase04_10"
+      },
+      {
+        "text": "写真を撮る",
+        "next": "phase04_10"
+      }
+    ],
+    "requiredFlags": [
+      "phase03_clear"
+    ],
+    "setFlag": "phase04_05_visited",
+    "event": "感覚麻痺",
+    "sanChange": 0,
+    "isTerminal": false,
+    "jump": null,
+    "lossCondition": null
+  },
+  {
+    "id": "phase04_06",
+    "text": "背を向けて歩き出すと、風が止み、足音が自分のものだけでなくなる。",
+    "options": [
+      {
+        "text": "立ち止まる",
+        "next": "phase04_11"
+      },
+      {
+        "text": "振り向く",
+        "next": "phase04_11"
+      },
+      {
+        "text": "走り出す",
+        "next": "phase04_11"
+      }
+    ],
+    "requiredFlags": [
+      "phase03_clear"
+    ],
+    "setFlag": "phase04_06_visited",
+    "event": "感覚麻痺",
+    "sanChange": 0,
+    "isTerminal": false,
+    "jump": null,
+    "lossCondition": null
+  },
+  {
+    "id": "phase04_07",
+    "text": "転んだ拍子に、地面が裂けるような音がして地面の一部が崩れた。",
+    "options": [
+      {
+        "text": "這い上がる",
+        "next": "phase04_12"
+      },
+      {
+        "text": "地面の中を覗く",
+        "next": "phase04_12"
+      },
+      {
+        "text": "声をあげる",
+        "next": "phase04_12"
+      }
+    ],
+    "requiredFlags": [
+      "phase03_clear"
+    ],
+    "setFlag": "phase04_07_visited",
+    "event": "視覚異常",
+    "sanChange": 0,
+    "isTerminal": false,
+    "jump": null,
+    "lossCondition": null
+  },
+  {
+    "id": "phase04_08",
+    "text": "転ばずに済んだが、靴の裏に何かがくっついていた。",
+    "options": [
+      {
+        "text": "はがす",
+        "next": "phase04_13"
+      },
+      {
+        "text": "無視する",
+        "next": "phase04_13"
+      },
+      {
+        "text": "観察する",
+        "next": "phase04_13"
+      }
+    ],
+    "requiredFlags": [
+      "phase03_clear"
+    ],
+    "setFlag": "phase04_08_visited",
+    "event": "幻聴",
+    "sanChange": -1,
+    "isTerminal": false,
+    "jump": null,
+    "lossCondition": null
+  },
+  {
+    "id": "phase04_09",
+    "text": "別の方向に進むと、草むらの奥から子供のような声が聞こえた。",
+    "options": [
+      {
+        "text": "声をかける",
+        "next": "phase04_14"
+      },
+      {
+        "text": "録音する",
+        "next": "phase04_14"
+      },
+      {
+        "text": "立ち去る",
+        "next": "phase04_14"
+      }
+    ],
+    "requiredFlags": [
+      "phase03_clear"
+    ],
+    "setFlag": "phase04_09_visited",
+    "event": "感覚麻痺",
+    "sanChange": 1,
+    "isTerminal": false,
+    "jump": null,
+    "lossCondition": null
+  },
+  {
+    "id": "phase04_10",
+    "text": "影は突然溶けるように地面に吸い込まれた。",
+    "options": [
+      {
+        "text": "跡を調べる",
+        "next": "phase04_15"
+      },
+      {
+        "text": "立ち尽くす",
+        "next": "phase04_15"
+      },
+      {
+        "text": "その場を離れる",
+        "next": "phase04_15"
+      }
+    ],
+    "requiredFlags": [
+      "phase03_clear"
+    ],
+    "setFlag": "phase04_10_visited",
+    "event": "異界干渉",
+    "sanChange": -2,
+    "isTerminal": false,
+    "jump": null,
+    "lossCondition": null
+  },
+  {
+    "id": "phase04_11",
+    "text": "誰もいないはずの場所から、もう一人の自分のような姿が現れる。",
+    "options": [
+      {
+        "text": "声をかける",
+        "next": "phase04_15"
+      },
+      {
+        "text": "隠れる",
+        "next": "phase04_15"
+      },
+      {
+        "text": "近づく",
+        "next": "phase04_15"
+      }
+    ],
+    "requiredFlags": [
+      "phase03_clear"
+    ],
+    "setFlag": "phase04_11_visited",
+    "event": "幻聴",
+    "sanChange": -3,
+    "isTerminal": true,
+    "jump": "phase99_lost",
+    "lossCondition": "san <= 0"
+  },
+  {
+    "id": "phase04_12",
+    "text": "地面の割れ目の中に古びた手帳のようなものが落ちていた。",
+    "options": [
+      {
+        "text": "拾う",
+        "next": "phase04_15"
+      },
+      {
+        "text": "そのままにする",
+        "next": "phase04_15"
+      },
+      {
+        "text": "他に何かないか探す",
+        "next": "phase04_15"
+      }
+    ],
+    "requiredFlags": [
+      "phase03_clear"
+    ],
+    "setFlag": "phase04_12_visited",
+    "event": "記憶喪失",
+    "sanChange": 0,
+    "isTerminal": false,
+    "jump": "phase09_14",
+    "lossCondition": null
+  },
+  {
+    "id": "phase04_13",
+    "text": "靴に付いていたのは、知らない駅の切符だった。日付は今日。",
+    "options": [
+      {
+        "text": "ポケットに入れる",
+        "next": "phase04_15"
+      },
+      {
+        "text": "破る",
+        "next": "phase04_15"
+      },
+      {
+        "text": "落とす",
+        "next": "phase04_15"
+      }
+    ],
+    "requiredFlags": [
+      "phase03_clear"
+    ],
+    "setFlag": "phase04_13_visited",
+    "event": "感覚麻痺",
+    "sanChange": -2,
+    "isTerminal": false,
+    "jump": null,
+    "lossCondition": null
+  },
+  {
+    "id": "phase04_14",
+    "text": "声の方を見ても、誰もいなかった。音だけが耳に残っている。",
+    "options": [
+      {
+        "text": "周囲を探す",
+        "next": "phase04_15"
+      },
+      {
+        "text": "録音を再生する",
+        "next": "phase04_15"
+      },
+      {
+        "text": "離れる",
+        "next": "phase04_15"
+      }
+    ],
+    "requiredFlags": [
+      "phase03_clear"
+    ],
+    "setFlag": "phase04_14_visited",
+    "event": "感覚麻痺",
+    "sanChange": 1,
+    "isTerminal": false,
+    "jump": null,
+    "lossCondition": null
+  },
+  {
+    "id": "phase04_15",
+    "text": "視界の端で、空間がゆがむような感覚を覚えた。その先には見慣れぬ建物が見える。",
+    "options": [
+      {
+        "text": "建物に向かう",
+        "next": "phase05_01"
+      },
+      {
+        "text": "避ける",
+        "next": "phase05_01"
+      },
+      {
+        "text": "様子を見る",
+        "next": "phase05_01"
+      }
+    ],
+    "requiredFlags": [
+      "phase03_clear"
+    ],
+    "setFlag": "phase04_15_visited",
+    "event": "感覚麻痺",
+    "sanChange": 0,
+    "isTerminal": false,
+    "jump": null,
+    "lossCondition": null
+  },
+  {
+    "id": "phase05_01",
+    "text": "見慣れぬ建物に近づくと、扉がひとりでに開いた。",
+    "options": [
+      {
+        "text": "中に入る",
+        "next": "phase05_02"
+      },
+      {
+        "text": "周囲を調べる",
+        "next": "phase05_03"
+      },
+      {
+        "text": "扉を閉める",
+        "next": "phase05_04"
+      }
+    ],
+    "requiredFlags": [
+      "phase04_clear"
+    ],
+    "setFlag": "phase05_01_visited",
+    "event": "視覚異常",
+    "sanChange": 0,
+    "isTerminal": false,
+    "jump": null,
+    "lossCondition": null
+  },
+  {
+    "id": "phase05_02",
+    "text": "内部は異様に静かで、足音すら吸い込まれるようだった。",
+    "options": [
+      {
+        "text": "奥へ進む",
+        "next": "phase05_05"
+      },
+      {
+        "text": "壁を触る",
+        "next": "phase05_06"
+      },
+      {
+        "text": "すぐに出る",
+        "next": "phase05_07"
+      }
+    ],
+    "requiredFlags": [
+      "phase04_clear"
+    ],
+    "setFlag": "phase05_02_visited",
+    "event": "時間停止",
+    "sanChange": 1,
+    "isTerminal": true,
+    "jump": null,
+    "lossCondition": null
+  },
+  {
+    "id": "phase05_03",
+    "text": "建物の外壁には古い記号のようなものが刻まれていた。",
+    "options": [
+      {
+        "text": "メモを取る",
+        "next": "phase05_05"
+      },
+      {
+        "text": "触れてみる",
+        "next": "phase05_06"
+      },
+      {
+        "text": "無視する",
+        "next": "phase05_07"
+      }
+    ],
+    "requiredFlags": [
+      "phase04_clear"
+    ],
+    "setFlag": "phase05_03_visited",
+    "event": "幻聴",
+    "sanChange": 0,
+    "isTerminal": false,
+    "jump": null,
+    "lossCondition": null
+  },
+  {
+    "id": "phase05_04",
+    "text": "扉を閉めた瞬間、空気が振動し、遠くで鐘の音が響いた。",
+    "options": [
+      {
+        "text": "音の方へ向かう",
+        "next": "phase05_08"
+      },
+      {
+        "text": "その場を離れる",
+        "next": "phase05_09"
+      },
+      {
+        "text": "もう一度扉を開ける",
+        "next": "phase05_10"
+      }
+    ],
+    "requiredFlags": [
+      "phase04_clear"
+    ],
+    "setFlag": "phase05_04_visited",
+    "event": "視覚異常",
+    "sanChange": -3,
+    "isTerminal": true,
+    "jump": "phase99_lost",
+    "lossCondition": "san <= 0"
+  },
+  {
+    "id": "phase05_05",
+    "text": "進んだ先に階段があり、下から微かな光が漏れていた。",
+    "options": [
+      {
+        "text": "降りる",
+        "next": "phase05_11"
+      },
+      {
+        "text": "引き返す",
+        "next": "phase05_12"
+      },
+      {
+        "text": "声をかける",
+        "next": "phase05_13"
+      }
+    ],
+    "requiredFlags": [
+      "phase04_clear"
+    ],
+    "setFlag": "phase05_05_visited",
+    "event": "視覚異常",
+    "sanChange": 0,
+    "isTerminal": false,
+    "jump": "phase07_01",
+    "lossCondition": null
+  },
+  {
+    "id": "phase05_06",
+    "text": "壁は石造りのように見えたが、触れると柔らかい粘土のようだった。",
+    "options": [
+      {
+        "text": "押し込んでみる",
+        "next": "phase05_14"
+      },
+      {
+        "text": "手を引っ込める",
+        "next": "phase05_15"
+      },
+      {
+        "text": "何か書く",
+        "next": "phase05_11"
+      }
+    ],
+    "requiredFlags": [
+      "phase04_clear"
+    ],
+    "setFlag": "phase05_06_visited",
+    "event": "幻聴",
+    "sanChange": -3,
+    "isTerminal": true,
+    "jump": "phase99_lost",
+    "lossCondition": "san <= 0"
+  },
+  {
+    "id": "phase05_07",
+    "text": "建物を出た途端、外の景色が変わっていた。",
+    "options": [
+      {
+        "text": "辺りを見回す",
+        "next": "phase05_08"
+      },
+      {
+        "text": "元の場所を探す",
+        "next": "phase05_09"
+      },
+      {
+        "text": "声を上げる",
+        "next": "phase05_10"
+      }
+    ],
+    "requiredFlags": [
+      "phase04_clear"
+    ],
+    "setFlag": "phase05_07_visited",
+    "event": "視覚異常",
+    "sanChange": 0,
+    "isTerminal": false,
+    "jump": null,
+    "lossCondition": null
+  },
+  {
+    "id": "phase05_08",
+    "text": "鐘の音が遠ざかっていく中、霧の向こうに人影が見えた。",
+    "options": [
+      {
+        "text": "近づく",
+        "next": "phase05_11"
+      },
+      {
+        "text": "避ける",
+        "next": "phase05_12"
+      },
+      {
+        "text": "叫ぶ",
+        "next": "phase05_13"
+      }
+    ],
+    "requiredFlags": [
+      "phase04_clear"
+    ],
+    "setFlag": "phase05_08_visited",
+    "event": "時間停止",
+    "sanChange": 0,
+    "isTerminal": false,
+    "jump": null,
+    "lossCondition": null
+  },
+  {
+    "id": "phase05_09",
+    "text": "歩き回るうちに、足元に白い紙が舞い落ちた。",
+    "options": [
+      {
+        "text": "拾う",
+        "next": "phase05_14"
+      },
+      {
+        "text": "無視する",
+        "next": "phase05_15"
+      },
+      {
+        "text": "踏みつける",
+        "next": "phase05_11"
+      }
+    ],
+    "requiredFlags": [
+      "phase04_clear"
+    ],
+    "setFlag": "phase05_09_visited",
+    "event": "記憶喪失",
+    "sanChange": -1,
+    "isTerminal": false,
+    "jump": null,
+    "lossCondition": null
+  },
+  {
+    "id": "phase05_10",
+    "text": "扉の中はもう暗闇しかなかった。",
+    "options": [
+      {
+        "text": "入る",
+        "next": "phase05_12"
+      },
+      {
+        "text": "立ち尽くす",
+        "next": "phase05_13"
+      },
+      {
+        "text": "閉める",
+        "next": "phase05_14"
+      }
+    ],
+    "requiredFlags": [
+      "phase04_clear"
+    ],
+    "setFlag": "phase05_10_visited",
+    "event": "幻聴",
+    "sanChange": 0,
+    "isTerminal": true,
+    "jump": null,
+    "lossCondition": null
+  },
+  {
+    "id": "phase05_11",
+    "text": "光の中に祭壇のようなものが浮かび上がる。",
+    "options": [
+      {
+        "text": "近づく",
+        "next": "phase05_15"
+      },
+      {
+        "text": "手を合わせる",
+        "next": "phase06_01"
+      },
+      {
+        "text": "触れる",
+        "next": "phase06_01"
+      }
+    ],
+    "requiredFlags": [
+      "phase04_clear"
+    ],
+    "setFlag": "phase05_11_visited",
+    "event": "感覚麻痺",
+    "sanChange": 1,
+    "isTerminal": true,
+    "jump": null,
+    "lossCondition": null
+  },
+  {
+    "id": "phase05_12",
+    "text": "通ってきた道が、まるで存在しなかったかのように消えていた。",
+    "options": [
+      {
+        "text": "叫ぶ",
+        "next": "phase05_15"
+      },
+      {
+        "text": "地面を叩く",
+        "next": "phase05_11"
+      },
+      {
+        "text": "静かにする",
+        "next": "phase05_14"
+      }
+    ],
+    "requiredFlags": [
+      "phase04_clear"
+    ],
+    "setFlag": "phase05_12_visited",
+    "event": "記憶喪失",
+    "sanChange": 0,
+    "isTerminal": false,
+    "jump": null,
+    "lossCondition": null
+  },
+  {
+    "id": "phase05_13",
+    "text": "誰かの返答があったように聞こえたが、内容は聞き取れない。",
+    "options": [
+      {
+        "text": "もう一度叫ぶ",
+        "next": "phase06_01"
+      },
+      {
+        "text": "静かに耳を澄ます",
+        "next": "phase06_01"
+      },
+      {
+        "text": "その場を離れる",
+        "next": "phase06_01"
+      }
+    ],
+    "requiredFlags": [
+      "phase04_clear"
+    ],
+    "setFlag": "phase05_13_visited",
+    "event": "異界干渉",
+    "sanChange": -3,
+    "isTerminal": true,
+    "jump": "phase99_lost",
+    "lossCondition": "san <= 0"
+  },
+  {
+    "id": "phase05_14",
+    "text": "紙には『ここではない場所へ』とだけ書かれていた。",
+    "options": [
+      {
+        "text": "持っていく",
+        "next": "phase06_01"
+      },
+      {
+        "text": "破る",
+        "next": "phase06_01"
+      },
+      {
+        "text": "地面に戻す",
+        "next": "phase06_01"
+      }
+    ],
+    "requiredFlags": [
+      "phase04_clear"
+    ],
+    "setFlag": "phase05_14_visited",
+    "event": "記憶喪失",
+    "sanChange": -1,
+    "isTerminal": false,
+    "jump": null,
+    "lossCondition": null
+  },
+  {
+    "id": "phase05_15",
+    "text": "空間が揺らぎ、光と影の境界が曖昧になっていく。",
+    "options": [
+      {
+        "text": "その中へ進む",
+        "next": "phase06_01"
+      },
+      {
+        "text": "立ち止まる",
+        "next": "phase06_01"
+      },
+      {
+        "text": "目を閉じる",
+        "next": "phase06_01"
+      }
+    ],
+    "requiredFlags": [
+      "phase04_clear"
+    ],
+    "setFlag": "phase05_15_visited",
+    "event": "視覚異常",
+    "sanChange": 0,
+    "isTerminal": false,
+    "jump": null,
+    "lossCondition": null
+  },
+  {
+    "id": "phase06_01",
+    "text": "気がつくと、あなたは白と黒のタイルが敷き詰められた空間に立っていた。",
+    "options": [
+      {
+        "text": "前に進む",
+        "next": "phase06_02"
+      },
+      {
+        "text": "後ろを振り返る",
+        "next": "phase06_03"
+      },
+      {
+        "text": "足元を見る",
+        "next": "phase06_04"
+      }
+    ],
+    "requiredFlags": [
+      "phase05_clear"
+    ],
+    "setFlag": "phase06_01_visited",
+    "event": "時間停止",
+    "sanChange": -3,
+    "isTerminal": true,
+    "jump": "phase99_lost",
+    "lossCondition": "san <= 0"
+  },
+  {
+    "id": "phase06_02",
+    "text": "タイルの向こうに、巨大な鏡のようなものが浮かんでいる。",
+    "options": [
+      {
+        "text": "鏡に近づく",
+        "next": "phase06_05"
+      },
+      {
+        "text": "立ち止まる",
+        "next": "phase06_06"
+      },
+      {
+        "text": "叫ぶ",
+        "next": "phase06_07"
+      }
+    ],
+    "requiredFlags": [
+      "phase05_clear"
+    ],
+    "setFlag": "phase06_02_visited",
+    "event": "記憶喪失",
+    "sanChange": 0,
+    "isTerminal": false,
+    "jump": null,
+    "lossCondition": null
+  },
+  {
+    "id": "phase06_03",
+    "text": "背後には何もなかった。まるでそこに道など初めから存在しないかのように。",
+    "options": [
+      {
+        "text": "立ち尽くす",
+        "next": "phase06_08"
+      },
+      {
+        "text": "再び前を向く",
+        "next": "phase06_02"
+      },
+      {
+        "text": "地面に触れる",
+        "next": "phase06_09"
+      }
+    ],
+    "requiredFlags": [
+      "phase05_clear"
+    ],
+    "setFlag": "phase06_03_visited",
+    "event": "視覚異常",
+    "sanChange": 0,
+    "isTerminal": false,
+    "jump": null,
+    "lossCondition": null
+  },
+  {
+    "id": "phase06_04",
+    "text": "タイルの隙間から、赤黒い液体が滲み出していた。",
+    "options": [
+      {
+        "text": "液体に触れる",
+        "next": "phase06_10"
+      },
+      {
+        "text": "その場を離れる",
+        "next": "phase06_11"
+      },
+      {
+        "text": "観察する",
+        "next": "phase06_12"
+      }
+    ],
+    "requiredFlags": [
+      "phase05_clear"
+    ],
+    "setFlag": "phase06_04_visited",
+    "event": "異界干渉",
+    "sanChange": 1,
+    "isTerminal": false,
+    "jump": null,
+    "lossCondition": null
+  },
+  {
+    "id": "phase06_05",
+    "text": "鏡には、あなたではない何かが映っていた。",
+    "options": [
+      {
+        "text": "その姿に問いかける",
+        "next": "phase06_13"
+      },
+      {
+        "text": "鏡を割ろうとする",
+        "next": "phase06_14"
+      },
+      {
+        "text": "背を向ける",
+        "next": "phase06_15"
+      }
+    ],
+    "requiredFlags": [
+      "phase05_clear"
+    ],
+    "setFlag": "phase06_05_visited",
+    "event": "異界干渉",
+    "sanChange": 0,
+    "isTerminal": false,
+    "jump": null,
+    "lossCondition": null
+  },
+  {
+    "id": "phase06_06",
+    "text": "空間全体が微かに震え始めた。音はどこからともなく響く。",
+    "options": [
+      {
+        "text": "耳を澄ます",
+        "next": "phase06_13"
+      },
+      {
+        "text": "走り出す",
+        "next": "phase06_14"
+      },
+      {
+        "text": "しゃがみこむ",
+        "next": "phase06_15"
+      }
+    ],
+    "requiredFlags": [
+      "phase05_clear"
+    ],
+    "setFlag": "phase06_06_visited",
+    "event": "記憶喪失",
+    "sanChange": 1,
+    "isTerminal": false,
+    "jump": null,
+    "lossCondition": null
+  },
+  {
+    "id": "phase06_07",
+    "text": "あなたの声が何重にも反響し、意味を持たない音となって戻ってくる。",
+    "options": [
+      {
+        "text": "耳をふさぐ",
+        "next": "phase06_08"
+      },
+      {
+        "text": "口を押さえる",
+        "next": "phase06_09"
+      },
+      {
+        "text": "声を出し続ける",
+        "next": "phase06_10"
+      }
+    ],
+    "requiredFlags": [
+      "phase05_clear"
+    ],
+    "setFlag": "phase06_07_visited",
+    "event": "感覚麻痺",
+    "sanChange": -2,
+    "isTerminal": false,
+    "jump": null,
+    "lossCondition": null
+  },
+  {
+    "id": "phase06_08",
+    "text": "空間の歪みが広がり、すべてが波のように揺れていた。",
+    "options": [
+      {
+        "text": "身を任せる",
+        "next": "phase06_13"
+      },
+      {
+        "text": "抗おうとする",
+        "next": "phase06_14"
+      },
+      {
+        "text": "祈る",
+        "next": "phase06_15"
+      }
+    ],
+    "requiredFlags": [
+      "phase05_clear"
+    ],
+    "setFlag": "phase06_08_visited",
+    "event": "時間停止",
+    "sanChange": -1,
+    "isTerminal": false,
+    "jump": null,
+    "lossCondition": null
+  },
+  {
+    "id": "phase06_09",
+    "text": "地面に描かれた模様が、突然蠢きだした。",
+    "options": [
+      {
+        "text": "逃げる",
+        "next": "phase06_12"
+      },
+      {
+        "text": "模様に手を伸ばす",
+        "next": "phase06_11"
+      },
+      {
+        "text": "模様をなぞる",
+        "next": "phase06_10"
+      }
+    ],
+    "requiredFlags": [
+      "phase05_clear"
+    ],
+    "setFlag": "phase06_09_visited",
+    "event": "記憶喪失",
+    "sanChange": 1,
+    "isTerminal": true,
+    "jump": null,
+    "lossCondition": null
+  },
+  {
+    "id": "phase06_10",
+    "text": "触れた瞬間、視界が反転し、すべての音が消えた。",
+    "options": [
+      {
+        "text": "目を閉じる",
+        "next": "phase07_01"
+      },
+      {
+        "text": "声を出す",
+        "next": "phase07_01"
+      },
+      {
+        "text": "じっと待つ",
+        "next": "phase07_01"
+      }
+    ],
+    "requiredFlags": [
+      "phase05_clear"
+    ],
+    "setFlag": "phase06_10_visited",
+    "event": "視覚異常",
+    "sanChange": 0,
+    "isTerminal": false,
+    "jump": "phase09_09",
+    "lossCondition": null
+  },
+  {
+    "id": "phase06_11",
+    "text": "液体はまるで生きているかのように這い寄ってきた。",
+    "options": [
+      {
+        "text": "後ずさる",
+        "next": "phase07_01"
+      },
+      {
+        "text": "それを受け入れる",
+        "next": "phase07_01"
+      },
+      {
+        "text": "蹴散らす",
+        "next": "phase07_01"
+      }
+    ],
+    "requiredFlags": [
+      "phase05_clear"
+    ],
+    "setFlag": "phase06_11_visited",
+    "event": "感覚麻痺",
+    "sanChange": 1,
+    "isTerminal": false,
+    "jump": null,
+    "lossCondition": null
+  },
+  {
+    "id": "phase06_12",
+    "text": "突然、視界が白一色になり、感覚が失われていく。",
+    "options": [
+      {
+        "text": "意識を集中する",
+        "next": "phase07_01"
+      },
+      {
+        "text": "そのまま委ねる",
+        "next": "phase07_01"
+      },
+      {
+        "text": "何か叫ぶ",
+        "next": "phase07_01"
+      }
+    ],
+    "requiredFlags": [
+      "phase05_clear"
+    ],
+    "setFlag": "phase06_12_visited",
+    "event": "感覚麻痺",
+    "sanChange": -1,
+    "isTerminal": false,
+    "jump": null,
+    "lossCondition": null
+  },
+  {
+    "id": "phase06_13",
+    "text": "鏡の中の存在が、あなたの名を呼んだ気がした。",
+    "options": [
+      {
+        "text": "返事をする",
+        "next": "phase07_01"
+      },
+      {
+        "text": "黙る",
+        "next": "phase07_01"
+      },
+      {
+        "text": "その場から逃げる",
+        "next": "phase07_01"
+      }
+    ],
+    "requiredFlags": [
+      "phase05_clear"
+    ],
+    "setFlag": "phase06_13_visited",
+    "event": "視覚異常",
+    "sanChange": 1,
+    "isTerminal": true,
+    "jump": null,
+    "lossCondition": null
+  },
+  {
+    "id": "phase06_14",
+    "text": "鏡にひびが入り、空間が裂けるような音が響いた。",
+    "options": [
+      {
+        "text": "裂け目に入る",
+        "next": "phase07_01"
+      },
+      {
+        "text": "鏡を背に立つ",
+        "next": "phase07_01"
+      },
+      {
+        "text": "その場で崩れ落ちる",
+        "next": "phase07_01"
+      }
+    ],
+    "requiredFlags": [
+      "phase05_clear"
+    ],
+    "setFlag": "phase06_14_visited",
+    "event": "記憶喪失",
+    "sanChange": -1,
+    "isTerminal": false,
+    "jump": null,
+    "lossCondition": null
+  },
+  {
+    "id": "phase06_15",
+    "text": "何かがすぐ傍にいる気配がした。",
+    "options": [
+      {
+        "text": "振り向く",
+        "next": "phase07_01"
+      },
+      {
+        "text": "動かず耐える",
+        "next": "phase07_01"
+      },
+      {
+        "text": "走り出す",
+        "next": "phase07_01"
+      }
+    ],
+    "requiredFlags": [
+      "phase05_clear"
+    ],
+    "setFlag": "phase06_15_visited",
+    "event": "感覚麻痺",
+    "sanChange": 0,
+    "isTerminal": false,
+    "jump": null,
+    "lossCondition": null
+  },
+  {
+    "id": "phase07_01",
+    "text": "崩れかけた階段を登ると、小さな祠のような場所に出た。灯が一つ揺れている。",
+    "options": [
+      {
+        "text": "灯を手に取る",
+        "next": "phase07_02"
+      },
+      {
+        "text": "祠を調べる",
+        "next": "phase07_03"
+      },
+      {
+        "text": "来た道を戻る",
+        "next": "phase07_04"
+      }
+    ],
+    "requiredFlags": [
+      "phase06_clear"
+    ],
+    "setFlag": "phase07_01_visited",
+    "event": "幻聴",
+    "sanChange": -3,
+    "isTerminal": true,
+    "jump": "phase99_lost",
+    "lossCondition": "san <= 0"
+  },
+  {
+    "id": "phase07_02",
+    "text": "灯を手にした瞬間、視界に幾つもの選択肢が浮かび上がる。全てあなた自身の過去だった。",
+    "options": [
+      {
+        "text": "最も後悔した選択を選ぶ",
+        "next": "phase07_05"
+      },
+      {
+        "text": "もっとも楽しかった瞬間を選ぶ",
+        "next": "phase07_06"
+      },
+      {
+        "text": "選ばない",
+        "next": "phase07_07"
+      }
+    ],
+    "requiredFlags": [
+      "phase06_clear"
+    ],
+    "setFlag": "phase07_02_visited",
+    "event": "幻聴",
+    "sanChange": 0,
+    "isTerminal": false,
+    "jump": null,
+    "lossCondition": null
+  },
+  {
+    "id": "phase07_03",
+    "text": "祠の奥には封じられた文字が刻まれていた。『捧げよ、己の恐れ』。",
+    "options": [
+      {
+        "text": "恐れを書く",
+        "next": "phase07_08"
+      },
+      {
+        "text": "触れずに離れる",
+        "next": "phase07_09"
+      },
+      {
+        "text": "破壊を試みる",
+        "next": "phase07_10"
+      }
+    ],
+    "requiredFlags": [
+      "phase06_clear"
+    ],
+    "setFlag": "phase07_03_visited",
+    "event": "異界干渉",
+    "sanChange": 1,
+    "isTerminal": false,
+    "jump": "phase10_04",
+    "lossCondition": null
+  },
+  {
+    "id": "phase07_04",
+    "text": "戻ろうとしたその瞬間、階段は音もなく崩れ落ちていった。",
+    "options": [
+      {
+        "text": "跳ぶ",
+        "next": "phase07_11"
+      },
+      {
+        "text": "転がり落ちる",
+        "next": "phase07_12"
+      },
+      {
+        "text": "立ち尽くす",
+        "next": "phase07_13"
+      }
+    ],
+    "requiredFlags": [
+      "phase06_clear"
+    ],
+    "setFlag": "phase07_04_visited",
+    "event": "時間停止",
+    "sanChange": -1,
+    "isTerminal": false,
+    "jump": null,
+    "lossCondition": null
+  },
+  {
+    "id": "phase07_05",
+    "text": "後悔した記憶が蘇る。あなたはそのとき、誰かを見捨てていた。",
+    "options": [
+      {
+        "text": "謝る",
+        "next": "phase07_14"
+      },
+      {
+        "text": "無視する",
+        "next": "phase07_14"
+      },
+      {
+        "text": "やり直す",
+        "next": "phase07_14"
+      }
+    ],
+    "requiredFlags": [
+      "phase06_clear"
+    ],
+    "setFlag": "phase07_05_visited",
+    "event": "異界干渉",
+    "sanChange": 0,
+    "isTerminal": false,
+    "jump": null,
+    "lossCondition": null
+  },
+  {
+    "id": "phase07_06",
+    "text": "楽しかった記憶の中で、誰かが手を振っていた。その笑顔はもう思い出せない。",
+    "options": [
+      {
+        "text": "手を振り返す",
+        "next": "phase07_14"
+      },
+      {
+        "text": "走り寄る",
+        "next": "phase07_14"
+      },
+      {
+        "text": "その場に留まる",
+        "next": "phase07_14"
+      }
+    ],
+    "requiredFlags": [
+      "phase06_clear"
+    ],
+    "setFlag": "phase07_06_visited",
+    "event": "異界干渉",
+    "sanChange": -2,
+    "isTerminal": false,
+    "jump": null,
+    "lossCondition": null
+  },
+  {
+    "id": "phase07_07",
+    "text": "何も選ばなかったあなたの前に、すべての選択肢が黒く塗り潰されていく。",
+    "options": [
+      {
+        "text": "抗う",
+        "next": "phase07_14"
+      },
+      {
+        "text": "受け入れる",
+        "next": "phase07_14"
+      },
+      {
+        "text": "叫ぶ",
+        "next": "phase07_14"
+      }
+    ],
+    "requiredFlags": [
+      "phase06_clear"
+    ],
+    "setFlag": "phase07_07_visited",
+    "event": "視覚異常",
+    "sanChange": 0,
+    "isTerminal": false,
+    "jump": null,
+    "lossCondition": null
+  },
+  {
+    "id": "phase07_08",
+    "text": "恐れを記すと、それは燃え上がり祠の封印が解けた。",
+    "options": [
+      {
+        "text": "中に入る",
+        "next": "phase07_14"
+      },
+      {
+        "text": "後退する",
+        "next": "phase07_14"
+      },
+      {
+        "text": "炎に手を伸ばす",
+        "next": "phase07_14"
+      }
+    ],
+    "requiredFlags": [
+      "phase06_clear"
+    ],
+    "setFlag": "phase07_08_visited",
+    "event": "感覚麻痺",
+    "sanChange": 0,
+    "isTerminal": false,
+    "jump": null,
+    "lossCondition": null
+  },
+  {
+    "id": "phase07_09",
+    "text": "離れようとしたあなたの背中に何かが囁いた。『見届ける覚悟があるか？』",
+    "options": [
+      {
+        "text": "はい",
+        "next": "phase07_14"
+      },
+      {
+        "text": "いいえ",
+        "next": "phase07_14"
+      },
+      {
+        "text": "無言で頷く",
+        "next": "phase07_14"
+      }
+    ],
+    "requiredFlags": [
+      "phase06_clear"
+    ],
+    "setFlag": "phase07_09_visited",
+    "event": "時間停止",
+    "sanChange": -2,
+    "isTerminal": false,
+    "jump": null,
+    "lossCondition": null
+  },
+  {
+    "id": "phase07_10",
+    "text": "祠は壊れなかった。代わりに、あなたの足元に裂け目が現れた。",
+    "options": [
+      {
+        "text": "飛び込む",
+        "next": "phase07_14"
+      },
+      {
+        "text": "避ける",
+        "next": "phase07_14"
+      },
+      {
+        "text": "覗き込む",
+        "next": "phase07_14"
+      }
+    ],
+    "requiredFlags": [
+      "phase06_clear"
+    ],
+    "setFlag": "phase07_10_visited",
+    "event": "視覚異常",
+    "sanChange": -1,
+    "isTerminal": false,
+    "jump": null,
+    "lossCondition": null
+  },
+  {
+    "id": "phase07_11",
+    "text": "跳んだ先には、見知らぬ自分が立っていた。",
+    "options": [
+      {
+        "text": "問いかける",
+        "next": "phase07_14"
+      },
+      {
+        "text": "手を伸ばす",
+        "next": "phase07_14"
+      },
+      {
+        "text": "距離を取る",
+        "next": "phase07_14"
+      }
+    ],
+    "requiredFlags": [
+      "phase06_clear"
+    ],
+    "setFlag": "phase07_11_visited",
+    "event": "感覚麻痺",
+    "sanChange": 0,
+    "isTerminal": false,
+    "jump": null,
+    "lossCondition": null
+  },
+  {
+    "id": "phase07_12",
+    "text": "転がり落ちた先に、花が咲いていた。それはかつての誰かとの記憶に重なった。",
+    "options": [
+      {
+        "text": "花を摘む",
+        "next": "phase07_14"
+      },
+      {
+        "text": "見つめる",
+        "next": "phase07_14"
+      },
+      {
+        "text": "背を向ける",
+        "next": "phase07_14"
+      }
+    ],
+    "requiredFlags": [
+      "phase06_clear"
+    ],
+    "setFlag": "phase07_12_visited",
+    "event": "時間停止",
+    "sanChange": -2,
+    "isTerminal": false,
+    "jump": null,
+    "lossCondition": null
+  },
+  {
+    "id": "phase07_13",
+    "text": "立ち尽くすあなたの前に、子供の自分が現れた。『行こうよ』と手を差し伸べる。",
+    "options": [
+      {
+        "text": "手を取る",
+        "next": "phase07_14"
+      },
+      {
+        "text": "断る",
+        "next": "phase07_14"
+      },
+      {
+        "text": "抱きしめる",
+        "next": "phase07_14"
+      }
+    ],
+    "requiredFlags": [
+      "phase06_clear"
+    ],
+    "setFlag": "phase07_13_visited",
+    "event": "記憶喪失",
+    "sanChange": 0,
+    "isTerminal": false,
+    "jump": null,
+    "lossCondition": null
+  },
+  {
+    "id": "phase07_14",
+    "text": "選択を越えたその先に、あなたの意志が問われている。何を信じ、何を捨てるのか。",
+    "options": [
+      {
+        "text": "信じる",
+        "next": "phase08_01"
+      },
+      {
+        "text": "疑う",
+        "next": "phase08_01"
+      },
+      {
+        "text": "迷う",
+        "next": "phase08_01"
+      }
+    ],
+    "requiredFlags": [
+      "phase06_clear"
+    ],
+    "setFlag": "phase07_14_visited",
+    "event": "視覚異常",
+    "sanChange": -3,
+    "isTerminal": true,
+    "jump": "phase99_lost",
+    "lossCondition": "san <= 0"
+  },
+  {
+    "id": "phase08_01",
+    "text": "辺りの空間が崩れ始める。まるでガラスの世界が割れていくように。",
+    "options": [
+      {
+        "text": "割れ目をくぐる",
+        "next": "phase08_02"
+      },
+      {
+        "text": "手で触れる",
+        "next": "phase08_03"
+      },
+      {
+        "text": "その場にとどまる",
+        "next": "phase08_04"
+      }
+    ],
+    "requiredFlags": [
+      "phase07_clear"
+    ],
+    "setFlag": "phase08_01_visited",
+    "event": "異界干渉",
+    "sanChange": 0,
+    "isTerminal": true,
+    "jump": "phase09_06",
+    "lossCondition": null
+  },
+  {
+    "id": "phase08_02",
+    "text": "割れた向こうには懐かしい街並みが見える。だが誰もいない。",
+    "options": [
+      {
+        "text": "街に進む",
+        "next": "phase08_05"
+      },
+      {
+        "text": "戻ろうとする",
+        "next": "phase08_06"
+      },
+      {
+        "text": "声をかける",
+        "next": "phase08_07"
+      }
+    ],
+    "requiredFlags": [
+      "phase07_clear"
+    ],
+    "setFlag": "phase08_02_visited",
+    "event": "異界干渉",
+    "sanChange": 1,
+    "isTerminal": false,
+    "jump": null,
+    "lossCondition": null
+  },
+  {
+    "id": "phase08_03",
+    "text": "触れた瞬間、指先から記憶が流れ出ていくような感覚に襲われる。",
+    "options": [
+      {
+        "text": "そのまま触れる",
+        "next": "phase08_08"
+      },
+      {
+        "text": "手を引く",
+        "next": "phase08_09"
+      },
+      {
+        "text": "記憶に身を任せる",
+        "next": "phase08_10"
+      }
+    ],
+    "requiredFlags": [
+      "phase07_clear"
+    ],
+    "setFlag": "phase08_03_visited",
+    "event": "視覚異常",
+    "sanChange": -3,
+    "isTerminal": true,
+    "jump": "phase99_lost",
+    "lossCondition": "san <= 0"
+  },
+  {
+    "id": "phase08_04",
+    "text": "崩壊は止まらない。足元から虚無のような深淵が広がっていく。",
+    "options": [
+      {
+        "text": "跳ねる",
+        "next": "phase08_11"
+      },
+      {
+        "text": "叫ぶ",
+        "next": "phase08_12"
+      },
+      {
+        "text": "深淵に飛び込む",
+        "next": "phase08_13"
+      }
+    ],
+    "requiredFlags": [
+      "phase07_clear"
+    ],
+    "setFlag": "phase08_04_visited",
+    "event": "記憶喪失",
+    "sanChange": 0,
+    "isTerminal": false,
+    "jump": null,
+    "lossCondition": null
+  },
+  {
+    "id": "phase08_05",
+    "text": "誰もいない街の中に、自分の家の扉だけが見つかる。",
+    "options": [
+      {
+        "text": "扉を開ける",
+        "next": "phase08_14"
+      },
+      {
+        "text": "周囲を調べる",
+        "next": "phase08_15"
+      },
+      {
+        "text": "名前を呼ぶ",
+        "next": "phase08_10"
+      }
+    ],
+    "requiredFlags": [
+      "phase07_clear"
+    ],
+    "setFlag": "phase08_05_visited",
+    "event": "感覚麻痺",
+    "sanChange": 1,
+    "isTerminal": false,
+    "jump": null,
+    "lossCondition": null
+  },
+  {
+    "id": "phase08_06",
+    "text": "来た道はすでに存在しない。ガラスの破片が空中に浮いている。",
+    "options": [
+      {
+        "text": "破片を集める",
+        "next": "phase08_14"
+      },
+      {
+        "text": "浮かぶ破片を踏む",
+        "next": "phase08_13"
+      },
+      {
+        "text": "破片に映る自分を見る",
+        "next": "phase08_15"
+      }
+    ],
+    "requiredFlags": [
+      "phase07_clear"
+    ],
+    "setFlag": "phase08_06_visited",
+    "event": "視覚異常",
+    "sanChange": -2,
+    "isTerminal": true,
+    "jump": null,
+    "lossCondition": null
+  },
+  {
+    "id": "phase08_07",
+    "text": "誰も応えない。ただ風の音だけが返ってくる。",
+    "options": [
+      {
+        "text": "歩き続ける",
+        "next": "phase08_09"
+      },
+      {
+        "text": "もう一度呼ぶ",
+        "next": "phase08_10"
+      },
+      {
+        "text": "座り込む",
+        "next": "phase08_12"
+      }
+    ],
+    "requiredFlags": [
+      "phase07_clear"
+    ],
+    "setFlag": "phase08_07_visited",
+    "event": "視覚異常",
+    "sanChange": 0,
+    "isTerminal": false,
+    "jump": null,
+    "lossCondition": null
+  },
+  {
+    "id": "phase08_08",
+    "text": "記憶が溢れすぎて、世界がまばゆく白く染まる。",
+    "options": [
+      {
+        "text": "目を閉じる",
+        "next": "phase09_01"
+      },
+      {
+        "text": "そのまま進む",
+        "next": "phase09_01"
+      },
+      {
+        "text": "立ち尽くす",
+        "next": "phase09_01"
+      }
+    ],
+    "requiredFlags": [
+      "phase07_clear"
+    ],
+    "setFlag": "phase08_08_visited",
+    "event": "幻聴",
+    "sanChange": 0,
+    "isTerminal": false,
+    "jump": null,
+    "lossCondition": null
+  },
+  {
+    "id": "phase08_09",
+    "text": "視界が歪み、歩くたびに風景が変わる。時に過去、時に見知らぬ未来。",
+    "options": [
+      {
+        "text": "歩みを止める",
+        "next": "phase09_01"
+      },
+      {
+        "text": "風景に話しかける",
+        "next": "phase09_01"
+      },
+      {
+        "text": "時間を無視する",
+        "next": "phase09_01"
+      }
+    ],
+    "requiredFlags": [
+      "phase07_clear"
+    ],
+    "setFlag": "phase08_09_visited",
+    "event": "感覚麻痺",
+    "sanChange": 1,
+    "isTerminal": false,
+    "jump": null,
+    "lossCondition": null
+  },
+  {
+    "id": "phase08_10",
+    "text": "声がこだまし、自分自身の名前が返ってくる。それはどこか懐かしい。",
+    "options": [
+      {
+        "text": "声の方へ進む",
+        "next": "phase09_01"
+      },
+      {
+        "text": "立ち止まる",
+        "next": "phase09_01"
+      },
+      {
+        "text": "声に答える",
+        "next": "phase09_01"
+      }
+    ],
+    "requiredFlags": [
+      "phase07_clear"
+    ],
+    "setFlag": "phase08_10_visited",
+    "event": "異界干渉",
+    "sanChange": 0,
+    "isTerminal": false,
+    "jump": null,
+    "lossCondition": null
+  },
+  {
+    "id": "phase08_11",
+    "text": "跳ねた瞬間、宙に浮いた。空間の中に何かの扉が見える。",
+    "options": [
+      {
+        "text": "扉に向かう",
+        "next": "phase09_01"
+      },
+      {
+        "text": "空を漂う",
+        "next": "phase09_01"
+      },
+      {
+        "text": "扉を無視する",
+        "next": "phase09_01"
+      }
+    ],
+    "requiredFlags": [
+      "phase07_clear"
+    ],
+    "setFlag": "phase08_11_visited",
+    "event": "記憶喪失",
+    "sanChange": 0,
+    "isTerminal": false,
+    "jump": null,
+    "lossCondition": null
+  },
+  {
+    "id": "phase08_12",
+    "text": "座ると大地が再構築されるように、少しずつ周囲が整っていく。",
+    "options": [
+      {
+        "text": "落ち着いて考える",
+        "next": "phase09_01"
+      },
+      {
+        "text": "流れに任せる",
+        "next": "phase09_01"
+      },
+      {
+        "text": "立ち上がる",
+        "next": "phase09_01"
+      }
+    ],
+    "requiredFlags": [
+      "phase07_clear"
+    ],
+    "setFlag": "phase08_12_visited",
+    "event": "幻聴",
+    "sanChange": 0,
+    "isTerminal": false,
+    "jump": null,
+    "lossCondition": null
+  },
+  {
+    "id": "phase08_13",
+    "text": "深淵はやわらかく、まるで液体のようだ。沈むうちに何かが見えてくる。",
+    "options": [
+      {
+        "text": "目をこらす",
+        "next": "phase09_01"
+      },
+      {
+        "text": "目を閉じる",
+        "next": "phase09_01"
+      },
+      {
+        "text": "それに触れる",
+        "next": "phase09_01"
+      }
+    ],
+    "requiredFlags": [
+      "phase07_clear"
+    ],
+    "setFlag": "phase08_13_visited",
+    "event": "視覚異常",
+    "sanChange": 0,
+    "isTerminal": false,
+    "jump": null,
+    "lossCondition": null
+  },
+  {
+    "id": "phase08_14",
+    "text": "破片を組み合わせると、そこに自分の顔が映る鏡ができた。",
+    "options": [
+      {
+        "text": "鏡を見る",
+        "next": "phase09_01"
+      },
+      {
+        "text": "鏡を割る",
+        "next": "phase09_01"
+      },
+      {
+        "text": "鏡を持つ",
+        "next": "phase09_01"
+      }
+    ],
+    "requiredFlags": [
+      "phase07_clear"
+    ],
+    "setFlag": "phase08_14_visited",
+    "event": "視覚異常",
+    "sanChange": 0,
+    "isTerminal": false,
+    "jump": null,
+    "lossCondition": null
+  },
+  {
+    "id": "phase08_15",
+    "text": "街の空に穴が開いている。その先には星のような光が渦巻いている。",
+    "options": [
+      {
+        "text": "飛び上がる",
+        "next": "phase09_01"
+      },
+      {
+        "text": "眺め続ける",
+        "next": "phase09_01"
+      },
+      {
+        "text": "その穴に向かう",
+        "next": "phase09_01"
+      }
+    ],
+    "requiredFlags": [
+      "phase07_clear"
+    ],
+    "setFlag": "phase08_15_visited",
+    "event": "感覚麻痺",
+    "sanChange": 0,
+    "isTerminal": false,
+    "jump": null,
+    "lossCondition": null
+  },
+  {
+    "id": "phase09_01",
+    "text": "意識が戻ると、見慣れた部屋にいた。時計の針は止まっている。",
+    "options": [
+      {
+        "text": "時計に触れる",
+        "next": "phase09_02"
+      },
+      {
+        "text": "窓を開ける",
+        "next": "phase09_03"
+      },
+      {
+        "text": "扉を開ける",
+        "next": "phase09_04"
+      }
+    ],
+    "requiredFlags": [
+      "phase08_clear"
+    ],
+    "setFlag": "phase09_01_visited",
+    "event": "幻聴",
+    "sanChange": -3,
+    "isTerminal": true,
+    "jump": "phase99_lost",
+    "lossCondition": "san <= 0"
+  },
+  {
+    "id": "phase09_02",
+    "text": "時計は触れた瞬間に再び動き出した。カチリと小さな音が部屋に響く。",
+    "options": [
+      {
+        "text": "音の正体を探す",
+        "next": "phase09_05"
+      },
+      {
+        "text": "もう一度止める",
+        "next": "phase09_06"
+      },
+      {
+        "text": "何もしない",
+        "next": "phase09_07"
+      }
+    ],
+    "requiredFlags": [
+      "phase08_clear"
+    ],
+    "setFlag": "phase09_02_visited",
+    "event": "視覚異常",
+    "sanChange": -3,
+    "isTerminal": true,
+    "jump": "phase99_lost",
+    "lossCondition": "san <= 0"
+  },
+  {
+    "id": "phase09_03",
+    "text": "外は夜だが、月が2つ浮かんでいた。",
+    "options": [
+      {
+        "text": "月を見続ける",
+        "next": "phase09_08"
+      },
+      {
+        "text": "外に出る",
+        "next": "phase09_09"
+      },
+      {
+        "text": "月に語りかける",
+        "next": "phase09_10"
+      }
+    ],
+    "requiredFlags": [
+      "phase08_clear"
+    ],
+    "setFlag": "phase09_03_visited",
+    "event": "時間停止",
+    "sanChange": 0,
+    "isTerminal": false,
+    "jump": null,
+    "lossCondition": null
+  },
+  {
+    "id": "phase09_04",
+    "text": "扉の先は暗闇だったが、遠くに自分の名前を呼ぶ声が聞こえる。",
+    "options": [
+      {
+        "text": "声の方へ進む",
+        "next": "phase09_11"
+      },
+      {
+        "text": "扉を閉じる",
+        "next": "phase09_12"
+      },
+      {
+        "text": "立ち止まる",
+        "next": "phase09_13"
+      }
+    ],
+    "requiredFlags": [
+      "phase08_clear"
+    ],
+    "setFlag": "phase09_04_visited",
+    "event": "時間停止",
+    "sanChange": 0,
+    "isTerminal": false,
+    "jump": null,
+    "lossCondition": null
+  },
+  {
+    "id": "phase09_05",
+    "text": "棚の中にあった目覚まし時計が鳴っていた。時刻は正確だ。",
+    "options": [
+      {
+        "text": "目覚ましを止める",
+        "next": "phase09_14"
+      },
+      {
+        "text": "時計を壊す",
+        "next": "phase09_14"
+      },
+      {
+        "text": "放置する",
+        "next": "phase09_14"
+      }
+    ],
+    "requiredFlags": [
+      "phase08_clear"
+    ],
+    "setFlag": "phase09_05_visited",
+    "event": "異界干渉",
+    "sanChange": -2,
+    "isTerminal": false,
+    "jump": null,
+    "lossCondition": null
+  },
+  {
+    "id": "phase09_06",
+    "text": "時計の針は固く止まり、動かなくなった。時間は凍ったかのよう。",
+    "options": [
+      {
+        "text": "名前を呼ぶ",
+        "next": "phase09_14"
+      },
+      {
+        "text": "鏡を見る",
+        "next": "phase09_14"
+      },
+      {
+        "text": "床に座る",
+        "next": "phase09_14"
+      }
+    ],
+    "requiredFlags": [
+      "phase08_clear"
+    ],
+    "setFlag": "phase09_06_visited",
+    "event": "幻聴",
+    "sanChange": 0,
+    "isTerminal": true,
+    "jump": null,
+    "lossCondition": null
+  },
+  {
+    "id": "phase09_07",
+    "text": "無音の中で自分の呼吸音だけが響いている。",
+    "options": [
+      {
+        "text": "瞑想する",
+        "next": "phase09_14"
+      },
+      {
+        "text": "考えを巡らせる",
+        "next": "phase09_14"
+      },
+      {
+        "text": "寝転ぶ",
+        "next": "phase09_14"
+      }
+    ],
+    "requiredFlags": [
+      "phase08_clear"
+    ],
+    "setFlag": "phase09_07_visited",
+    "event": "記憶喪失",
+    "sanChange": -2,
+    "isTerminal": false,
+    "jump": null,
+    "lossCondition": null
+  },
+  {
+    "id": "phase09_08",
+    "text": "2つの月のうち片方が欠け始め、涙のように光が零れる。",
+    "options": [
+      {
+        "text": "光を受け止める",
+        "next": "phase09_14"
+      },
+      {
+        "text": "そのまま見届ける",
+        "next": "phase09_14"
+      },
+      {
+        "text": "背を向ける",
+        "next": "phase09_14"
+      }
+    ],
+    "requiredFlags": [
+      "phase08_clear"
+    ],
+    "setFlag": "phase09_08_visited",
+    "event": "幻聴",
+    "sanChange": 1,
+    "isTerminal": false,
+    "jump": null,
+    "lossCondition": null
+  },
+  {
+    "id": "phase09_09",
+    "text": "地面が柔らかく、まるで水面のように波打っている。",
+    "options": [
+      {
+        "text": "歩き続ける",
+        "next": "phase09_14"
+      },
+      {
+        "text": "立ち止まる",
+        "next": "phase09_14"
+      },
+      {
+        "text": "水に触れる",
+        "next": "phase09_14"
+      }
+    ],
+    "requiredFlags": [
+      "phase08_clear"
+    ],
+    "setFlag": "phase09_09_visited",
+    "event": "感覚麻痺",
+    "sanChange": 0,
+    "isTerminal": false,
+    "jump": null,
+    "lossCondition": null
+  },
+  {
+    "id": "phase09_10",
+    "text": "月は何も答えず、代わりに星が瞬いた。そこに文字のような輝きが浮かぶ。",
+    "options": [
+      {
+        "text": "文字を読む",
+        "next": "phase09_14"
+      },
+      {
+        "text": "目をそらす",
+        "next": "phase09_14"
+      },
+      {
+        "text": "心に刻む",
+        "next": "phase09_14"
+      }
+    ],
+    "requiredFlags": [
+      "phase08_clear"
+    ],
+    "setFlag": "phase09_10_visited",
+    "event": "感覚麻痺",
+    "sanChange": 0,
+    "isTerminal": false,
+    "jump": null,
+    "lossCondition": null
+  },
+  {
+    "id": "phase09_11",
+    "text": "闇の中に、誰かの姿が浮かぶ。それは自分自身のようにも見える。",
+    "options": [
+      {
+        "text": "話しかける",
+        "next": "phase09_14"
+      },
+      {
+        "text": "逃げる",
+        "next": "phase09_14"
+      },
+      {
+        "text": "抱きしめる",
+        "next": "phase09_14"
+      }
+    ],
+    "requiredFlags": [
+      "phase08_clear"
+    ],
+    "setFlag": "phase09_11_visited",
+    "event": "記憶喪失",
+    "sanChange": -1,
+    "isTerminal": false,
+    "jump": null,
+    "lossCondition": null
+  },
+  {
+    "id": "phase09_12",
+    "text": "扉を閉じると、部屋の壁に文字が浮かび上がった。",
+    "options": [
+      {
+        "text": "読もうとする",
+        "next": "phase09_14"
+      },
+      {
+        "text": "手で消す",
+        "next": "phase09_14"
+      },
+      {
+        "text": "無視する",
+        "next": "phase09_14"
+      }
+    ],
+    "requiredFlags": [
+      "phase08_clear"
+    ],
+    "setFlag": "phase09_12_visited",
+    "event": "異界干渉",
+    "sanChange": -3,
+    "isTerminal": true,
+    "jump": "phase99_lost",
+    "lossCondition": "san <= 0"
+  },
+  {
+    "id": "phase09_13",
+    "text": "暗闇に光の粒が集まり、目の前に鍵が浮かび上がる。",
+    "options": [
+      {
+        "text": "鍵を取る",
+        "next": "phase09_14"
+      },
+      {
+        "text": "鍵を無視",
+        "next": "phase09_14"
+      },
+      {
+        "text": "鍵を飲み込む",
+        "next": "phase09_14"
+      }
+    ],
+    "requiredFlags": [
+      "phase08_clear"
+    ],
+    "setFlag": "phase09_13_visited",
+    "event": "幻聴",
+    "sanChange": 0,
+    "isTerminal": false,
+    "jump": null,
+    "lossCondition": null
+  },
+  {
+    "id": "phase09_14",
+    "text": "あなたの意識は再び揺らぎ、現実と幻想の境界が曖昧になる。",
+    "options": [
+      {
+        "text": "目を閉じる",
+        "next": "phase10_01"
+      },
+      {
+        "text": "立ち上がる",
+        "next": "phase10_01"
+      },
+      {
+        "text": "何もしない",
+        "next": "phase10_01"
+      }
+    ],
+    "requiredFlags": [
+      "phase08_clear"
+    ],
+    "setFlag": "phase09_14_visited",
+    "event": "異界干渉",
+    "sanChange": 1,
+    "isTerminal": false,
+    "jump": "phase04_06",
+    "lossCondition": null
+  },
+  {
+    "id": "phase10_01",
+    "text": "白い空間に立っていた。足元にはかつての記憶が断片のように散らばっている。",
+    "options": [
+      {
+        "text": "記憶を拾う",
+        "next": "phase10_02"
+      },
+      {
+        "text": "そのまま歩く",
+        "next": "phase10_03"
+      },
+      {
+        "text": "立ち尽くす",
+        "next": "phase10_04"
+      }
+    ],
+    "requiredFlags": [
+      "phase09_clear"
+    ],
+    "setFlag": "phase10_01_visited",
+    "event": "異界干渉",
+    "sanChange": 0,
+    "isTerminal": false,
+    "jump": null,
+    "lossCondition": null
+  },
+  {
+    "id": "phase10_02",
+    "text": "拾い上げた記憶は、過去の選択の瞬間だった。あの駅に降り立ったときの映像。",
+    "options": [
+      {
+        "text": "記憶を再生する",
+        "next": "phase10_05"
+      },
+      {
+        "text": "捨てる",
+        "next": "phase10_06"
+      },
+      {
+        "text": "胸にしまう",
+        "next": "phase10_07"
+      }
+    ],
+    "requiredFlags": [
+      "phase09_clear"
+    ],
+    "setFlag": "phase10_02_visited",
+    "event": "異界干渉",
+    "sanChange": 0,
+    "isTerminal": false,
+    "jump": null,
+    "lossCondition": null
+  },
+  {
+    "id": "phase10_03",
+    "text": "歩みを進めると、遠くに誰かの背中が見えた。こちらに気づいていないようだ。",
+    "options": [
+      {
+        "text": "呼びかける",
+        "next": "phase10_08"
+      },
+      {
+        "text": "追いかける",
+        "next": "phase10_09"
+      },
+      {
+        "text": "引き返す",
+        "next": "phase10_10"
+      }
+    ],
+    "requiredFlags": [
+      "phase09_clear"
+    ],
+    "setFlag": "phase10_03_visited",
+    "event": "時間停止",
+    "sanChange": 1,
+    "isTerminal": false,
+    "jump": "phase06_02",
+    "lossCondition": null
+  },
+  {
+    "id": "phase10_04",
+    "text": "立ち尽くすあなたの元に、風が吹き抜け、声が運ばれてくる。『帰る場所は見つかったか？』",
+    "options": [
+      {
+        "text": "はい",
+        "next": "phase10_11"
+      },
+      {
+        "text": "いいえ",
+        "next": "phase10_12"
+      },
+      {
+        "text": "わからない",
+        "next": "phase10_13"
+      }
+    ],
+    "requiredFlags": [
+      "phase09_clear"
+    ],
+    "setFlag": "phase10_04_visited",
+    "event": "記憶喪失",
+    "sanChange": -2,
+    "isTerminal": false,
+    "jump": null,
+    "lossCondition": null
+  },
+  {
+    "id": "phase10_05",
+    "text": "記憶の中で、あの日の自分が何かをつぶやいていた。それは、今のあなたへのメッセージだった。",
+    "options": [
+      {
+        "text": "耳を澄ます",
+        "next": "phase10_14"
+      },
+      {
+        "text": "思い出す",
+        "next": "phase10_14"
+      },
+      {
+        "text": "拒否する",
+        "next": "phase10_14"
+      }
+    ],
+    "requiredFlags": [
+      "phase09_clear"
+    ],
+    "setFlag": "phase10_05_visited",
+    "event": "視覚異常",
+    "sanChange": 0,
+    "isTerminal": false,
+    "jump": null,
+    "lossCondition": null
+  },
+  {
+    "id": "phase10_06",
+    "text": "記憶を捨てた瞬間、視界が真っ白に染まり、足元が崩れ始める。",
+    "options": [
+      {
+        "text": "耐える",
+        "next": "phase10_14"
+      },
+      {
+        "text": "逃げる",
+        "next": "phase10_14"
+      },
+      {
+        "text": "叫ぶ",
+        "next": "phase10_14"
+      }
+    ],
+    "requiredFlags": [
+      "phase09_clear"
+    ],
+    "setFlag": "phase10_06_visited",
+    "event": "視覚異常",
+    "sanChange": 0,
+    "isTerminal": false,
+    "jump": null,
+    "lossCondition": null
+  },
+  {
+    "id": "phase10_07",
+    "text": "胸にしまった記憶はあたたかく、光となってあなたを包み込んだ。",
+    "options": [
+      {
+        "text": "そのまま包まれる",
+        "next": "phase10_14"
+      },
+      {
+        "text": "光を手に取る",
+        "next": "phase10_14"
+      },
+      {
+        "text": "目を閉じる",
+        "next": "phase10_14"
+      }
+    ],
+    "requiredFlags": [
+      "phase09_clear"
+    ],
+    "setFlag": "phase10_07_visited",
+    "event": "視覚異常",
+    "sanChange": -1,
+    "isTerminal": false,
+    "jump": null,
+    "lossCondition": null
+  },
+  {
+    "id": "phase10_08",
+    "text": "声をかけた瞬間、振り返ったその顔は、かつてのあなた自身だった。",
+    "options": [
+      {
+        "text": "話す",
+        "next": "phase10_14"
+      },
+      {
+        "text": "無視する",
+        "next": "phase10_14"
+      },
+      {
+        "text": "手を取る",
+        "next": "phase10_14"
+      }
+    ],
+    "requiredFlags": [
+      "phase09_clear"
+    ],
+    "setFlag": "phase10_08_visited",
+    "event": "記憶喪失",
+    "sanChange": 1,
+    "isTerminal": false,
+    "jump": null,
+    "lossCondition": null
+  },
+  {
+    "id": "phase10_09",
+    "text": "追いかけて近づくと、その人物は徐々に溶けて霧になっていった。",
+    "options": [
+      {
+        "text": "霧を吸い込む",
+        "next": "phase10_14"
+      },
+      {
+        "text": "手で払う",
+        "next": "phase10_14"
+      },
+      {
+        "text": "立ち止まる",
+        "next": "phase10_14"
+      }
+    ],
+    "requiredFlags": [
+      "phase09_clear"
+    ],
+    "setFlag": "phase10_09_visited",
+    "event": "異界干渉",
+    "sanChange": -3,
+    "isTerminal": true,
+    "jump": "phase99_lost",
+    "lossCondition": "san <= 0"
+  },
+  {
+    "id": "phase10_10",
+    "text": "引き返す道はすでに存在せず、あなたの背後には無限の闇が広がっていた。",
+    "options": [
+      {
+        "text": "闇に入る",
+        "next": "phase10_14"
+      },
+      {
+        "text": "叫ぶ",
+        "next": "phase10_14"
+      },
+      {
+        "text": "ひざまずく",
+        "next": "phase10_14"
+      }
+    ],
+    "requiredFlags": [
+      "phase09_clear"
+    ],
+    "setFlag": "phase10_10_visited",
+    "event": "幻聴",
+    "sanChange": 1,
+    "isTerminal": false,
+    "jump": null,
+    "lossCondition": null
+  },
+  {
+    "id": "phase10_11",
+    "text": "『ならば、おかえり』という声とともに、扉が現れる。",
+    "options": [
+      {
+        "text": "扉を開ける",
+        "next": "phase10_15"
+      },
+      {
+        "text": "立ち止まる",
+        "next": "phase10_15"
+      },
+      {
+        "text": "扉を壊す",
+        "next": "phase10_15"
+      }
+    ],
+    "requiredFlags": [
+      "phase09_clear"
+    ],
+    "setFlag": "phase10_11_visited",
+    "event": "時間停止",
+    "sanChange": 0,
+    "isTerminal": false,
+    "jump": null,
+    "lossCondition": null
+  },
+  {
+    "id": "phase10_12",
+    "text": "『それでも、歩みを止めるな』という言葉が頭の中に響いた。",
+    "options": [
+      {
+        "text": "進む",
+        "next": "phase10_15"
+      },
+      {
+        "text": "座る",
+        "next": "phase10_15"
+      },
+      {
+        "text": "目を閉じる",
+        "next": "phase10_15"
+      }
+    ],
+    "requiredFlags": [
+      "phase09_clear"
+    ],
+    "setFlag": "phase10_12_visited",
+    "event": "異界干渉",
+    "sanChange": 1,
+    "isTerminal": false,
+    "jump": null,
+    "lossCondition": null
+  },
+  {
+    "id": "phase10_13",
+    "text": "『それなら、もう一度探してみよう』と誰かが囁く。",
+    "options": [
+      {
+        "text": "頷く",
+        "next": "phase10_15"
+      },
+      {
+        "text": "首を振る",
+        "next": "phase10_15"
+      },
+      {
+        "text": "沈黙する",
+        "next": "phase10_15"
+      }
+    ],
+    "requiredFlags": [
+      "phase09_clear"
+    ],
+    "setFlag": "phase10_13_visited",
+    "event": "感覚麻痺",
+    "sanChange": 0,
+    "isTerminal": false,
+    "jump": "phase07_12",
+    "lossCondition": null
+  },
+  {
+    "id": "phase10_14",
+    "text": "選び続けたあなたの物語が、静かに終わりを迎えようとしている。",
+    "options": [
+      {
+        "text": "受け入れる",
+        "next": "phase10_15"
+      },
+      {
+        "text": "抗う",
+        "next": "phase10_15"
+      },
+      {
+        "text": "祈る",
+        "next": "phase10_15"
+      }
+    ],
+    "requiredFlags": [
+      "phase09_clear"
+    ],
+    "setFlag": "phase10_14_visited",
+    "event": "時間停止",
+    "sanChange": 0,
+    "isTerminal": false,
+    "jump": null,
+    "lossCondition": null
+  },
+  {
+    "id": "phase10_15",
+    "text": "白い空間が消え、あなたはまばゆい光の中に包まれる。これが終わりか、それとも……。",
+    "options": [
+      {
+        "text": "目を閉じる",
+        "next": "phase_end"
+      },
+      {
+        "text": "もう一度目を開ける",
+        "next": "phase01_01"
+      },
+      {
+        "text": "何もしない",
+        "next": "phase_end"
+      }
+    ],
+    "requiredFlags": [
+      "phase09_clear"
+    ],
+    "setFlag": "phase10_15_visited",
+    "event": "時間停止",
+    "sanChange": 0,
+    "isTerminal": false,
+    "jump": null,
+    "lossCondition": null
+  },
+  {
+    "id": "phase99_lost",
+    "text": "あなたの精神は限界を超え、闇に沈んだ……\nもうここから帰ることはできない。",
+    "options": [],
+    "requiredFlags": [],
+    "setFlag": "lost",
+    "event": "ロスト",
+    "sanChange": 0,
+    "isTerminal": true,
+    "jump": null,
+    "lossCondition": null
+  }
+]

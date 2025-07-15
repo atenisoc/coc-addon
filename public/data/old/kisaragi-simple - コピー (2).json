@@ -1,0 +1,714 @@
+{
+  "metadata": {
+    "title": "きさらぎ駅（簡易版）",
+    "version": "1.3"
+  },
+  "nodes": [
+    {
+      "id": "scene_start",
+      "text": "電車を降りたあなたは、無人のホームに佇んでいる。駅は静まり返っている。",
+      "options": [
+        {
+          "text": "駅名表示を見る",
+          "next": "scene_1"
+        },
+        {
+          "text": "駅構内を調べる",
+          "next": "scene_2"
+        },
+        {
+          "text": "駅の外に出る",
+          "next": "scene_5"
+        },
+        {
+          "text": "電車に戻る",
+          "next": "scene_unused_return"
+        }
+      ]
+    },
+    {
+      "id": "scene_1",
+      "text": "駅名表示には『きさらぎ駅』と書かれていた。聞いたことのない駅名だ。",
+      "options": [
+        {
+          "text": "駅構内を調べる",
+          "next": "scene_2"
+        },
+        {
+          "text": "駅の外に出る",
+          "next": "scene_5"
+        },
+        {
+          "text": "自動生成の選択肢 1",
+          "next": "scene_1_autogen_0"
+        }
+      ]
+    },
+    {
+      "id": "scene_2",
+      "text": "駅構内は薄暗く、使われていない様子だ。時刻表は破れており、落ちた切符や古びた掲示板が目立つ。",
+      "options": [
+        {
+          "text": "自動販売機を探す",
+          "next": "scene_3"
+        },
+        {
+          "text": "掲示板を読む",
+          "next": "scene_4"
+        },
+        {
+          "text": "自動生成の選択肢 1",
+          "next": "scene_2_autogen_0"
+        }
+      ]
+    },
+    {
+      "id": "scene_3",
+      "text": "古びた自動販売機が1台。ボタンを押しても何も起きない。電源は通っていないようだ。",
+      "options": [
+        {
+          "text": "念のためお金を入れてみる",
+          "next": "scene_6"
+        },
+        {
+          "text": "駅の外に出る",
+          "next": "scene_5"
+        },
+        {
+          "text": "自動生成の選択肢 1",
+          "next": "scene_3_autogen_0"
+        }
+      ]
+    },
+    {
+      "id": "scene_4",
+      "text": "掲示板には数年前の日付の張り紙があり、「この駅は廃駅予定」と書かれている。だが現在の年号ではない。",
+      "options": [
+        {
+          "text": "駅の外に出る",
+          "next": "scene_5"
+        },
+        {
+          "text": "電車に戻る",
+          "next": "scene_unused_return"
+        },
+        {
+          "text": "自動生成の選択肢 1",
+          "next": "scene_4_autogen_0"
+        }
+      ]
+    },
+    {
+      "id": "scene_5",
+      "text": "駅舎の外に出ると、真夜中の山間にぽつんと駅があることが分かった。周囲に灯りはなく、空気がひどく静かだ。",
+      "options": [
+        {
+          "text": "近くの道を歩いてみる",
+          "next": "scene_7"
+        },
+        {
+          "text": "駅に戻る",
+          "next": "scene_start"
+        },
+        {
+          "text": "自動生成の選択肢 1",
+          "next": "scene_5_autogen_0"
+        }
+      ]
+    },
+    {
+      "id": "scene_6",
+      "text": "カタン。硬貨が吸い込まれた。数秒後、ガコンという音と共に紙の束が出てきた。",
+      "options": [
+        {
+          "text": "紙の束を調べる",
+          "next": "scene_8"
+        },
+        {
+          "text": "駅の外に出る",
+          "next": "scene_5"
+        },
+        {
+          "text": "自動生成の選択肢 1",
+          "next": "scene_6_autogen_0"
+        }
+      ]
+    },
+    {
+      "id": "scene_7",
+      "text": "しばらく歩くと、かすかに光が見えた。そこには古びた神社のような建物がある。",
+      "options": [
+        {
+          "text": "神社に入る",
+          "next": "scene_9"
+        },
+        {
+          "text": "引き返す",
+          "next": "scene_5"
+        },
+        {
+          "text": "自動生成の選択肢 1",
+          "next": "scene_7_autogen_0"
+        }
+      ]
+    },
+    {
+      "id": "scene_8",
+      "text": "紙には『この駅は呪われている。出るには順を辿ること』と書かれていた。いくつかの手記も綴られている。",
+      "options": [
+        {
+          "text": "手記を読む",
+          "next": "scene_10"
+        },
+        {
+          "text": "駅の外に出る",
+          "next": "scene_5"
+        },
+        {
+          "text": "自動生成の選択肢 1",
+          "next": "scene_8_autogen_0"
+        }
+      ]
+    },
+    {
+      "id": "scene_9",
+      "text": "神社の中には誰もいない。奥には古いお札が貼られた扉がある。",
+      "options": [
+        {
+          "text": "扉を開ける",
+          "next": "scene_11"
+        },
+        {
+          "text": "神社を調べる",
+          "next": "scene_12"
+        },
+        {
+          "text": "外に出る",
+          "next": "scene_5"
+        }
+      ]
+    },
+    {
+      "id": "scene_10",
+      "text": "手記には『順を誤れば、還れない』『音が導く』などの不穏な言葉が続いていた。",
+      "options": [
+        {
+          "text": "神社へ向かう",
+          "next": "scene_7"
+        },
+        {
+          "text": "駅に戻る",
+          "next": "scene_start"
+        },
+        {
+          "text": "自動生成の選択肢 1",
+          "next": "scene_10_autogen_0"
+        }
+      ]
+    },
+    {
+      "id": "scene_11",
+      "text": "扉を開けると、眩しい光が溢れ出した。気づけば元の世界に戻っていた。",
+      "options": [
+        {
+          "text": "自動生成の選択肢 1",
+          "next": "scene_11_autogen_0"
+        },
+        {
+          "text": "自動生成の選択肢 2",
+          "next": "scene_11_autogen_1"
+        },
+        {
+          "text": "自動生成の選択肢 3",
+          "next": "scene_11_autogen_2"
+        }
+      ]
+    },
+    {
+      "id": "scene_12",
+      "text": "祭壇には鈴と鏡が供えられている。どちらかを手に取れそうだ。",
+      "options": [
+        {
+          "text": "鈴を取る",
+          "next": "scene_13"
+        },
+        {
+          "text": "鏡を取る",
+          "next": "scene_14"
+        },
+        {
+          "text": "自動生成の選択肢 1",
+          "next": "scene_12_autogen_0"
+        }
+      ]
+    },
+    {
+      "id": "scene_13",
+      "text": "鈴を手に取った瞬間、背後から足音が。振り返ると誰もいない。",
+      "options": [
+        {
+          "text": "外に出る",
+          "next": "scene_5"
+        },
+        {
+          "text": "再び扉を開ける",
+          "next": "scene_11"
+        },
+        {
+          "text": "自動生成の選択肢 1",
+          "next": "scene_13_autogen_0"
+        }
+      ]
+    },
+    {
+      "id": "scene_14",
+      "text": "鏡に映ったのは、もう一人の自分。だがその目は虚ろだった。",
+      "options": [
+        {
+          "text": "鏡を割る",
+          "next": "scene_15"
+        },
+        {
+          "text": "そのまま放置する",
+          "next": "scene_9"
+        },
+        {
+          "text": "自動生成の選択肢 1",
+          "next": "scene_14_autogen_0"
+        }
+      ]
+    },
+    {
+      "id": "scene_15",
+      "text": "鏡が砕けると同時に、神社全体が震え出した。外に出ると空が赤く染まっていた。",
+      "options": [
+        {
+          "text": "逃げ出す",
+          "next": "scene_bad_end"
+        },
+        {
+          "text": "駅へ戻る",
+          "next": "scene_start"
+        },
+        {
+          "text": "自動生成の選択肢 1",
+          "next": "scene_15_autogen_0"
+        }
+      ]
+    },
+    {
+      "id": "scene_bad_end",
+      "text": "あなたは異界に囚われ、二度と戻ることはなかった。",
+      "options": [
+        {
+          "text": "自動生成の選択肢 1",
+          "next": "scene_bad_end_autogen_0"
+        },
+        {
+          "text": "自動生成の選択肢 2",
+          "next": "scene_bad_end_autogen_1"
+        },
+        {
+          "text": "自動生成の選択肢 3",
+          "next": "scene_bad_end_autogen_2"
+        }
+      ]
+    },
+    {
+      "id": "scene_unused_return",
+      "text": "🚧 '電車に戻る' に対応するシーンは未設定です。",
+      "options": [
+        {
+          "text": "駅に戻る",
+          "next": "scene_start"
+        },
+        {
+          "text": "自動生成の選択肢 1",
+          "next": "scene_unused_return_autogen_0"
+        },
+        {
+          "text": "自動生成の選択肢 2",
+          "next": "scene_unused_return_autogen_1"
+        }
+      ]
+    },
+    {
+      "id": "scene_1_autogen_0",
+      "text": "🚧 自動生成された展開です。",
+      "options": [
+        {
+          "text": "駅に戻る",
+          "next": "scene_1"
+        },
+        {
+          "text": "さらに奥へ進む",
+          "next": "scene_1_autogen_1"
+        },
+        {
+          "text": "声を出して呼びかける",
+          "next": "scene_1_autogen_2"
+        }
+      ]
+    },
+    {
+      "id": "scene_2_autogen_0",
+      "text": "🚧 自動生成された展開です。",
+      "options": [
+        {
+          "text": "駅に戻る",
+          "next": "scene_1"
+        },
+        {
+          "text": "さらに奥へ進む",
+          "next": "scene_1_autogen_1"
+        },
+        {
+          "text": "声を出して呼びかける",
+          "next": "scene_1_autogen_2"
+        }
+      ]
+    },
+    {
+      "id": "scene_3_autogen_0",
+      "text": "🚧 自動生成された展開です。",
+      "options": [
+        {
+          "text": "駅に戻る",
+          "next": "scene_1"
+        },
+        {
+          "text": "さらに奥へ進む",
+          "next": "scene_1_autogen_1"
+        },
+        {
+          "text": "声を出して呼びかける",
+          "next": "scene_1_autogen_2"
+        }
+      ]
+    },
+    {
+      "id": "scene_4_autogen_0",
+      "text": "🚧 自動生成された展開です。",
+      "options": [
+        {
+          "text": "駅に戻る",
+          "next": "scene_1"
+        },
+        {
+          "text": "さらに奥へ進む",
+          "next": "scene_1_autogen_1"
+        },
+        {
+          "text": "声を出して呼びかける",
+          "next": "scene_1_autogen_2"
+        }
+      ]
+    },
+    {
+      "id": "scene_5_autogen_0",
+      "text": "🚧 自動生成された展開です。",
+      "options": [
+        {
+          "text": "駅に戻る",
+          "next": "scene_1"
+        },
+        {
+          "text": "さらに奥へ進む",
+          "next": "scene_1_autogen_1"
+        },
+        {
+          "text": "声を出して呼びかける",
+          "next": "scene_1_autogen_2"
+        }
+      ]
+    },
+    {
+      "id": "scene_6_autogen_0",
+      "text": "🚧 自動生成された展開です。",
+      "options": [
+        {
+          "text": "駅に戻る",
+          "next": "scene_1"
+        },
+        {
+          "text": "さらに奥へ進む",
+          "next": "scene_1_autogen_1"
+        },
+        {
+          "text": "声を出して呼びかける",
+          "next": "scene_1_autogen_2"
+        }
+      ]
+    },
+    {
+      "id": "scene_7_autogen_0",
+      "text": "🚧 自動生成された展開です。",
+      "options": [
+        {
+          "text": "駅に戻る",
+          "next": "scene_1"
+        },
+        {
+          "text": "さらに奥へ進む",
+          "next": "scene_1_autogen_1"
+        },
+        {
+          "text": "声を出して呼びかける",
+          "next": "scene_1_autogen_2"
+        }
+      ]
+    },
+    {
+      "id": "scene_8_autogen_0",
+      "text": "🚧 自動生成された展開です。",
+      "options": [
+        {
+          "text": "駅に戻る",
+          "next": "scene_1"
+        },
+        {
+          "text": "さらに奥へ進む",
+          "next": "scene_1_autogen_1"
+        },
+        {
+          "text": "声を出して呼びかける",
+          "next": "scene_1_autogen_2"
+        }
+      ]
+    },
+    {
+      "id": "scene_10_autogen_0",
+      "text": "🚧 自動生成された展開です。",
+      "options": [
+        {
+          "text": "駅に戻る",
+          "next": "scene_1"
+        },
+        {
+          "text": "さらに奥へ進む",
+          "next": "scene_1_autogen_1"
+        },
+        {
+          "text": "声を出して呼びかける",
+          "next": "scene_1_autogen_2"
+        }
+      ]
+    },
+    {
+      "id": "scene_11_autogen_0",
+      "text": "🚧 自動生成された展開です。",
+      "options": [
+        {
+          "text": "駅に戻る",
+          "next": "scene_1"
+        },
+        {
+          "text": "さらに奥へ進む",
+          "next": "scene_1_autogen_1"
+        },
+        {
+          "text": "声を出して呼びかける",
+          "next": "scene_1_autogen_2"
+        }
+      ]
+    },
+    {
+      "id": "scene_11_autogen_1",
+      "text": "🚧 自動生成された展開です。",
+      "options": [
+        {
+          "text": "駅に戻る",
+          "next": "scene_1"
+        },
+        {
+          "text": "さらに奥へ進む",
+          "next": "scene_1_autogen_1"
+        },
+        {
+          "text": "声を出して呼びかける",
+          "next": "scene_1_autogen_2"
+        }
+      ]
+    },
+    {
+      "id": "scene_11_autogen_2",
+      "text": "🚧 自動生成された展開です。",
+      "options": [
+        {
+          "text": "駅に戻る",
+          "next": "scene_1"
+        },
+        {
+          "text": "さらに奥へ進む",
+          "next": "scene_1_autogen_1"
+        },
+        {
+          "text": "声を出して呼びかける",
+          "next": "scene_1_autogen_2"
+        }
+      ]
+    },
+    {
+      "id": "scene_12_autogen_0",
+      "text": "🚧 自動生成された展開です。",
+      "options": [
+        {
+          "text": "駅に戻る",
+          "next": "scene_1"
+        },
+        {
+          "text": "さらに奥へ進む",
+          "next": "scene_1_autogen_1"
+        },
+        {
+          "text": "声を出して呼びかける",
+          "next": "scene_1_autogen_2"
+        }
+      ]
+    },
+    {
+      "id": "scene_13_autogen_0",
+      "text": "🚧 自動生成された展開です。",
+      "options": [
+        {
+          "text": "駅に戻る",
+          "next": "scene_1"
+        },
+        {
+          "text": "さらに奥へ進む",
+          "next": "scene_1_autogen_1"
+        },
+        {
+          "text": "声を出して呼びかける",
+          "next": "scene_1_autogen_2"
+        }
+      ]
+    },
+    {
+      "id": "scene_14_autogen_0",
+      "text": "🚧 自動生成された展開です。",
+      "options": [
+        {
+          "text": "駅に戻る",
+          "next": "scene_1"
+        },
+        {
+          "text": "さらに奥へ進む",
+          "next": "scene_1_autogen_1"
+        },
+        {
+          "text": "声を出して呼びかける",
+          "next": "scene_1_autogen_2"
+        }
+      ]
+    },
+    {
+      "id": "scene_15_autogen_0",
+      "text": "🚧 自動生成された展開です。",
+      "options": [
+        {
+          "text": "駅に戻る",
+          "next": "scene_1"
+        },
+        {
+          "text": "さらに奥へ進む",
+          "next": "scene_1_autogen_1"
+        },
+        {
+          "text": "声を出して呼びかける",
+          "next": "scene_1_autogen_2"
+        }
+      ]
+    },
+    {
+      "id": "scene_bad_end_autogen_0",
+      "text": "🚧 自動生成された展開です。",
+      "options": [
+        {
+          "text": "駅に戻る",
+          "next": "scene_1"
+        },
+        {
+          "text": "さらに奥へ進む",
+          "next": "scene_1_autogen_1"
+        },
+        {
+          "text": "声を出して呼びかける",
+          "next": "scene_1_autogen_2"
+        }
+      ]
+    },
+    {
+      "id": "scene_bad_end_autogen_1",
+      "text": "🚧 自動生成された展開です。",
+      "options": [
+        {
+          "text": "駅に戻る",
+          "next": "scene_1"
+        },
+        {
+          "text": "さらに奥へ進む",
+          "next": "scene_1_autogen_1"
+        },
+        {
+          "text": "声を出して呼びかける",
+          "next": "scene_1_autogen_2"
+        }
+      ]
+    },
+    {
+      "id": "scene_bad_end_autogen_2",
+      "text": "🚧 自動生成された展開です。",
+      "options": [
+        {
+          "text": "駅に戻る",
+          "next": "scene_1"
+        },
+        {
+          "text": "さらに奥へ進む",
+          "next": "scene_1_autogen_1"
+        },
+        {
+          "text": "声を出して呼びかける",
+          "next": "scene_1_autogen_2"
+        }
+      ]
+    },
+    {
+      "id": "scene_unused_return_autogen_0",
+      "text": "🚧 自動生成された展開です。",
+      "options": [
+        {
+          "text": "駅に戻る",
+          "next": "scene_1"
+        },
+        {
+          "text": "さらに奥へ進む",
+          "next": "scene_1_autogen_1"
+        },
+        {
+          "text": "声を出して呼びかける",
+          "next": "scene_1_autogen_2"
+        }
+      ]
+    },
+    {
+      "id": "scene_unused_return_autogen_1",
+      "text": "🚧 自動生成された展開です。",
+      "options": [
+        {
+          "text": "駅に戻る",
+          "next": "scene_1"
+        },
+        {
+          "text": "さらに奥へ進む",
+          "next": "scene_1_autogen_1"
+        },
+        {
+          "text": "声を出して呼びかける",
+          "next": "scene_1_autogen_2"
+        }
+      ]
+    }
+  ]
+}

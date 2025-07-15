@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>一人用CoCセッション一覧</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      margin: 1.5em;
+      background-color: #f8f9fa;
+      color: #333;
+    }
+    h1 {
+      color: #222;
+    }
+    .instructions {
+      margin-bottom: 1em;
+      padding: 1em;
+      background: #e6f2ff;
+      border-left: 4px solid #0b57d0;
+    }
+    button {
+      padding: 0.5em 1em;
+      font-size: 1em;
+      border: none;
+      background-color: #4CAF50;
+      color: white;
+      border-radius: 0.5em;
+      cursor: pointer;
+      margin-top: 0.5em;
+    }
+    button:hover {
+      background-color: #45a049;
+    }
+    a.gpt-link {
+      display: inline-block;
+      margin: 1em 0;
+      font-size: 1.1em;
+      color: #0b57d0;
+    }
+    .scenario {
+      margin-bottom: 2em;
+      padding: 1em;
+      background-color: #fff;
+      border: 1px solid #ddd;
+      border-radius: 0.5em;
+    }
+    .scenario h2 {
+      margin-top: 0;
+    }
+    @media (max-width: 600px) {
+      h1 { font-size: 1.4em; }
+      button { font-size: 1em; }
+    }
+  </style>
+</head>
+<body>
+  <h1>一人用CoCセッション一覧</h1>
+
+  <div class="instructions">
+    <p>① 以下のシナリオをコピーしてください。</p>
+    <p>② <a class="gpt-link" href="https://chat.openai.com/" target="_blank">ChatGPTを開く（タップして貼り付け）</a></p>
+  </div>
+
+  <div class="scenario">
+    <h2>静寂のアトリエ</h2>
+    <p>山奥の小さなアトリエで過ごす一夜。不気味な気配が静かに忍び寄る。</p>
+    <button onclick="copyPrompt('atelier')">📋 プロンプトをコピー</button>
+  </div>
+
+  <div class="scenario">
+    <h2>廃病院の記憶</h2>
+    <p>閉鎖された病院を訪れたあなたに、過去の記憶と怪異が迫る。</p>
+    <button onclick="copyPrompt('hospital')">📋 プロンプトをコピー</button>
+  </div>
+
+  <div class="scenario">
+    <h2>毒入りスープ</h2>
+    <p>密室で目を覚ました探索者。円卓に並ぶ5つのスープのうち、1つには毒が――。NPCとの会話と探索で真相に迫れ。</p>
+    <button onclick="copyPrompt('poison')">📋 プロンプトをコピー</button>
+  </div>
+
+  <textarea id="atelier" style="display:none;">
+=== SESSION-LAUNCH:COC ===
+このファイルはセッション開始用プロンプトです。
+すべてをコピーしてGPTに貼ってください。
+
+=== BEGIN-GPT ===
+#GPT.ROLE=KP
+#GPT.MODE=COC_1P
+#PROMPT_ID=SHIZUKA_ATELIER
+#ENCODED_BLOCK=5pel5pel44Gu44GM44KC44Go44GX44Gf44KJ44GE44Gm44CB5bCP5bqX44Gr44GZ44KL44Gf44GZ44CC
+=== END-GPT ===
+  </textarea>
+
+  <textarea id="hospital" style="display:none;">
+=== SESSION-LAUNCH:COC ===
+このファイルはセッション開始用プロンプトです。
+すべてをコピーしてGPTに貼ってください。
+
+=== BEGIN-GPT ===
+#GPT.ROLE=KP
+#GPT.MODE=COC_1P
+#PROMPT_ID=HAI_BYOUIN
+#ENCODED_BLOCK=6ZaL6Zyy5p2x44Gr44KJ44GV44KT44Go44GZ44KL44Gq44GE44G+44GZ44CC
+=== END-GPT ===
+  </textarea>
+
+  <textarea id="poison" style="display:none;">
+=== SESSION-LAUNCH:COC ===
+このファイルはセッション開始用プロンプトです。
+すべてをコピーしてGPTに貼ってください。
+
+=== BEGIN-GPT ===
+あなたはゲームマスター（GM）です。
+このセッションはクトゥルフ神話TRPGの1人用セッションで、シナリオ名は『毒入りスープ』です。
+
+プレイヤーは、ある密室の中で目を覚ました探索者です。
+部屋には他に数名の人物がいて、目を覚ましたプレイヤーと同じように閉じ込められています。
+テーブルの上には「スープ」が5人分置かれており、そのうち1つに毒が入っていると告げられます。
+
+部屋の構造やNPC、進行フェーズ、注意事項は以下の通り：
+・スープの間と四方の部屋（北・東・南・西）
+・登場人物：秋山、ミカ、堀内、クロエ
+・プレイヤーは探索や推理を通じて状況を把握し、スープを飲むか判断する
+
+導入は「探索者がスープの間で目覚めるシーン」から始めてください。
+プレイヤーが行動を宣言したら、それに応じて描写・情報・NPCの反応を提示してください。
+=== END-GPT ===
+  </textarea>
+
+  <script>
+    function copyPrompt(id) {
+      const content = document.getElementById(id).value;
+      navigator.clipboard.writeText(content).then(() => {
+        alert("プロンプトをコピーしました！ChatGPTに貼り付けてセッションを開始してください。");
+      });
+    }
+  </script>
+</body>
+</html>

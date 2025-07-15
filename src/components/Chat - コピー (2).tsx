@@ -5,43 +5,28 @@ const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY!,
 });
 
+function determinePhase(flags: any): string {
+  const visitedCount = flags.visited?.length ?? 0;
+  const elapsed = flags.time_elapsed ?? 0;
 
-
-// ✅ これを追記（ファイル冒頭あたり）
-import { determinePhase } from '@/lib/prompts/kisaragiPrompt';
-
-
-
-
-
+  if (flags.phase === 'phase04_分岐' && elapsed >= 1 + (flags.last_phase04_turn ?? 0)) {
+    return 'phase05_結末';
+  } else if (flags.knows_exit_direction || flags.fear_level >= 60) {
+    return 'phase04_分岐';
+  } else if (elapsed >= 6 || visitedCount >= 5) {
+    return 'phase03_干渉';
+  } else if (elapsed >= 3 || visitedCount >= 3) {
+    return 'phase02_探索';
+  } else {
+    return 'phase01_導入';
+  }
+}
 
 function mergeFlags(base: any, gptFlags: any): any {
   const merged = { ...base, ...gptFlags };
 
-
-
-  // ✅ time_elapsed系を必ず1加算
-  merged.time_elapsed = (base.time_elapsed ?? 0) + 1;
-  merged.time_elapsed_local = (base.time_elapsed_local ?? 0) + 1;
-  merged.time_elapsed_global = (base.time_elapsed_global ?? 0) + 1;
-
-  merged.san_level = (base.san_level ?? 0) - 1;
-
-
-
-
-  // ✅ バッチ表示（サーバー側コンソールに出力）
-  console.log('[mergeFlags] ⏱ タイマー状態:', {
-    time_elapsed: merged.time_elapsed,
-    time_elapsed_global: merged.time_elapsed_global,
-    time_elapsed_local: merged.time_elapsed_local,
-  });
-
-
-
   // phaseは常にこちらで上書き（GPT出力より優先）
   merged.phase = determinePhase(merged);
-
 
   // 分岐に入ったら一度だけ記録
   if (merged.phase === 'phase04_分岐' && !('last_phase04_turn' in merged)) {
@@ -49,11 +34,11 @@ function mergeFlags(base: any, gptFlags: any): any {
   }
 
   // 必須初期化（安全性のため）
-  //merged.visited = Array.isArray(merged.visited) ? merged.visited : [];
-  //merged.items = Array.isArray(merged.items) ? merged.items : [];
-  //merged.time_elapsed = typeof merged.time_elapsed === 'number' ? merged.time_elapsed : 0;
-  //merged.san_level = typeof merged.san_level === 'number' ? merged.san_level : 100;
-  //merged.fear_level = typeof merged.fear_level === 'number' ? merged.fear_level : 0;
+  merged.visited = Array.isArray(merged.visited) ? merged.visited : [];
+  merged.items = Array.isArray(merged.items) ? merged.items : [];
+  merged.time_elapsed = typeof merged.time_elapsed === 'number' ? merged.time_elapsed : 0;
+  merged.san_level = typeof merged.san_level === 'number' ? merged.san_level : 100;
+  merged.fear_level = typeof merged.fear_level === 'number' ? merged.fear_level : 0;
 
   return merged;
 }
@@ -80,8 +65,7 @@ export async function chat(
     console.log('[chat.ts] ✅ sending:', messages);
 
     const res = await openai.chat.completions.create({
-      //model: 'gpt-3.5-turbo',
-      model: 'gpt-4o',
+      model: 'gpt-4',
       messages,
       temperature: 0.8,
     });
@@ -108,7 +92,6 @@ export async function chat(
     const parsed = parseJson(content);
 
     const gptFlags = parsed?.flags ?? {};
-
     const mergedFlags = mergeFlags(flags, gptFlags);
 
 // ✅ バッチ（コンソール）に出力

@@ -82,27 +82,39 @@ function extractChoices(text: string): string[] {
     const data = await res.json()
     const reply = data.reply ?? '[応答なし]'
 
+
 if (data.flags) {
-  const serverFlags = data.flags ?? {};
-
   setFlags((prevFlags) => {
+    const serverFlags = data.flags ?? {}; // ✅ これを最初に定義！
     const newPhaseLog = [...(prevFlags.phase_log ?? [])];
-    if (serverFlags.phase && !newPhaseLog.includes(serverFlags.phase)) {
-      newPhaseLog.push(serverFlags.phase);
+    if (data.flags.phase && !newPhaseLog.includes(data.flags.phase)) {
+      newPhaseLog.push(data.flags.phase);
     }
+　  const mergedFlags = {
+  　  ...prevFlags,
+  　  ...serverFlags,
+ 　   phase_log: newPhaseLog,
+  　};
+　　// フラグをマージする直前にバッチ出力
+　　console.log('[ChatClient.tsx] 🟡 prevFlags:', prevFlags);
+　　console.log('[ChatClient.tsx] 🟡 data.flags (from GPT):', data.flags);
+    setDebugFlags(mergedFlags); // ✅ デバッグにも保存
+　  return mergedFlags;
 
-    const mergedFlags = {
-      ...prevFlags,
-      ...serverFlags,
-      phase_log: newPhaseLog,
-    };
+　　// マージ後の状態をバッチ出力（既にあるなら省略可）
+　　console.log('[ChatClient.tsx] ✅ mergedFlags after GPT response:', mergedFlags);
 
-    // ✅ debugFlags に正しくマージ結果を入れる（prevFlags が見える位置）
-    setDebugFlags(mergedFlags);
-    return mergedFlags;
+    // ✅ ここでログ出力（バッチ的なトレース）
+    console.log('[ChatClient] フラグマージ結果:', mergedFlags);
+    console.log('[ChatClient] GPT返却 flags:', data.flags);
+    console.log('[ChatClient] 旧 flags:', prevFlags);
+
+  console.log('[ChatClient.tsx] ✅ mergedFlags after GPT response:', mergedFlags);
+
+  setDebugFlags(mergedFlags); // ✅ これで OK（定義後に使用）
+  return mergedFlags;
   });
 }
-
 
 
 
@@ -183,7 +195,10 @@ if (data.flags) {
           </button>
         </div>
 
-
+        <div className="text-xs text-[#88bfa8] rounded border border-[#88bfa8] p-2">
+          <div className="font-bold mb-1">[デバッグ] flags 状態:</div>
+          <pre>{JSON.stringify(debugFlags, null, 2)}</pre>
+        </div>
 
 　　　　<div className="p-4 bg-gray-100 rounded-lg mt-4">
   <div className="flex items-center space-x-2 mb-2">
@@ -192,7 +207,7 @@ if (data.flags) {
     </span>
     <span className="text-sm text-gray-600">（デバッグ用のフラグ状態）</span>
   </div>
-  <pre className="text-xs bg-black p-2 rounded border overflow-x-auto">
+  <pre className="text-xs bg-white p-2 rounded border overflow-x-auto">
     {JSON.stringify(debugFlags, null, 2)}
   </pre>
 </div>

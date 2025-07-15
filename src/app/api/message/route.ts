@@ -1,110 +1,174 @@
-// src/app/api/message/route.ts
+import { NextResponse } from 'next/server';
+import { chat } from '@/components/chat';
+// chat.ts の先頭にこれを追加
+import { kisaragiPrompt } from '@/lib/prompts/kisaragiPrompt'; // または相対パスで
 
-import { NextRequest } from 'next/server'
-import OpenAI from 'openai'
-import { getScenarioDescription } from '@/lib/scenario'
 
-export const runtime = 'edge'
+const initialFlags = {
+  phase: 'start',
+  visited: [],
+  has_seen_shadow: false,
+  has_heard_whisper: false,
+  san_level: 100,
+  has_flashlight: false,
+  injured: false,
+  knows_exit_direction: false,
+  trust_npc_yamamoto: 50,
+  fear_level: 0,
+  is_followed: false,
+  loop_count: 0,
+  phase_log: [],
+  items: [],
 
-const MAX_FALLBACK_COUNT = 2
 
-export async function POST(req: NextRequest) {
-  const { userInput, history, scenarioId, fallbackCount = 0 } = await req.json()
 
-  if (fallbackCount >= MAX_FALLBACK_COUNT) {
-    return new Response(JSON.stringify({
-      reply: '※ システム異常により進行を変更します。再構成された選択肢により継続可能です。',
-      options: ['無理やり進める', '直近に戻る', 'テンプレート選択肢で続ける'],
-      fallback: true,
-      errorFlag: 'loop-detected',
-      debugFlags: ['FALLBACK_LOOP_LIMIT']
-    }), { status: 207 })
-  }
+  time_elapsed_global: 0, // ← 追加①
+  time_elapsed_local: 0,  // ← 追加②
 
-  if (userInput === 'force-error') {
-    return new Response(JSON.stringify({
-      reply: '※ 構造不正テスト: 強制エラー応答',
-      options: ['再試行', '確認する'],
-      fallback: true,
-      errorFlag: 'structure-invalid',
-      debugFlags: ['FORCED_TEST']
-    }), { status: 206 })
-  }
+};
 
-  if (userInput === 'force-exception') {
-    throw new Error('強制例外 for test')
-  }
+export async function POST(req: Request) {
+  try {
+    const body = await req.json();
+    const { messages, flags: clientFlags } = body;
 
-  const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY || '' })
-  const scenarioSummary = getScenarioDescription(scenarioId)
+const flags = 
+  clientFlags && Object.keys(clientFlags).length > 0
+    ? { ...initialFlags, ...clientFlags } // → 正常な送信があればマージ
+    : { ...initialFlags };                // → 無ければ初期化
 
-  const systemPrompt = `あなたはクトゥルフ神話TRPGのゲームマスターです。
-プレイヤーは現在、シナリオ「${scenarioId}」を探索中です。
 
-【シナリオ概要】
-${scenarioSummary}
+    const lastMessage = messages?.[messages.length - 1]?.content ?? '';
 
-以下のJSON形式だけを、説明なしでそのまま返してください。
-- コードブロック、補足、説明、見出し、HTMLは禁止
-- JSON以外は出力してはいけません
+    // ✅ GPT応答の取得（reply に埋め込みJSONを含むことを想定）
+    const { reply: rawReply } = await chat(flags, lastMessage);
 
-【出力形式】
-{
-  "reply": "描写本文をここに記述します。",
-  "options": ["選択肢1", "選択肢2", "選択肢3"]
+
+// ✅ chat.ts 側で正規化された flags をそのまま受け取る
+const { reply: finalReply, flags: mergedFlags } = await chat(flags, lastMessage);
+
+// ✅ そのまま返す
+return NextResponse.json({ reply: finalReply, flags: mergedFlags });
+
+
+
+    // ✅ フラグ整備・サニタイズ
+    flags.phase = typeof flags.phase === 'string' ? flags.phase : 'start';
+    flags.visited = Array.isArray(flags.visited) ? flags.visited : [];
+    flags.has_seen_shadow = !!flags.has_seen_shadow;
+    flags.has_heard_whisper = !!flags.has_heard_whisper;
+
+    flags.san_level = typeof flags.san_level === 'number' ? flags.san_level - 1 : 99;
+    if (flags.san_level < 0) flags.san_level = 0;
+
+    flags.has_flashlight = !!flags.has_flashlight;
+    flags.injured = !!flags.injured;
+    flags.knows_exit_direction = !!flags.knows_exit_direction;
+
+    flags.trust_npc_yamamoto = typeof flags.trust_npc_yamamoto === 'number'
+      ? flags.trust_npc_yamamoto
+      : 50;
+
+    flags.fear_level = typeof flags.fear_level === 'number' ? flags.fear_level : 0;
+
+
+    flags.is_followed = !!flags.is_followed;
+    flags.loop_count = typeof flags.loop_count === 'number' ? flags.loop_count : 0;
+    flags.phase_log = Array.isArray(flags.phase_log) ? flags.phase_log : [];
+
+
+// ✅ 直前のフェーズを取得
+const prevPhase = flags.phase_log?.at(-1) ?? 'start';
+
+// ✅ フェーズ変化時はローカルタイマーをリセット、それ以外は +1
+if (flags.phase !== prevPhase) {
+  flags.time_elapsed_local = 0;
+} else {
+  flags.time_elapsed_local = typeof flags.time_elapsed_local === 'number'
+    ? flags.time_elapsed_local + 1
+    : 1;
 }
 
-【ルール】
-- reply は簡潔に。情景描写を含めつつ300字以内
-- options は必ず ["〜", "〜", "〜"] という JSON 配列
-- options 各要素は "" で囲った文字列
-- options に "," や "\"" や 改行 を含まないこと
-- 絶対に reply や options を省略しない
-- 上記JSONのみを返すこと（前後の補足は禁止）`
+// ✅ phaseが一定時間経過したら自動で次のphaseへ進行
+const phaseOrder = [
+  'phase01_導入',
+  'phase02_探索',
+  'phase03_外部探索',
+  'phase04_終盤',
+  'phase99_脱出'
+];
 
-  try {
-    const chatHistory = [
-      { role: 'system', content: systemPrompt },
-      ...history.map((m: any) => ({ role: m.role, content: m.content }))
-    ]
+const currentPhaseIndex = phaseOrder.indexOf(flags.phase);
+const LOCAL_TIME_LIMIT = 5;
 
-    const response = await openai.chat.completions.create({
-      model: 'gpt-4',
-      messages: chatHistory,
-      temperature: 0.8,
-    })
+if (
+  currentPhaseIndex >= 0 &&
+  currentPhaseIndex < phaseOrder.length - 1 &&
+  flags.time_elapsed_local >= LOCAL_TIME_LIMIT
+) {
+  const nextPhase = phaseOrder[currentPhaseIndex + 1];
+  console.log(`[route.ts] ⏳ ローカル時間 ${flags.time_elapsed_local} により ${flags.phase} → ${nextPhase}`);
+  flags.phase = nextPhase;
+  flags.time_elapsed_local = 0; // 次フェーズのためにリセット
+}
 
-    let raw = response.choices[0]?.message.content?.trim() ?? ''
-    console.log('[GPT応答]', raw) // ⭐ 追加ログ出力
 
-    if (raw.startsWith('```')) {
-      raw = raw.replace(/```json|```/g, '').trim()
-    }
 
-    const json = JSON.parse(raw)
-    const isValid =
-      typeof json === 'object' &&
-      typeof json.reply === 'string' &&
-      Array.isArray(json.options) &&
-      json.options.every((opt: any) => typeof opt === 'string') &&
-      json.options.length >= 2 && json.options.length <= 4
+// ✅ グローバルタイマーは常に +1
+const prevGlobal = clientFlags?.time_elapsed_global;
+flags.time_elapsed_global = typeof prevGlobal === 'number' && Number.isFinite(prevGlobal)
+  ? prevGlobal + 1
+  : 1;
 
-    if (!isValid) throw new Error('構造検証エラー')
+// ✅ ローカルタイマー：phaseが変わっていなければ +1、変わっていれば 0
+const prevLocal = clientFlags?.time_elapsed_local;
+if (flags.phase !== prevPhase) {
+  flags.time_elapsed_local = 0;
+} else {
+  flags.time_elapsed_local = typeof prevLocal === 'number' && Number.isFinite(prevLocal)
+    ? prevLocal + 1
+    : 1;
+}
 
-    return new Response(JSON.stringify(json), {
-      headers: { 'Content-Type': 'application/json' },
-      status: 200,
-    })
-  } catch (err: any) {
-    console.warn('[構造不正または例外]', err)
+// ✅ 共通タイマー（全体的な時間の指標）も +1
+const prevTime = clientFlags?.time_elapsed;
+flags.time_elapsed = typeof prevTime === 'number' && Number.isFinite(prevTime)
+  ? prevTime + 1
+  : 1;
 
-    return new Response(JSON.stringify({
-      reply: '……沈黙が流れる。空気が不穏に揺れた。何かが狂っているようだ。',
-      options: ['様子を見る', '静かに待つ', '誰かを呼ぶ'],
-      fallback: true,
-      errorFlag: 'structure-invalid-or-exception',
-      debugFlags: ['RAW_FAIL_PARSE_OR_EXCEPTION'],
-      fallbackCount: fallbackCount + 1
-    }), { status: 206 })
+
+
+
+// ✅ フェーズ巻き戻し防止ロジック（追加）
+const isPhaseRewind = (current: string, previous: string): boolean => {
+  const phaseRank = {
+    start: 0,
+    phase01_導入: 1,
+    phase02_探索: 2,
+    phase03_外部探索: 3,
+    phase04_終盤: 4,
+    phase99_脱出: 5,
+  };
+  return (phaseRank[current] ?? 0) < (phaseRank[previous] ?? 0);
+};
+
+if (isPhaseRewind(flags.phase, prevPhase)) {
+  console.warn(`[route.ts] ⚠️ phaseが巻き戻ろうとしました: ${flags.phase} → ${prevPhase} に補正`);
+  flags.phase = prevPhase;
+}
+
+
+
+    flags.phase_log.push(flags.phase);
+    flags.items = Array.isArray(flags.items) ? flags.items : [];
+
+
+    return NextResponse.json({ reply: finalReply, flags });
+  } catch (err) {
+    console.error('[route.ts] Error:', err);
+    return NextResponse.json({
+      reply: '（エラーが発生しましたが、物語は続行されます）',
+      flags: initialFlags
+    });
   }
 }

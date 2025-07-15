@@ -30,6 +30,13 @@ export default function COCPage() {
 }
 
 const scenarioList = [
+{
+  title: '「きさらぎ駅（簡易版）」',
+  subtitle: '選択式でテンポよく進む、都市伝説の体験。',
+  description: '異界の駅に迷い込む、短時間で体験可能な分岐式シナリオ。試験・デモプレイにも最適。',
+  href: '/session?id=kisaragi-simple',
+},
+
   {
     title: '「悪魔の住む館」',
     subtitle: 'その館には、決して触れてはならない過去がある。',

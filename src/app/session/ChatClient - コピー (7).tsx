@@ -14,7 +14,6 @@ export default function ChatClient() {
   const [flags, setFlags] = useState<Record<string, any>>({})
   const [choices, setChoices] = useState<string[]>([])
   const [isLoading, setIsLoading] = useState(false)
-　const [debugFlags, setDebugFlags] = useState<Record<string, any>>({})
   const scrollRef = useRef<HTMLDivElement>(null)
 
   const initialFlags = {
@@ -24,33 +23,22 @@ export default function ChatClient() {
     phase_log: []
   }
 
-
-function extractChoices(text: string): string[] {
-  return text
-    .split('\n')
-    .filter(line => /^\s*\d+[.:、]\s*/.test(line.trim()))
-    .map(line => line.replace(/^\s*\d+[.:、]\s*/, '').trim())
-    .filter(choice => choice.length > 0)
-}
+  function extractChoices(text: string): string[] {
+    return text.split('\n').filter(line => /^\d+\./.test(line.trim())).map(line => line.replace(/^\d+\.\s*/, '').trim())
+  }
 
   useEffect(() => {
     const fetchInitial = async () => {
       setIsLoading(true)
-      const initialMessages: Message[] = []
-      setMessages([...initialMessages, { role: 'assistant', content: '' }])
-
       const res = await fetch('/api/message', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ messages: [], flags: initialFlags }),
       })
-
       if (!res.ok) {
         console.error('初回APIエラー:', await res.text())
         setIsLoading(false)
         return
       }
-
       const data = await res.json()
       setMessages([{ role: 'assistant', content: data.reply ?? '[応答なし]' }])
       setFlags(data.flags ?? initialFlags)
@@ -66,49 +54,20 @@ function extractChoices(text: string): string[] {
     setMessages(newMessages)
     setInput('')
     setIsLoading(true)
-
     const res = await fetch('/api/message', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ messages: newMessages, flags }),
     })
-
     if (!res.ok) {
       console.error('送信APIエラー:', await res.text())
       setIsLoading(false)
       return
     }
-
     const data = await res.json()
     const reply = data.reply ?? '[応答なし]'
-
-if (data.flags) {
-  const serverFlags = data.flags ?? {};
-
-  setFlags((prevFlags) => {
-    const newPhaseLog = [...(prevFlags.phase_log ?? [])];
-    if (serverFlags.phase && !newPhaseLog.includes(serverFlags.phase)) {
-      newPhaseLog.push(serverFlags.phase);
-    }
-
-    const mergedFlags = {
-      ...prevFlags,
-      ...serverFlags,
-      phase_log: newPhaseLog,
-    };
-
-    // ✅ debugFlags に正しくマージ結果を入れる（prevFlags が見える位置）
-    setDebugFlags(mergedFlags);
-    return mergedFlags;
-  });
-}
-
-
-
-
-
-    setChoices(extractChoices(reply))
     setMessages([...newMessages, { role: 'assistant', content: reply }])
+    if (data.flags) setFlags(data.flags)
+    setChoices(extractChoices(reply))
     setIsLoading(false)
   }
 
@@ -121,34 +80,30 @@ if (data.flags) {
   }, [messages])
 
   return (
-    <div className="relative min-h-screen font-['Kiwi_Maru'] text-white">
+    <div className="relative min-h-screen font-['Kiwi_Maru'] text-[#c4ffc4]">
       <div className="fixed inset-0 bg-cover bg-center bg-no-repeat z-0" style={{ backgroundImage: `url('/bg/kisaragi/phase00_fix.png')` }}></div>
 
       <div className="relative p-4 max-w-2xl mx-auto min-h-screen bg-transparent z-10">
         <div className="mb-4">
-          <h2 className="text-3xl font-bold tracking-wide text-white drop-shadow-md font-serif">きさらぎ駅セッション</h2>
-          {isLoading && <div className="text-sm italic text-[#a8fca8] animate-pulse mt-1"> </div>}
+          <h2 className="text-3xl font-bold tracking-wide text-[#d4ffe4] drop-shadow-md font-serif">きさらぎ駅セッション</h2>
         </div>
 
         <div className="space-y-4 mb-4">
-          {messages.map((msg, i) => {
-            const isLast = i === messages.length - 1
-            const isAssistant = msg.role === 'assistant'
-            return (
-              <div key={i} className={msg.role === 'user' ? 'text-right text-sky-300' : ''}>
-                <div className="text-xs font-bold text-[#a8fca8] mb-1">{msg.role}</div>
-                {msg.content !== undefined && (
-                  isAssistant && isLast && isLoading ? (
-                    <div className="text-sm italic text-[#a8fca8] animate-pulse">GMが確認中...</div>
-                  ) : isAssistant && isLast ? (
+          {messages.map((msg, i) => (
+            <div key={i} className={msg.role === 'user' ? 'text-right text-sky-300' : ''}>
+              <div className="text-xs font-bold text-[#a8fca8] mb-1">{msg.role}</div>
+              {msg.content !== undefined && (
+                msg.role === 'assistant' && i === messages.length - 1 ? (
+                  <>
+                    {isLoading && <div className="text-sm italic text-[#a8fca8] animate-pulse">GMが確認中...</div>}
                     <TypingText text={msg.content} speed={25} />
-                  ) : (
-                    <div className="whitespace-pre-wrap">{msg.content}</div>
-                  )
-                )}
-              </div>
-            )
-          })}
+                  </>
+                ) : (
+                  <div className="whitespace-pre-wrap">{typeof msg.content === 'string' ? msg.content : '[不正な形式]'}</div>
+                )
+              )}
+            </div>
+          ))}
           <div ref={scrollRef} />
         </div>
 
@@ -183,20 +138,10 @@ if (data.flags) {
           </button>
         </div>
 
-
-
-　　　　<div className="p-4 bg-gray-100 rounded-lg mt-4">
-  <div className="flex items-center space-x-2 mb-2">
-    <span className="px-2 py-1 text-xs font-semibold text-white bg-red-500 rounded-full">
-      debugFlags
-    </span>
-    <span className="text-sm text-gray-600">（デバッグ用のフラグ状態）</span>
-  </div>
-  <pre className="text-xs bg-black p-2 rounded border overflow-x-auto">
-    {JSON.stringify(debugFlags, null, 2)}
-  </pre>
-</div>
-
+        <div className="text-xs text-[#88bfa8] rounded border border-[#88bfa8] p-2">
+          <div className="font-bold mb-1">[デバッグ] flags 状態:</div>
+          <pre>{JSON.stringify(flags, null, 2)}</pre>
+        </div>
       </div>
     </div>
   )

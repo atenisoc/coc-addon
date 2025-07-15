@@ -1,0 +1,114 @@
+[
+  {
+    "id": "start",
+    "text": "電車を降りたあなたは、無人のホームに佇んでいる。駅は静まり返っている。",
+    "choices": [
+      {
+        "text": "駅名表示を見る",
+        "next": "scene_station_name"
+      },
+      {
+        "text": "駅構内を調べる",
+        "next": "scene_inside_station"
+      },
+      {
+        "text": "ホームを歩く",
+        "next": "scene_walk_home"
+      },
+      {
+        "text": "電車に戻る",
+        "next": "scene_back_to_train"
+      }
+    ]
+  },
+  {
+    "id": "scene_station_name",
+    "text": "駅名表示には『きさらぎ駅』と書かれていた。聞いたことのない駅名だ。",
+    "choices": [
+      {
+        "text": "駅構内を調べる",
+        "next": "scene_inside_station"
+      },
+      {
+        "text": "ホームを歩く",
+        "next": "scene_walk_home"
+      },
+      {
+        "text": "自由行動",
+        "next": "scene_free_action"
+      }
+    ]
+  },
+  {
+    "id": "scene_inside_station",
+    "text": "駅構内は薄暗く、使われていない様子だ。時刻表は破れており、落ちた切符や古びた掲示板が目立つ。",
+    "choices": [
+      {
+        "text": "自動販売機を探す",
+        "next": "scene_vending_machine"
+      },
+      {
+        "text": "掲示板を調べる",
+        "next": "scene_bulletin_board"
+      },
+      {
+        "text": "外に出られるか確認する",
+        "next": "scene_exit_check"
+      }
+    ]
+  },
+  {
+    "id": "scene_vending_machine",
+    "text": "古びた自動販売機が1台。ボタンを押しても何も起きない。電源は通っていないようだ。",
+    "choices": [
+      {
+        "text": "念のためお金を入れてみる",
+        "next": "scene_insert_coin"
+      },
+      {
+        "text": "他の場所を探す",
+        "next": "scene_inside_station"
+      },
+      {
+        "text": "自由行動",
+        "next": "scene_free_action"
+      }
+    ]
+  },
+  {
+    "id": "scene_insert_coin",
+    "text": "カタン。硬貨が吸い込まれた。数秒後、ガコンという音と共に紙の束が出てきた。",
+    "choices": [
+      {
+        "text": "紙の束を調べる",
+        "next": "scene_paper_bundle"
+      },
+      {
+        "text": "他の場所を探す",
+        "next": "scene_inside_station"
+      },
+      {
+        "text": "自由行動",
+        "next": "scene_free_action"
+      }
+    ]
+  },
+  {
+    "id": "scene_paper_bundle",
+    "text": "紙の束には古びた地図と、意味不明な記号が書かれた紙片が挟まれている。",
+    "choices": [
+      {
+        "text": "記号の紙片を観察する",
+        "next": "scene_observe_symbols"
+      },
+      {
+        "text": "地図を開く",
+        "next": "scene_map"
+      },
+      {
+        "text": "他の場所を探す",
+        "next": "scene_inside_station"
+      }
+    ]
+  }
+]

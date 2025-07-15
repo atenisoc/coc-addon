@@ -1,0 +1,1086 @@
+[
+  {
+    "id": "phase10_start",
+    "text": "気づけば夜が明けかけている。きさらぎ駅の周囲は朝靄に包まれている。",
+    "options": [
+      {
+        "text": "改めて駅を見回す",
+        "next": "phase10_station_check"
+      },
+      {
+        "text": "近くの山道へ足を踏み入れる",
+        "next": "phase10_mountain_path"
+      },
+      {
+        "text": "地図を再確認する",
+        "next": "phase10_map_check"
+      },
+      {
+        "text": "無理にでも線路を歩く",
+        "next": "phase10_walk_tracks"
+      }
+    ],
+    "phase": "真相・閉じた物語（記録・死後・ループ等）"
+  },
+  {
+    "id": "phase10_station_check",
+    "text": "駅は相変わらず無人で、少し埃っぽいが整っている。だが、どこか違和感がある。",
+    "options": [
+      {
+        "text": "違和感の正体を探る",
+        "next": "phase10_sense_disturbance"
+      },
+      {
+        "text": "構内の掲示物を見る",
+        "next": "phase10_posters"
+      },
+      {
+        "text": "再び電車が来るか試す",
+        "next": "phase10_wait_train"
+      }
+    ],
+    "phase": "真相・閉じた物語（記録・死後・ループ等）"
+  },
+  {
+    "id": "phase10_mountain_path",
+    "text": "山道はぬかるみ、足元が不安定だ。視界も悪く、何かが近くにいる気配を感じる。",
+    "options": [
+      {
+        "text": "戻る",
+        "next": "phase10_start"
+      },
+      {
+        "text": "気配を確認する",
+        "next": "phase10_check_presence"
+      },
+      {
+        "text": "先へ進む",
+        "next": "phase10_deep_forest"
+      }
+    ],
+    "phase": "真相・閉じた物語（記録・死後・ループ等）"
+  },
+  {
+    "id": "phase10_map_check",
+    "text": "地図には見たことのない地名と、謎の記号が多数描かれている。",
+    "options": [
+      {
+        "text": "記号の意味を考える",
+        "next": "phase10_symbol_meaning"
+      },
+      {
+        "text": "紙を破いてみる",
+        "next": "phase10_rip_map"
+      },
+      {
+        "text": "地図をポケットにしまう",
+        "next": "phase10_keep_map"
+      }
+    ],
+    "phase": "真相・閉じた物語（記録・死後・ループ等）"
+  },
+  {
+    "id": "phase10_walk_tracks",
+    "text": "線路を歩いていると、空間がゆがむような錯覚を覚える。",
+    "options": [
+      {
+        "text": "歩き続ける",
+        "next": "phase10_continue_walk"
+      },
+      {
+        "text": "線路を離れる",
+        "next": "phase10_leave_tracks"
+      },
+      {
+        "text": "しゃがんで休む",
+        "next": "phase10_rest"
+      }
+    ],
+    "phase": "真相・閉じた物語（記録・死後・ループ等）"
+  },
+  {
+    "id": "start",
+    "text": "電車を降りたあなたは、無人のホームに佇んでいる。駅は静まり返っている。",
+    "choices": [
+      {
+        "text": "駅名表示を見る",
+        "next": "scene_station_name"
+      },
+      {
+        "text": "駅構内を調べる",
+        "next": "scene_inside_station"
+      },
+      {
+        "text": "ホームを歩く",
+        "next": "scene_walk_home"
+      },
+      {
+        "text": "電車に戻る",
+        "next": "scene_back_to_train"
+      }
+    ],
+    "phase": "目覚め・違和感の始まり"
+  },
+  {
+    "id": "scene_station_name",
+    "text": "駅名表示には『きさらぎ駅』と書かれていた。聞いたことのない駅名だ。",
+    "choices": [
+      {
+        "text": "駅構内を調べる",
+        "next": "scene_inside_station"
+      },
+      {
+        "text": "ホームを歩く",
+        "next": "scene_walk_home"
+      },
+      {
+        "text": "自由行動",
+        "next": "scene_free_action"
+      }
+    ],
+    "phase": "目覚め・違和感の始まり"
+  },
+  {
+    "id": "scene_inside_station",
+    "text": "駅構内は薄暗く、使われていない様子だ。時刻表は破れており、落ちた切符や古びた掲示板が目立つ。",
+    "choices": [
+      {
+        "text": "自動販売機を探す",
+        "next": "scene_vending_machine"
+      },
+      {
+        "text": "掲示板を調べる",
+        "next": "scene_bulletin_board"
+      },
+      {
+        "text": "外に出られるか確認する",
+        "next": "scene_exit_check"
+      }
+    ],
+    "phase": "目覚め・違和感の始まり"
+  },
+  {
+    "id": "scene_vending_machine",
+    "text": "古びた自動販売機が1台。ボタンを押しても何も起きない。電源は通っていないようだ。",
+    "choices": [
+      {
+        "text": "念のためお金を入れてみる",
+        "next": "scene_insert_coin"
+      },
+      {
+        "text": "他の場所を探す",
+        "next": "scene_inside_station"
+      },
+      {
+        "text": "自由行動",
+        "next": "scene_free_action"
+      }
+    ],
+    "phase": "目覚め・違和感の始まり"
+  },
+  {
+    "id": "scene_insert_coin",
+    "text": "カタン。硬貨が吸い込まれた。数秒後、ガコンという音と共に紙の束が出てきた。",
+    "choices": [
+      {
+        "text": "紙の束を調べる",
+        "next": "scene_paper_bundle"
+      },
+      {
+        "text": "他の場所を探す",
+        "next": "scene_inside_station"
+      },
+      {
+        "text": "自由行動",
+        "next": "scene_free_action"
+      }
+    ],
+    "phase": "目覚め・違和感の始まり"
+  },
+  {
+    "id": "scene_paper_bundle",
+    "text": "紙の束には古びた地図と、意味不明な記号が書かれた紙片が挟まれている。",
+    "choices": [
+      {
+        "text": "記号の紙片を観察する",
+        "next": "scene_observe_symbols"
+      },
+      {
+        "text": "地図を開く",
+        "next": "scene_map"
+      },
+      {
+        "text": "他の場所を探す",
+        "next": "scene_inside_station"
+      }
+    ],
+    "phase": "目覚め・違和感の始まり"
+  },
+  {
+    "id": "scene_2a",
+    "text": "駅の外に出ると、濃い霧が立ち込めている。空は月も星もない、不自然な黒さだ。周囲には舗装されていない細道が数本、闇へと続いている。",
+    "choices": [
+      {
+        "text": "道を1本選んで進んでみる",
+        "next": "scene_2c"
+      },
+      {
+        "text": "駅に戻って構内を再確認する",
+        "next": "scene_1b"
+      },
+      {
+        "text": "大声で誰かを呼んでみる",
+        "next": "scene_2b"
+      },
+      {
+        "text": "霧の中でしばらく立ち止まって耳を澄ます",
+        "next": "scene_2d"
+      }
+    ],
+    "phase": "駅構内探索"
+  },
+  {
+    "id": "scene_2b",
+    "text": "あなたは叫ぶ。「誰かいませんか！？」霧に声が吸い込まれるように消えるが…しばらくして、どこか遠くで“鈴の音”が聞こえた。",
+    "choices": [
+      {
+        "text": "音の方に向かってみる",
+        "next": "scene_2e"
+      },
+      {
+        "text": "駅に戻る",
+        "next": "scene_1a"
+      },
+      {
+        "text": "叫ぶのをやめて、静かにする",
+        "next": "scene_2d"
+      }
+    ],
+    "phase": "駅構内探索"
+  },
+  {
+    "id": "scene_2c",
+    "text": "道は思ったより長く、霧が濃くなるにつれて方向感覚が失われていく。足元で何かが「ぐにゃり」と潰れるような音を立てた。",
+    "choices": [
+      {
+        "text": "足元を確認する",
+        "next": "scene_2f"
+      },
+      {
+        "text": "無視して進む",
+        "next": "scene_2g"
+      },
+      {
+        "text": "引き返す",
+        "next": "scene_1a"
+      }
+    ],
+    "phase": "駅構内探索"
+  },
+  {
+    "id": "scene_2d",
+    "text": "……何か聞こえる。獣とも人ともつかぬ、くぐもった呻き声が、霧の向こうから近づいている。",
+    "choices": [
+      {
+        "text": "霧の中に声の主を探しに行く",
+        "next": "scene_2h"
+      },
+      {
+        "text": "とっさに駅に戻る",
+        "next": "scene_1a"
+      },
+      {
+        "text": "物陰に隠れてやり過ごす",
+        "next": "scene_2i"
+      }
+    ],
+    "phase": "駅構内探索"
+  },
+  {
+    "id": "scene_2e",
+    "text": "鈴の音を追って歩くと、小さな祠が見えてきた。中には奇妙な形の石像と紙がある。",
+    "choices": [
+      {
+        "text": "祠に祈る",
+        "next": "scene_2j"
+      },
+      {
+        "text": "紙を手に取る",
+        "next": "scene_2k"
+      },
+      {
+        "text": "引き返す",
+        "next": "scene_1a"
+      }
+    ],
+    "phase": "駅構内探索"
+  },
+  {
+    "id": "scene_2f",
+    "text": "足元には得体の知れない生き物の残骸のようなものがある。触れずに進むべきだった。",
+    "choices": [
+      {
+        "text": "無理にでも正体を調べる",
+        "next": "scene_2g"
+      },
+      {
+        "text": "その場から離れる",
+        "next": "scene_1a"
+      }
+    ],
+    "phase": "駅構内探索"
+  },
+  {
+    "id": "scene_2g",
+    "text": "霧の中で何かがこちらを見ている気がする……背後から気配が近づく。",
+    "choices": [
+      {
+        "text": "振り返る",
+        "next": "scene_2h"
+      },
+      {
+        "text": "走って逃げる",
+        "next": "scene_1a"
+      },
+      {
+        "text": "動かず気配をやりすごす",
+        "next": "scene_2i"
+      }
+    ],
+    "phase": "駅構内探索"
+  },
+  {
+    "id": "scene_2h",
+    "text": "何かがいた。黒い影が目の前を横切る。あなたの心に寒気が走る。",
+    "choices": [
+      {
+        "text": "叫ぶ",
+        "next": "scene_1a"
+      },
+      {
+        "text": "目を閉じる",
+        "next": "scene_2i"
+      },
+      {
+        "text": "逃げる",
+        "next": "scene_1a"
+      }
+    ],
+    "phase": "駅構内探索"
+  },
+  {
+    "id": "scene_2i",
+    "text": "そのままやりすごせたようだ。影は遠ざかり、再び静寂が戻る。",
+    "choices": [
+      {
+        "text": "駅に戻る",
+        "next": "scene_1a"
+      },
+      {
+        "text": "別の道を進む",
+        "next": "scene_2c"
+      }
+    ],
+    "phase": "駅構内探索"
+  },
+  {
+    "id": "scene_2j",
+    "text": "祈っていると、背後から柔らかい風が吹いた。少し安心感を得た気がする。",
+    "choices": [
+      {
+        "text": "紙を見る",
+        "next": "scene_2k"
+      },
+      {
+        "text": "駅に戻る",
+        "next": "scene_1a"
+      }
+    ],
+    "phase": "駅構内探索"
+  },
+  {
+    "id": "scene_2k",
+    "text": "紙には何かの封印のような文字列が並んでいる。読んだ瞬間、頭がずきんと痛んだ。",
+    "choices": [
+      {
+        "text": "その場で耐える",
+        "next": "scene_2i"
+      },
+      {
+        "text": "紙を破る",
+        "next": "scene_2h"
+      },
+      {
+        "text": "祠に戻して立ち去る",
+        "next": "scene_1a"
+      }
+    ],
+    "phase": "駅構内探索"
+  },
+  {
+    "id": "scene_3a",
+    "text": "祠の扉をそっと開けると、中には奇妙な文様が描かれた石板が安置されていた。",
+    "options": [
+      {
+        "text": "石板を詳しく調べる",
+        "next": "scene_3b"
+      },
+      {
+        "text": "石板に触れてみる",
+        "next": "scene_3c"
+      },
+      {
+        "text": "祠を後にする",
+        "next": "scene_3d"
+      }
+    ],
+    "phase": "駅外の風景と分岐"
+  },
+  {
+    "id": "scene_3b",
+    "text": "石板には人間のものとは思えない図形と、何かの警告のような文字が刻まれていた。",
+    "options": [
+      {
+        "text": "警告を無視して読み解く",
+        "next": "scene_3e"
+      },
+      {
+        "text": "警告を受け入れて石板から離れる",
+        "next": "scene_3d"
+      },
+      {
+        "text": "石板の裏を確認する",
+        "next": "scene_3f"
+      }
+    ],
+    "phase": "駅外の風景と分岐"
+  },
+  {
+    "id": "scene_3c",
+    "text": "指先が石板に触れた瞬間、全身に冷たい衝撃が走る。視界がぐにゃりと歪んだ。",
+    "options": [
+      {
+        "text": "無理にでも石板を離す",
+        "next": "scene_3d"
+      },
+      {
+        "text": "意識を集中し続ける",
+        "next": "scene_3g"
+      },
+      {
+        "text": "声を出して誰かを呼ぶ",
+        "next": "scene_3h"
+      }
+    ],
+    "phase": "駅外の風景と分岐"
+  },
+  {
+    "id": "scene_3d",
+    "text": "あなたは祠を後にした。霧はさらに濃くなり、遠くで何かのうめき声が響いた。",
+    "options": [
+      {
+        "text": "声のする方へ進む",
+        "next": "scene_3i"
+      },
+      {
+        "text": "駅に戻る",
+        "next": "scene_1a"
+      },
+      {
+        "text": "道の反対側に逃げる",
+        "next": "scene_3j"
+      }
+    ],
+    "phase": "駅外の風景と分岐"
+  },
+  {
+    "id": "scene_3e",
+    "text": "文様が浮かび上がり、あなたの意識に直接語りかけてくる。“忘れてはならぬ”",
+    "options": [
+      {
+        "text": "意味を理解しようとする",
+        "next": "scene_3k"
+      },
+      {
+        "text": "すぐに石板から離れる",
+        "next": "scene_3d"
+      },
+      {
+        "text": "メモを取り記録する",
+        "next": "scene_3l"
+      }
+    ],
+    "phase": "駅外の風景と分岐"
+  },
+  {
+    "id": "scene_4_1",
+    "text": "神社の奥、蝋燭の灯りに照らされた祭壇が現れる。中央に古い木箱が置かれている。",
+    "choices": [
+      {
+        "text": "木箱を開ける",
+        "next_id": "scene_4_2"
+      },
+      {
+        "text": "木箱を触らず観察する",
+        "next_id": "scene_4_3"
+      },
+      {
+        "text": "神社をさらに奥へ進む",
+        "next_id": "scene_4_4"
+      },
+      {
+        "text": "神社を出る",
+        "next_id": "scene_3_4"
+      }
+    ],
+    "phase": "干渉の兆候"
+  },
+  {
+    "id": "scene_4_2",
+    "text": "木箱の中には、白い髪の束と血のにじんだ人形が入っていた。",
+    "choices": [
+      {
+        "text": "髪の束を取り出す",
+        "next_id": "scene_4_5"
+      },
+      {
+        "text": "人形を観察する",
+        "next_id": "scene_4_6"
+      },
+      {
+        "text": "木箱を閉じる",
+        "next_id": "scene_4_1"
+      },
+      {
+        "text": "急いでその場を離れる",
+        "next_id": "scene_4_7"
+      }
+    ],
+    "phase": "干渉の兆候"
+  },
+  {
+    "id": "scene_4_3",
+    "text": "木箱には呪文のような文様が刻まれており、箱の周囲には円形の印が描かれていた。",
+    "choices": [
+      {
+        "text": "文様を紙に写す",
+        "next_id": "scene_4_8"
+      },
+      {
+        "text": "印を踏んでみる",
+        "next_id": "scene_4_9"
+      },
+      {
+        "text": "木箱を開ける",
+        "next_id": "scene_4_2"
+      },
+      {
+        "text": "神社を出る",
+        "next_id": "scene_3_4"
+      }
+    ],
+    "phase": "干渉の兆候"
+  },
+  {
+    "id": "scene_4_4",
+    "text": "奥には封鎖された扉があり、鍵がかかっている。",
+    "choices": [
+      {
+        "text": "扉を無理やり開けようとする",
+        "next_id": "scene_4_10"
+      },
+      {
+        "text": "鍵を探す",
+        "next_id": "scene_4_11"
+      },
+      {
+        "text": "近くの壁を調べる",
+        "next_id": "scene_4_12"
+      },
+      {
+        "text": "引き返す",
+        "next_id": "scene_4_1"
+      }
+    ],
+    "phase": "干渉の兆候"
+  },
+  {
+    "id": "scene_5a",
+    "text": "神社の扉を開けると、ゆっくりと冷気が漏れ出してくる。奥は真っ暗だ。",
+    "choices": [
+      {
+        "text": "懐中電灯で奥を照らす",
+        "next_id": "scene_5b"
+      },
+      {
+        "text": "中に入ってみる",
+        "next_id": "scene_5c"
+      },
+      {
+        "text": "やっぱり引き返す",
+        "next_id": "scene_3a"
+      }
+    ],
+    "phase": "導かれる場所"
+  },
+  {
+    "id": "scene_5b",
+    "text": "懐中電灯で照らすと、壁には古い文字がびっしりと刻まれている。",
+    "choices": [
+      {
+        "text": "文字を読み取ってみる",
+        "next_id": "scene_5d"
+      },
+      {
+        "text": "中に進む",
+        "next_id": "scene_5c"
+      },
+      {
+        "text": "やっぱり扉を閉めて戻る",
+        "next_id": "scene_3a"
+      }
+    ],
+    "phase": "導かれる場所"
+  },
+  {
+    "id": "scene_5c",
+    "text": "足を踏み入れた瞬間、扉が音を立てて閉まり、外の音が消えた。",
+    "choices": [
+      {
+        "text": "奥へ進む",
+        "next_id": "scene_5e"
+      },
+      {
+        "text": "扉を開けようとする",
+        "next_id": "scene_5f"
+      },
+      {
+        "text": "灯りを探す",
+        "next_id": "scene_5g"
+      }
+    ],
+    "phase": "導かれる場所"
+  },
+  {
+    "id": "scene_5d",
+    "text": "文字は「この先、戻れぬ者多し」と読めた。警告のようだ。",
+    "choices": [
+      {
+        "text": "それでも中に進む",
+        "next_id": "scene_5c"
+      },
+      {
+        "text": "扉を閉じて戻る",
+        "next_id": "scene_3a"
+      },
+      {
+        "text": "文字をスケッチしておく",
+        "next_id": "scene_5h"
+      }
+    ],
+    "phase": "導かれる場所"
+  },
+  {
+    "id": "scene_5e",
+    "text": "通路は急に狭くなり、左右に分かれている。",
+    "choices": [
+      {
+        "text": "左へ進む",
+        "next_id": "scene_6a"
+      },
+      {
+        "text": "右へ進む",
+        "next_id": "scene_6b"
+      },
+      {
+        "text": "引き返す",
+        "next_id": "scene_5c"
+      }
+    ],
+    "phase": "導かれる場所"
+  },
+  {
+    "id": "scene_5f",
+    "text": "扉はびくともしない。中からは開けられないようだ。",
+    "choices": [
+      {
+        "text": "諦めて奥に進む",
+        "next_id": "scene_5e"
+      },
+      {
+        "text": "助けを呼ぶ",
+        "next_id": "scene_5i"
+      },
+      {
+        "text": "しばらく待つ",
+        "next_id": "scene_5j"
+      }
+    ],
+    "phase": "導かれる場所"
+  },
+  {
+    "id": "scene_5g",
+    "text": "手探りで壁をまさぐると、古いランプのようなものが掛かっていた。",
+    "choices": [
+      {
+        "text": "火を灯してみる",
+        "next_id": "scene_5k"
+      },
+      {
+        "text": "持って進む",
+        "next_id": "scene_5e"
+      },
+      {
+        "text": "その場で休む",
+        "next_id": "scene_5j"
+      }
+    ],
+    "phase": "導かれる場所"
+  },
+  {
+    "id": "scene_6a",
+    "text": "あなたは再び山道に足を踏み入れる。空気が濃く、周囲の音が遠のいていくような感覚に包まれる。",
+    "options": [
+      {
+        "text": "音のする方向へ進む",
+        "next_id": "scene_6b"
+      },
+      {
+        "text": "明かりを求めて進む",
+        "next_id": "scene_6c"
+      },
+      {
+        "text": "来た道を戻る",
+        "next_id": "scene_4b"
+      },
+      {
+        "text": "草むらを調べる",
+        "next_id": "scene_6d"
+      }
+    ],
+    "phase": "境界との接触"
+  },
+  {
+    "id": "scene_6b",
+    "text": "小さな祠があり、前には何かを祀るような形跡がある。誰かが最近までいたような気配が残る。",
+    "options": [
+      {
+        "text": "祠の扉を開けてみる",
+        "next_id": "scene_6e"
+      },
+      {
+        "text": "お供え物に手を出す",
+        "next_id": "scene_6f"
+      },
+      {
+        "text": "周囲を警戒しながら調べる",
+        "next_id": "scene_6g"
+      }
+    ],
+    "phase": "境界との接触"
+  },
+  {
+    "id": "scene_6c",
+    "text": "光の正体は小さな提灯だった。誰かが意図的に設置したようだが、周囲には誰の姿もない。",
+    "options": [
+      {
+        "text": "提灯を持っていく",
+        "next_id": "scene_6h"
+      },
+      {
+        "text": "提灯を調べてみる",
+        "next_id": "scene_6i"
+      },
+      {
+        "text": "その場を離れる",
+        "next_id": "scene_6j"
+      }
+    ],
+    "phase": "境界との接触"
+  },
+  {
+    "id": "scene_6d",
+    "text": "草むらには何かが埋まっていた。掘ってみると、濡れた日記帳が出てきた。",
+    "options": [
+      {
+        "text": "日記帳を開く",
+        "next_id": "scene_6k"
+      },
+      {
+        "text": "触らずに埋め戻す",
+        "next_id": "scene_6l"
+      },
+      {
+        "text": "あたりをさらに調べる",
+        "next_id": "scene_6m"
+      }
+    ],
+    "phase": "境界との接触"
+  },
+  {
+    "id": "phase7_1",
+    "text": "逃げ切ったと思った矢先、道が途切れていた。目の前には暗い崖が広がっている。",
+    "options": [
+      {
+        "text": "崖を降りる方法を探す",
+        "next": "phase7_2"
+      },
+      {
+        "text": "後ろを振り返る",
+        "next": "phase7_3"
+      },
+      {
+        "text": "叫んで助けを呼ぶ",
+        "next": "phase7_4"
+      }
+    ],
+    "phase": "意志の試練（選択・儀式・内面性）"
+  },
+  {
+    "id": "phase7_2",
+    "text": "崖の近くに細い獣道のような下り坂があった。だが非常に危険そうだ。",
+    "options": [
+      {
+        "text": "慎重に降りてみる",
+        "next": "phase7_5"
+      },
+      {
+        "text": "やはり戻る",
+        "next": "phase7_3"
+      },
+      {
+        "text": "その場で休む",
+        "next": "phase7_6"
+      }
+    ],
+    "phase": "意志の試練（選択・儀式・内面性）"
+  },
+  {
+    "id": "phase7_3",
+    "text": "振り返ると、さっきまでいなかったはずの人影が立っていた。",
+    "options": [
+      {
+        "text": "話しかける",
+        "next": "phase7_7"
+      },
+      {
+        "text": "逃げる",
+        "next": "phase7_8"
+      },
+      {
+        "text": "立ち尽くす",
+        "next": "phase7_9"
+      }
+    ],
+    "phase": "意志の試練（選択・儀式・内面性）"
+  },
+  {
+    "id": "phase7_4",
+    "text": "声は闇に吸い込まれるように響くだけだった。応答はない。",
+    "options": [
+      {
+        "text": "もう一度叫ぶ",
+        "next": "phase7_10"
+      },
+      {
+        "text": "黙って耳を澄ます",
+        "next": "phase7_11"
+      },
+      {
+        "text": "諦めて別の手段を探す",
+        "next": "phase7_2"
+      }
+    ],
+    "phase": "意志の試練（選択・儀式・内面性）"
+  },
+  {
+    "id": "scene_8a",
+    "text": "地図を手がかりに山中を彷徨っていると、急に視界が歪み、空気が波打つような違和感を覚える。",
+    "options": [
+      {
+        "label": "歪みの中心に進む",
+        "next_id": "scene_8b"
+      },
+      {
+        "label": "その場で様子を見る",
+        "next_id": "scene_8c"
+      },
+      {
+        "label": "後ろを振り返る",
+        "next_id": "scene_8d"
+      }
+    ],
+    "phase": "崩壊または脱出"
+  },
+  {
+    "id": "scene_8b",
+    "text": "歪みの中心へと歩み寄ると、そこには見慣れた駅のような建物がぼんやりと現れる。",
+    "options": [
+      {
+        "label": "駅へ入る",
+        "next_id": "scene_8e"
+      },
+      {
+        "label": "引き返す",
+        "next_id": "scene_8c"
+      },
+      {
+        "label": "建物をぐるりと回る",
+        "next_id": "scene_8f"
+      }
+    ],
+    "phase": "崩壊または脱出"
+  },
+  {
+    "id": "scene_8c",
+    "text": "歪みは次第に収まり、ただの空間に戻る。地図の印も徐々に消え始めている。",
+    "options": [
+      {
+        "label": "別の道を探す",
+        "next_id": "scene_8g"
+      },
+      {
+        "label": "地図を燃やす",
+        "next_id": "scene_8h"
+      },
+      {
+        "label": "再び歪みを探す",
+        "next_id": "scene_8b"
+      }
+    ],
+    "phase": "崩壊または脱出"
+  },
+  {
+    "id": "scene_8d",
+    "text": "背後には人のような影が見えるが、近づくと消える。代わりに白い紙が地面に落ちている。",
+    "options": [
+      {
+        "label": "紙を拾う",
+        "next_id": "scene_8h"
+      },
+      {
+        "label": "何もせず前へ進む",
+        "next_id": "scene_8g"
+      },
+      {
+        "label": "叫ぶ",
+        "next_id": "scene_8i"
+      }
+    ],
+    "phase": "崩壊または脱出"
+  },
+  {
+    "id": "scene_8e",
+    "text": "駅の中は無人で、見覚えのある風景が続いている。奇妙な既視感を覚える。",
+    "options": [
+      {
+        "label": "ホームに出る",
+        "next_id": "scene_8j"
+      },
+      {
+        "label": "待合室で休む",
+        "next_id": "scene_8k"
+      },
+      {
+        "label": "構内を探す",
+        "next_id": "scene_8l"
+      }
+    ],
+    "phase": "崩壊または脱出"
+  },
+  {
+    "id": "scene_8f",
+    "text": "建物の裏には赤黒い文字で何かが書かれた石碑がある。",
+    "options": [
+      {
+        "label": "文字を読む",
+        "next_id": "scene_8m"
+      },
+      {
+        "label": "石碑に触れる",
+        "next_id": "scene_8n"
+      },
+      {
+        "label": "その場を立ち去る",
+        "next_id": "scene_8g"
+      }
+    ],
+    "phase": "崩壊または脱出"
+  },
+  {
+    "id": "scene_9a",
+    "text": "あなたは声のする方へと進み、不気味なトンネルへとたどり着く。",
+    "choices": [
+      {
+        "text": "トンネルに入る",
+        "next_id": "scene_9b"
+      },
+      {
+        "text": "引き返す",
+        "next_id": "scene_8d"
+      },
+      {
+        "text": "トンネルの周囲を調べる",
+        "next_id": "scene_9c"
+      }
+    ],
+    "phase": "現実か幻想か（ループ・帰還）"
+  },
+  {
+    "id": "scene_9b",
+    "text": "トンネルの中は真っ暗だ。進むごとに足音が吸い込まれていくようだ。",
+    "choices": [
+      {
+        "text": "懐中電灯で照らす",
+        "next_id": "scene_9d"
+      },
+      {
+        "text": "スマホのライトを使う",
+        "next_id": "scene_9e"
+      },
+      {
+        "text": "何も使わず進む",
+        "next_id": "scene_9f"
+      }
+    ],
+    "phase": "現実か幻想か（ループ・帰還）"
+  },
+  {
+    "id": "scene_9c",
+    "text": "トンネルの入口近くに、風化した看板があり『入るな』と書かれている。",
+    "choices": [
+      {
+        "text": "それでも入る",
+        "next_id": "scene_9b"
+      },
+      {
+        "text": "看板を調べる",
+        "next_id": "scene_9g"
+      },
+      {
+        "text": "別の道を探す",
+        "next_id": "scene_9h"
+      }
+    ],
+    "phase": "現実か幻想か（ループ・帰還）"
+  },
+  {
+    "id": "scene_9d",
+    "text": "懐中電灯が突然ちらつき、誰かの足音が後ろから近づいてくる。",
+    "choices": [
+      {
+        "text": "振り向く",
+        "next_id": "scene_9i"
+      },
+      {
+        "text": "走って逃げる",
+        "next_id": "scene_9j"
+      },
+      {
+        "text": "静かに隠れる",
+        "next_id": "scene_9k"
+      }
+    ],
+    "phase": "現実か幻想か（ループ・帰還）"
+  }
+]
