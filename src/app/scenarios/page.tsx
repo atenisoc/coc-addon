@@ -1,7 +1,9 @@
 // src/app/scenarios/page.tsx
 import fs from 'fs';
 import path from 'path';
-import ScenarioCard from '@/components/ScenarioCard';
+import { ScenarioCard } from '@/components/ScenarioCard';
+
+
 
 interface Scenario {
   title: string;
