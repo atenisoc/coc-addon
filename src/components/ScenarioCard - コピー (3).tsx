@@ -6,17 +6,16 @@ interface ScenarioCardProps {
   title: string;
   summary: string;
   prompt: string;
-  image?: string; // 🔸ここを追加
 }
 
-export function ScenarioCard({ title, summary, prompt, image }: ScenarioCardProps) {
+export function ScenarioCard({ title, summary, prompt }: ScenarioCardProps) {
   const [copied, setCopied] = useState(false);
 
   const fallbackCopy = (text: string) => {
     const textarea = document.createElement('textarea');
     textarea.value = text;
-    textarea.style.position = 'fixed';
-    textarea.style.opacity = '0';
+    textarea.style.position = 'fixed'; // スクロールずれ対策
+    textarea.style.opacity = '0';      // 非表示
     document.body.appendChild(textarea);
     textarea.focus();
     textarea.select();
@@ -38,25 +37,16 @@ export function ScenarioCard({ title, summary, prompt, image }: ScenarioCardProp
         setCopied(true);
         setTimeout(() => setCopied(false), 2000);
       } else {
-        fallbackCopy(prompt);
+        fallbackCopy(prompt); // フォールバック実行
       }
     } catch (err) {
       console.error('コピーに失敗しました', err);
-      fallbackCopy(prompt);
+      fallbackCopy(prompt); // 失敗時もフォールバック
     }
   };
 
   return (
     <div className="w-full max-w-xl bg-gray rounded-lg shadow hover:shadow-md transition p-5 space-y-3 border">
-      {/* 🔽 挿絵を上部に追加 */}
-      {image && (
-        <img
-          src={image}
-          alt={title}
-          className="w-full h-auto rounded-md mb-2"
-        />
-      )}
-
       <div className="flex items-start justify-between gap-4">
         <button
           onClick={handleCopy}
@@ -68,7 +58,7 @@ export function ScenarioCard({ title, summary, prompt, image }: ScenarioCardProp
           <h3 className="text-2xl font-bold text-red-500 font-serif tracking-wide leading-snug">
             {title}
           </h3>
-          <p className="text-base text-white leading-relaxed tracking-wide mt-1 whitespace-pre-line">
+          <p className="text-base text-white-700 leading-relaxed tracking-wide mt-1">
             {summary}
           </p>
         </div>

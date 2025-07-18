@@ -6,10 +6,10 @@ interface ScenarioCardProps {
   title: string;
   summary: string;
   prompt: string;
-  image?: string; // 🔸ここを追加
+  image?: string;
 }
 
-export function ScenarioCard({ title, summary, prompt, image }: ScenarioCardProps) {
+export function ScenarioCardHorizontal({ title, summary, prompt, image }: ScenarioCardProps) {
   const [copied, setCopied] = useState(false);
 
   const fallbackCopy = (text: string) => {
@@ -47,31 +47,30 @@ export function ScenarioCard({ title, summary, prompt, image }: ScenarioCardProp
   };
 
   return (
-    <div className="w-full max-w-xl bg-gray rounded-lg shadow hover:shadow-md transition p-5 space-y-3 border">
-      {/* 🔽 挿絵を上部に追加 */}
+    <div className="w-full max-w-xl flex bg-gray rounded-lg shadow hover:shadow-md transition overflow-hidden border">
       {image && (
         <img
           src={image}
           alt={title}
-          className="w-full h-auto rounded-md mb-2"
+          className="w-1/3 object-cover"
         />
       )}
-
-      <div className="flex items-start justify-between gap-4">
-        <button
-          onClick={handleCopy}
-          className="bg-green-600 text-white text-sm px-4 py-2 rounded hover:bg-green-700 whitespace-nowrap"
-        >
-          {copied ? '✅ コピー済' : '📋 コピー'}
-        </button>
-        <div className="text-left w-full">
-          <h3 className="text-2xl font-bold text-red-500 font-serif tracking-wide leading-snug">
+      <div className="p-4 w-2/3 flex flex-col justify-between">
+        <div>
+          <h3 className="text-xl font-bold text-red-500 font-serif tracking-wide">
             {title}
           </h3>
-          <p className="text-base text-white leading-relaxed tracking-wide mt-1 whitespace-pre-line">
+          <p className="text-sm text-white leading-snug mt-1 whitespace-pre-line">
             {summary}
           </p>
         </div>
+
+        <button
+          onClick={handleCopy}
+          className="mt-3 self-start px-4 py-1 bg-green-600 text-white text-sm rounded hover:bg-green-700"
+        >
+          {copied ? '✅ コピー済' : '📋 コピー'}
+        </button>
       </div>
     </div>
   );
